@@ -11,7 +11,7 @@ return require('packer').startup(function()
    use "lukas-reineke/indent-blankline.nvim" -- ident lines
    use 'tpope/vim-surround' -- surround text with "'`([{
    use 'windwp/nvim-autopairs'
-   use 'rcarriga/nvim-notify' -- GUI Notifications style
+   use "hkupty/iron.nvim" -- Jupyter like functionality for .py files
    use {
       'kyazdani42/nvim-tree.lua',
       requires = {

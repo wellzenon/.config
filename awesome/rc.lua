@@ -296,10 +296,10 @@ globalkeys = mytable.join(
               {description = "view  previous nonempty", group = "tag"}),
 
     -- Default client focus
-    awful.key({ altkey,           }, "Tab",
-        function ()
-            awful.client.focus.byidx( 1)
-        end,
+    awful.key({ altkey,           }, "Tab", function () os.execute('rofi -show window -kb-accept-entry "!Alt-Tab,!Alt+Alt_L" -kb-row-down "Alt+Tab" -show-icons') end,
+--        function ()
+--            awful.client.focus.byidx( 1)
+--        end,
         {description = "focus next by index", group = "client"}
     ),
     awful.key({ altkey, "Shift"   }, "Tab",
@@ -541,12 +541,12 @@ globalkeys = mytable.join(
     -- check https://github.com/DaveDavenport/rofi for more details
     -- rofi
     awful.key({ modkey }, "x", function ()
-            os.execute(string.format("rofi -show %s", 'run'))
+            os.execute(string.format("rofi -show %s", 'drun'))
         end,
         {description = "show rofi", group = "launcher"}),
     
     -- Prompt
-    awful.key({ modkey }, "r", function () awful.screen.focused().mypromptbox:run() end,
+    awful.key({ modkey }, "r", function () os.execute(string.format("rofi -show %s", 'run')) end,
               {description = "run prompt", group = "launcher"})
 
    --[[

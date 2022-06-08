@@ -1,27 +1,40 @@
 local indent = 3
 
-vim.opt.tabstop = indent
-vim.opt.softtabstop = indent
-vim.opt.shiftwidth = indent
-vim.opt.expandtab = true
-vim.opt.autoindent = true
-vim.opt.copyindent = true
-vim.opt.cursorline = true -- Enable highlighting of the current line
-vim.opt.cursorlineopt = "both"
-
-vim.opt.termguicolors = true -- True color support
-
-vim.opt.relativenumber = true
-vim.opt.number = true
-vim.opt.incsearch = true
-
+local config = {
+   tabstop = indent,
+   softtabstop = indent,
+   shiftwidth = indent,
+   expandtab = true,
+   autoindent = true,
+   copyindent = true,
+   cursorline = true ,-- Enable highlighting of the current line
+   cursorlineopt = "both",
+   termguicolors = true, -- True color support
+   relativenumber = true,
+   number = true,
+   incsearch = true,
+   splitbelow = true,
+   splitright = true,
+   smartcase=true,
+   smartindent=true,
+   updatetime=300,
+   showmode = false,
+   undofile = true,
+   swapfile = false,
+   autowriteall = true,
+   writeany = true,
+   mouse="a",
 -- Folding {{{
-vim.opt.foldenable=true
-vim.opt.foldlevelstart=10  -- default folding level when buffer is opened
-vim.opt.foldnestmax=10     -- maximum nested fold
-vim.opt.foldmethod='indent'  -- fold based on indentation
+   foldenable=true,
+   foldlevelstart=10,  -- default folding level when buffer is opened
+   foldnestmax=10,     -- maximum nested fold
+   foldmethod='indent',  -- fold based on indentation
 -- }}} Folding
+}
+
+for key, value in pairs(config) do
+   vim.opt[key]=value
+end
 
 -- set nvim python environment
 vim.g.python3_host_prog = '$HOME/.local/venv/nvim/bin/python'
-

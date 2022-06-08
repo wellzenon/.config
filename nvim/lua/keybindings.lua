@@ -1,7 +1,11 @@
 local map = vim.api.nvim_set_keymap
+
+-- get out of terminal mode
 map('i', 'jj', '<Esc>', {})
+map('t', 'jj', '<C-\\><C-n>', {})
 
 local opts = { noremap = true }
+local opts_silent = { noremap=true, silent=true }
 
 -- local cmd = vim.cmd
 
@@ -23,8 +27,10 @@ local opts = { noremap = true }
 map("n", "<Esc>", "<cmd> :noh <CR>", opts)
 
 --navigation between bufferlines tabs
-map("n", "<A-h>", ":TablineBufferNext <cr>", opts)
-map("n", "<A-l>", ":TablineBufferPrevious <cr>", opts)
+map("n", "<A-h>", ":TablineBufferNext <cr>", opts_silent)
+map("n", "<A-l>", ":TablineBufferPrevious <cr>", opts_silent)
+map("t", "<A-h>", "<C-\\><C-N> :TablineBufferNext <cr>", opts_silent)
+map("t", "<A-l>", "<C-\\><C-N> :TablineBufferPrevious <cr>", opts_silent)
 
 -- navigation between windows
 map("n", "<C-h>", "<C-w>h", opts)
@@ -36,6 +42,13 @@ map("t", "<C-h>", "<C-\\><C-N><C-w>h", opts)
 map("t", "<C-j>", "<C-\\><C-N><C-w>j", opts)
 map("t", "<C-l>", "<C-\\><C-N><C-w>l", opts)
 map("t", "<C-k>", "<C-\\><C-N><C-w>k", opts)
+
+-- resizing windows
+map("n", "<A-->", "<C-w>-", opts)
+map("n", "<A-=>", "<C-w>+", opts)
+map("n", "<A-.>", "<C-w><", opts)
+map("n", "<A-,>", "<C-w>>", opts)
+
 
 -- move cursor within insert mode
 map("i", "<C-h>", "<Left>", opts)
@@ -52,6 +65,8 @@ map("i", "<A-j>", "<Esc>:m .+1<CR>==gi", opts)
 map("n", "<A-k>", ":m .-2<CR>==", opts)
 map("v", "<A-k>", ":m '<-2<CR>gv=gv", opts)
 map("i", "<A-k>", "<Esc>:m .-2<CR>==gi", opts)
+map("i", "<C-CR>", "<Esc>o", opts) -- adds a line below on insert mode
+map("n", "<C-CR>", "o<Esc>", opts) -- adds a line below on insert mode
 
 map("n", "<C-c>", "<cmd> :%y+ <CR>", opts) -- copy whole file content
 map("n", "<S-t>", "<cmd> :enew <CR>", opts) -- new buffer
@@ -74,14 +89,8 @@ map("n", "<leader>fg", "<cmd>lua require('telescope.builtin').live_grep()<cr>", 
 map("n", "<leader>fb", "<cmd>lua require('telescope.builtin').buffers()<cr>", opts)
 map("n", "<leader>fh", "<cmd>lua require('telescope.builtin').help_tags()<cr>", opts)
 
--- terminal mappings
-
--- get out of terminal mode
--- map("t", { "jk" }, "<C-\\><C-n>", opts)
-
 -- LSP keybindings
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
-local opts_silent = { noremap=true, silent=true }
 map('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts_silent)
 map('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts_silent)
 map('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts_silent)
