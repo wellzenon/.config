@@ -24,6 +24,20 @@ local hotkeys_popup = require("awful.hotkeys_popup")
                       require("awful.hotkeys_popup.keys")
 local mytable       = awful.util.table or gears.table -- 4.{0,1} compatibility
 
+awesome.connect_signal(
+'exit',
+function(args)
+   awful.util.spawn('touch ~/.awesome-restart')
+end
+)
+
+awesome.connect_signal(
+'startup',
+function(args)
+   awful.util.spawn('bash -c "xrandr --output eDP-1 --mode 1920x1080 --rate 120.00 --primary --output HDMI-1-0 --right-of eDP-1 --mode 1440x900 --rate 60.00"')
+end
+)
+
 -- }}}
 
 -- {{{ Error handling
@@ -296,7 +310,7 @@ globalkeys = mytable.join(
               {description = "view  previous nonempty", group = "tag"}),
 
     -- Default client focus
-    awful.key({ altkey,           }, "Tab", function () os.execute('rofi -show window -kb-accept-entry "!Alt-Tab,!Alt+Alt_L" -kb-row-down "Alt+Tab" -show-icons') end,
+    awful.key({ altkey,           }, "Tab", function () os.execute('rofi -show window -kb-accept-entry "!Alt-Tab,!Alt+Alt_L" -kb-row-up "Alt+Shift+Tab" -kb-row-down "Alt+Tab" -show-icons -selected-row 1') end,
 --        function ()
 --            awful.client.focus.byidx( 1)
 --        end,
@@ -540,14 +554,16 @@ globalkeys = mytable.join(
     -- alternatively use rofi, a dmenu-like application with more features
     -- check https://github.com/DaveDavenport/rofi for more details
     -- rofi
-    awful.key({ modkey }, "x", function ()
-            os.execute(string.format("rofi -show %s", 'drun'))
-        end,
+    awful.key({ modkey }, "x", function () os.execute(string.format("rofi -show %s", 'drun')) end,
         {description = "show rofi", group = "launcher"}),
-    
+
     -- Prompt
     awful.key({ modkey }, "r", function () os.execute(string.format("rofi -show %s", 'run')) end,
-              {description = "run prompt", group = "launcher"})
+              {description = "run prompt", group = "launcher"}),
+
+    -- Emoji
+    awful.key({ modkey }, "e", function () os.execute(string.format("rofi -show emoji -modi emoji", 'run')) end,
+              {description = "emoji selector", group = "launcher"})
 
    --[[
     awful.key({ modkey }, "x",

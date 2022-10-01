@@ -46,8 +46,8 @@ map("t", "<C-k>", "<C-\\><C-N><C-w>k", opts)
 -- resizing windows
 map("n", "<A-->", "<C-w>-", opts)
 map("n", "<A-=>", "<C-w>+", opts)
-map("n", "<A-.>", "<C-w><", opts)
-map("n", "<A-,>", "<C-w>>", opts)
+map("n", "<A-,>", "<C-w><", opts)
+map("n", "<A-.>", "<C-w>>", opts)
 
 
 -- move cursor within insert mode
@@ -77,7 +77,7 @@ map("n", "<leader>rn", "<cmd> :set rnu! <CR>", opts) -- relative line numbers
 -- nvim-tree
 map("n", "<leader>z", "<cmd> :NvimTreeToggle <CR>", opts)
 
--- fast save and close
+-- fast have and close
 map("n", "<C-q>", "<cmd> :bd <CR>", opts)
 map('i', "<C-q>", '<Esc>:bd<cr>', opts)
 map("n", "<C-s>", "<cmd> :w <CR>", opts) -- ctrl + s to save file
@@ -119,7 +119,7 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'tsserver', 'pyright' }
+local servers = { 'tsserver', 'pyright', 'cssls' }
 
 -- Add additional capabilities supported by nvim-cmp
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -133,8 +133,16 @@ for _, lsp in pairs(servers) do
       debounce_text_changes = 150,
     },
     capabilities = capabilities,
-  }
+ }
 end
+
+--svelte LSP
+require'lspconfig'.svelte.setup {
+   on_attach = on_attach,
+   capabilities = capabilities,
+   cmd = { "svelteserver", "--stdio" },
+   filetypes = { "svelte", "html"},
+}
 
 -- lua LSP
 local runtime_path = vim.split(package.path, ';')
@@ -210,11 +218,13 @@ cmp.setup {
     end, { 'i', 's' }),
   }),
   sources = {
-    { name = 'nvim_lsp' },
-    { name = 'luasnip' },
-		{ name = 'orgmode' },
-		{ name = 'neorg' },
-  },
+   { name = 'nvim_lsp' },
+   { name = 'luasnip' },
+--   { name = 'orgmode' },
+--   { name = 'neorg' },
+  }--, {
+--     { name = 'buffer' },
+--  }
 }
 
 -- symbols-outline keymaps

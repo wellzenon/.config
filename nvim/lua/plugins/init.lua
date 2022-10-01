@@ -25,6 +25,8 @@ require'nvim-treesitter.configs'.setup {
   ident = { enable = true },
 }
 
+require("symbols-outline").setup()
+
 require'tabline'.setup {enable = false}
 
 require('lualine').setup {
@@ -46,18 +48,10 @@ require('lualine').setup {
 
 -- indent highlighting
 require("indent_blankline").setup {
-    space_char_blankline = " ",
-    show_current_context = true,
+   space_char_blankline = " ",
+   show_current_context = true,
    show_current_context_start = true,
 }
-
--- colorscheme
-require('onedark').setup {
-  style = 'deep',
-  transparent = true,  -- Show/hide background
-  term_colors = true,
-}
-require('onedark').load()
 
 require('nvim-autopairs').setup{}
 
@@ -73,7 +67,7 @@ require "iron.core".setup {
         command = {"bash"}
       }
     },
-    repl_open_cmd = require('iron.view').curry.right(40),
+    repl_open_cmd = require('iron.view').right(40),
     -- how the REPL window will be opened, the default is opening
     -- a float window of height 40 at the bottom.
   },
@@ -99,27 +93,35 @@ require "iron.core".setup {
   }
 }
 
-require('neorg').setup {
-   load = {
-      ["core.defaults"] = {},
-      ["core.norg.dirman"] = { -- This module is be responsible for managing directories full of .norg files.
-         config = {
-            workspaces = {
-               work = "~/notes/work",
-               home = "~/notes/home",
-            }
-         }
-      },
-      ["core.norg.qol.toc"] = {}, -- Generates a Table of Content from the Neorg file.
-      ["core.norg.journal"]={}, -- Easily create files for a journal.
-      ["core.gtd.base"]={}, -- Manages your tasks with Neorg using the Getting Things Done methodology.
-      ["core.norg.concealer"]={}, -- Enhances the basic Neorg experience by using icons instead of text.
-      ["core.norg.completion"]={}, -- A wrapper to interface with several different completion engines.
-      ["core.export"]={}, -- Exports Neorg documents into any other supported filetype.
-      ["core.presenter"]={}, -- Neorg module to create gorgeous presentation slides.
-      ["core.norg.manoeuvre"]={} -- A Neorg module for moving around different elements up and down.
-   }
+-- colorscheme
+require('onedark').setup {
+   style = 'deep',
+   transparent = true,  -- Show/hide background
+   term_colors = true,
 }
+require('onedark').load()
+
+--require('neorg').setup {
+--   load = {
+--      ["core.defaults"] = {},
+--      ["core.norg.dirman"] = { -- This module is be responsible for managing directories full of .norg files.
+--         config = {
+--            workspaces = {
+--               work = "~/notes/work",
+--               home = "~/notes/home",
+--            }
+--         }
+--      },
+--      ["core.norg.qol.toc"] = {}, -- Generates a Table of Content from the Neorg file.
+--      ["core.norg.journal"]={}, -- Easily create files for a journal.
+--      ["core.gtd.base"]={}, -- Manages your tasks with Neorg using the Getting Things Done methodology.
+--      ["core.norg.concealer"]={}, -- Enhances the basic Neorg experience by using icons instead of text.
+--      ["core.norg.completion"]={}, -- A wrapper to interface with several different completion engines.
+--      ["core.export"]={}, -- Exports Neorg documents into any other supported filetype.
+--      ["core.presenter"]={}, -- Neorg module to create gorgeous presentation slides.
+--      ["core.norg.manoeuvre"]={} -- A Neorg module for moving around different elements up and down.
+--   }
+--}
 
 --require'bufferline'.setup {
    --   options = {
