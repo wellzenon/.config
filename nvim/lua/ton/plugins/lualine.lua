@@ -37,10 +37,14 @@ local spaces = function()
   return "spaces: " .. vim.api.nvim_buf_get_option(0, "shiftwidth")
 end
 
-local buffers = {
-  require 'tabline'.tabline_buffers,
-  colored = true,
-}
+--[[ local buffers = { ]]
+--[[   require 'tabline'.tabline_buffers, ]]
+--[[   colored = true, ]]
+--[[ } ]]
+
+--local winbar = {
+--  require "winbar".show_winbar()
+--}
 
 lualine.setup {
   options = {
@@ -55,9 +59,10 @@ lualine.setup {
   sections = {
     lualine_a = { "mode" },
     lualine_b = { diagnostics },
-    lualine_c = { buffers },
-    lualine_x = { diff, "branch", spaces, "encoding", filetype },
+    lualine_c = {diff, "branch"},
+    lualine_x = { spaces, "encoding", filetype },
     lualine_y = { location },
     lualine_z = { "progress" },
   },
+  --[[ winbar = {} ]]
 }

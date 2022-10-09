@@ -5,7 +5,7 @@ end
 cybu.setup {
   position = {
     relative_to = "win", -- win, editor, cursor
-    anchor = "topright", -- topleft, topcenter, topright,
+    anchor = "bottomright", -- topleft, topcenter, topright,
     -- centerleft, center, centerright,
     -- bottomleft, bottomcenter, bottomright
     -- vertical_offset = 10, -- vertical offset from anchor in lines
@@ -30,5 +30,5 @@ cybu.setup {
 }
 -- vim.keymap.set("n", "<up>", "<Plug>(CybuPrev)")
 -- vim.keymap.set("n", "<down>", "<Plug>(CybuNext)")
-vim.keymap.set("n", "<c-h>", "<Plug>(CybuPrev)")
-vim.keymap.set("n", "<c-l>", "<Plug>(CybuNext)")
+vim.keymap.set("n", "<s-h>", "<Plug>(CybuPrev)")
+vim.keymap.set("n", "<s-l>", "<Plug>(CybuNext)")

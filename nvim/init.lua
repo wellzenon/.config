@@ -12,9 +12,7 @@ require "ton.plugins.comment"
 require "ton.plugins.gitsigns"
 require "ton.plugins.nvim-tree"
 require "ton.plugins.lualine"
-require "ton.plugins.tabline"
---require "ton.plugins.bufferline"
---require "ton.plugins.evilline"
+--require "ton.plugins.tabline"
 require "ton.plugins.toggleterm"
 require "ton.plugins.project"
 require "ton.plugins.impatient"
@@ -36,6 +34,8 @@ require "ton.plugins.notify"
 require "ton.plugins.cybu"
 require "ton.plugins.surround"
 require "ton.plugins.winbar"
+require "ton.plugins.mind"
+
 --require("config")
 --require("plugins")
 --require'nvim-tree'.setup{}
