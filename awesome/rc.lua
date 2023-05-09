@@ -341,7 +341,7 @@ globalkeys = mytable.join(
 		"Tab",
 		function()
 			os.execute(
-				'rofi -show window -kb-accept-entry "!Alt-Tab,!Alt+Alt_L" -kb-row-up "Alt+Shift+Tab" -kb-row-down "Alt+Tab" -show-icons -selected-row 1'
+				'rofi -show window -kb-accept-entry "!Alt-Tab,!Alt+Alt_L" -kb-row-up "Alt+ISO_Left_Tab" -kb-row-down "Alt+Tab" -show-icons -selected-row 1'
 			)
 		end,
 		--        function ()
@@ -449,6 +449,9 @@ globalkeys = mytable.join(
 		awful.spawn(terminal)
 	end, { description = "open a terminal", group = "launcher" }),
 	awful.key({ modkey, "Control" }, "r", awesome.restart, { description = "reload awesome", group = "awesome" }),
+	awful.key({ modkey, "Control" }, "q", function()
+		os.execute("shutdown -h 0")
+	end, { description = "force shutdown", group = "awesome" }),
 	awful.key({ modkey, "Shift" }, "q", awesome.quit, { description = "quit awesome", group = "awesome" }),
 
 	awful.key({ modkey, altkey }, "l", function()
