@@ -4,7 +4,7 @@ return {
     lazy = true,
     -- event = { "BufReadPre path/to/my-vault/**.md" },
     -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand':
-    event = { "BufReadPre " .. vim.fn.expand("~") .. "/vaults/tudo/**.md" },
+    event = { "BufReadPre " .. vim.fn.expand("~") .. "/vaults/**.md" },
     dependencies = {
       -- Required.
       "nvim-lua/plenary.nvim",
@@ -30,7 +30,7 @@ return {
       dir = "~/vaults/tudo/", -- no need to call 'vim.fn.expand' here
 
       -- Optional, if you keep notes in a specific subdirectory of your vault.
-      notes_subdir = "notes",
+      -- notes_subdir = "notes",
 
       daily_notes = {
         -- Optional, if you keep daily notes in a separate directory.
@@ -59,7 +59,8 @@ return {
             suffix = suffix .. string.char(math.random(65, 90))
           end
         end
-        return tostring(os.time()) .. "-" .. suffix
+        -- return tostring(os.time()) .. "-" .. suffix
+        return suffix
       end,
 
       -- Optional, set to true if you don't want Obsidian to manage frontmatter.

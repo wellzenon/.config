@@ -302,6 +302,22 @@ root.buttons(mytable.join(
 
 -- }}}
 
+local function screenshot(select)
+	local filename = os.date("%Y-%m-%d_%H-%M.png")
+	local path = "~/Imagens/Screenshots"
+
+	if select then
+		os.execute("bash ~/bin/screenshot -s yes -t " .. path .. " -f " .. filename)
+	else
+		os.execute("bash ~/bin/screenshot -t " .. path .. " -f " .. filename)
+	end
+
+	naughty.notify({
+		preset = naughty.config.presets.info,
+		title = "Screenshot saved on",
+		text = path .. "/" .. filename .. tostring(select),
+	})
+end
 -- {{{ Key bindings
 
 globalkeys = mytable.join(
@@ -310,9 +326,12 @@ globalkeys = mytable.join(
 	--[[ {description = "destroy all notifications", group = "hotkeys"}), ]]
 	-- Take a screenshot
 	-- https://github.com/lcpz/dots/blob/master/bin/screenshot
-	awful.key({ altkey }, "p", function()
-		os.execute("bash ~/bin/screenshot")
+	awful.key({}, "Print", function()
+		screenshot()
 	end, { description = "take a screenshot", group = "hotkeys" }),
+	awful.key({ altkey }, "Print", function()
+		screenshot(true)
+	end, { description = "take a screenshot from selected area", group = "hotkeys" }),
 
 	-- X screen locker
 	awful.key({ altkey, "Control" }, "l", function()
