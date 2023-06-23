@@ -47,4 +47,12 @@ return {
       style = "moon",
     },
   },
+  {
+    "rcarriga/nvim-notify",
+    opts = {
+      background_colour = "#222436",
+      render = "compact",
+      top_down = false,
+    },
+  },
 }
