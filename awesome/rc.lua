@@ -374,8 +374,27 @@ globalkeys = mytable.join(
 		{ altkey },
 		"Tab",
 		function()
+			-- os.execute([[
+			--        rofi -modi window -show window -hide-scrollbar -padding 50 -line-padding 4 -auto-select \
+			--        -kb-cancel "Alt+Escape,Escape" \
+			--        -kb-accept-entry "!Alt-Tab,!Alt+Alt_L,Return"\
+			--        -kb-row-down "Alt+Tab,Alt+Down" \
+			--        -kb-row-up "Alt+ISO_Left_Tab,Alt+Up" \
+			--        -timeout-delay 1 -timeout-action "kb-accept-entry" \
+			--        -selected-row 1
+			--      ]])
 			os.execute(
-				'rofi -show window -kb-accept-entry "!Alt-Tab,!Alt+Alt_L" -kb-row-up "Alt+ISO_Left_Tab" -kb-row-down "Alt+Tab" -show-icons -selected-row 1'
+				-- Solution found in https://github.com/davatorium/rofi/issues/38#issuecomment-596037267 and https://superuser.com/a/1602025
+				[[
+			       rofi -modi window -show window -hide-scrollbar -padding 50 -line-padding 4 -auto-select \
+			       -kb-cancel "Alt+Escape,Escape" \
+			       -kb-accept-entry "!Alt-Tab,!Alt+Alt_L,Return"\
+			       -kb-row-down "Alt+Tab,Alt+Down" \
+			       -kb-row-up "Alt+ISO_Left_Tab,Alt+Up" \
+			       -selected-row 1 &
+			       while for did in $(xinput --list --id-only) ; do xinput query-state $did 2>/dev/null | grep down ; done | egrep -q . ; do sleep 0 ; done
+			       xdotool key --delay 0 Enter
+			     ]]
 			)
 		end,
 		--        function ()
@@ -383,9 +402,10 @@ globalkeys = mytable.join(
 		--        end,
 		{ description = "focus next by index", group = "client" }
 	),
-	awful.key({ altkey, "Shift" }, "Tab", function()
-		awful.client.focus.byidx(-1)
-	end, { description = "focus previous by index", group = "client" }),
+
+	-- awful.key({ altkey, "Shift" }, "Tab", function()
+	-- 	awful.client.focus.byidx(-1)
+	-- end, { description = "focus previous by index", group = "client" }),
 
 	-- By-direction client focus
 	awful.key({ modkey }, "j", function()
@@ -433,14 +453,16 @@ globalkeys = mytable.join(
 	end, { description = "focus the previous screen", group = "screen" }),
 	awful.key({ modkey }, "u", awful.client.urgent.jumpto, { description = "jump to urgent client", group = "client" }),
 	awful.key({ modkey }, "Tab", function()
-		if cycle_prev then
-			awful.client.focus.history.previous()
-		else
-			awful.client.focus.byidx(-1)
-		end
-		if client.focus then
-			client.focus:raise()
-		end
+		awful.client.focus.history.previous()
+		client.focus:raise()
+		-- if cycle_prev then
+		-- 	awful.client.focus.history.previous()
+		-- else
+		-- 	awful.client.focus.byidx(-1)
+		-- end
+		-- if client.focus then
+		-- 	client.focus:raise()
+		-- end
 	end, { description = "cycle with previous/go back", group = "client" }),
 
 	-- Show/hide wibox
