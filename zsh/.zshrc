@@ -72,11 +72,10 @@ export NVM_DIR="$HOME/.config/nvm"
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
 
-#NNN
-export NNN_PLUG="p:preview-tui;t:preview-tabbed"
 
-export NNN_FIFO="/tmp/nnn.fifo"
-# set --export NNN_FIFO="/tmp/nnn.fifo"
+# NNN
+
+[ -n "$NNNLVL" ] && PS1="N$NNNLVL $PS1"
 
 n ()
 {
@@ -101,7 +100,7 @@ n ()
 
     # The command builtin allows one to alias nnn to n, if desired, without
     # making an infinitely recursive alias
-    command nnn -cdexPp "$@"
+    command nnn -acdexPp "$@"
 
     [ ! -f "$NNN_TMPFILE" ] || {
         . "$NNN_TMPFILE"
