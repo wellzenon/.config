@@ -667,7 +667,12 @@ globalkeys = mytable.join(
 	-- Emoji
 	awful.key({ modkey }, "e", function()
 		os.execute(string.format("rofi -show emoji -modi emoji", "run"))
-	end, { description = "emoji selector", group = "launcher" })
+	end, { description = "emoji selector", group = "launcher" }),
+
+	-- Toggle Redshift with Mod+Shift+t
+	awful.key({ modkey }, "d", function()
+		lain.widget.contrib.redshift.toggle()
+	end)
 
 	--[[
     awful.key({ modkey }, "x",
@@ -927,5 +932,14 @@ end)
 client.connect_signal("unfocus", function(c)
 	c.border_color = beautiful.border_normal
 end)
+
+-- Autorun programs
+-- local autorun = true
+-- local autorunApps = { "redshift" }
+-- if autorun then
+-- 	for app = 1, #autorunApps do
+-- 		awful.util.spawn(autorunApps[app])
+-- 	end
+-- end
 
 -- }}}

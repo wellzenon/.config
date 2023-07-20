@@ -52,26 +52,29 @@ return {
       },
       lualine_b = { "branch" },
       lualine_c = {
-        -- "fileformat",
-        -- {
-        --   "navic",
-        --   color_correction = nil,
-        --   navic_opts = nil,
-        -- },
         {
-          "buffers",
-          show_filename_only = false,
-          separator = { right = "" },
-          left_padding = 2,
-          buffers_color = {
-            -- Same values as the general color option can be used here.
-            active = "lualine_b_normal", -- Color for active buffer.
-            inactive = "lualine_c_normal", -- Color for inactive buffer.
-          },
+          "filename",
+          path = 4,
         },
+        {
+          "navic",
+          color_correction = nil,
+          navic_opts = nil,
+        },
+        -- {
+        --   "buffers",
+        --   show_filename_only = false,
+        --   separator = { right = "" },
+        --   left_padding = 2,
+        --   buffers_color = {
+        --     -- Same values as the general color option can be used here.
+        --     active = "lualine_b_normal", -- Color for active buffer.
+        --     inactive = "lualine_c_normal", -- Color for inactive buffer.
+        --   },
+        -- },
       },
-      lualine_x = { "navic" },
-      lualine_y = { "filetype", "progress" },
+      -- lualine_x = { "navic" },
+      lualine_y = { "fileformat", "filetype", "progress" },
       lualine_z = {
         { "location", separator = { left = "", right = "" }, left_padding = 2 },
       },
@@ -85,8 +88,22 @@ return {
       lualine_z = { "location" },
     },
     extensions = {},
-    winbar = {},
-    inactive_winbar = {},
+    winbar = {
+      lualine_a = {},
+      lualine_b = {},
+      lualine_c = { { "filename", path = 4 } },
+      lualine_x = {},
+      lualine_y = {},
+      lualine_z = {},
+    },
+    inactive_winbar = {
+      lualine_a = {},
+      lualine_b = {},
+      lualine_c = { { "filename", path = 4 } },
+      lualine_x = {},
+      lualine_y = {},
+      lualine_z = {},
+    },
     -- tabline = {
     --   lualine_a = {
     --     {
