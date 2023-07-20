@@ -5,11 +5,12 @@
 -- stylua: ignore
 local colors = {
   darkblue = '#161721',
-  greyblue = '#3E4450',
+  greyblue = '#444A73',
   blue   = '#80a0ff',
   cyan   = '#79dac8',
   black  = '#080808',
   white  = '#c6c6c6',
+  pink   = '#FB9FD6',
   red    = '#ff5189',
   violet = '#d183e8',
   grey   = '#303030',
@@ -17,12 +18,12 @@ local colors = {
 
 local bubbles_theme = {
   normal = {
-    a = { fg = colors.black, bg = colors.violet },
+    a = { fg = colors.black, bg = colors.blue },
     b = { fg = colors.blue, bg = colors.greyblue },
     c = { fg = colors.blue, bg = colors.darkblue },
   },
 
-  insert = { a = { fg = colors.black, bg = colors.blue } },
+  insert = { a = { fg = colors.black, bg = colors.pink } },
   visual = { a = { fg = colors.black, bg = colors.cyan } },
   replace = { a = { fg = colors.black, bg = colors.red } },
 

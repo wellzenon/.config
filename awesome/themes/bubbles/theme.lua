@@ -15,16 +15,16 @@ local os = os
 local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 
 local theme = {}
-theme.dir = os.getenv("HOME") .. "/.config/awesome/themes/powerarrow-dark"
-theme.wallpaper = theme.dir .. "/wall.jpg"
+theme.dir = os.getenv("HOME") .. "/.config/awesome/themes/bubbles"
+theme.wallpaper = theme.dir .. "/man-colors.jpg"
 theme.font = "ProggyCleanTTCE Nerd Font Mono 12"
 -- theme.font = "TerminessTTF Nerd Font 9"
 -- theme.tasklist_font_focus = "TerminessTTF Nerd Font, Bold 9"
-theme.fg_normal = "#C88FED"
-theme.fg_focus = "#C88FED"
+theme.fg_normal = "#80A0ff"
+theme.fg_focus = "#80A0FF" --"#C88FED"
 theme.fg_urgent = "#CC9393"
 theme.bg_normal = "#2A2D3E"
-theme.bg_focus = "#3E4450"
+theme.bg_focus = "#444A73" -- "#3E4450"
 theme.bg_urgent = "#2A2D3E"
 theme.border_width = dpi(0)
 theme.border_normal = "#3F3F3F"
@@ -300,23 +300,17 @@ local bar = wibox.widget.textbox(" ⼁ ")
 
 -- Bubble like layouts
 local bubble = function(widgets, bg_color, fg_color)
-	bg_color = bg_color or theme.bg_focus
-	fg_color = fg_color or theme.fg_focus
-
 	local bg = wibox.container.background()
-	bg.bg = bg_color
-	bg.fg = fg_color
+	bg.bg = bg_color or theme.bg_focus
+	bg.fg = fg_color or theme.fg_focus
 
 	local l = wibox.layout.fixed.horizontal()
 
 	l:add(spr)
 	for _, widget in pairs(widgets) do
-		widget.valign = "center"
 		l:add(widget)
 	end
 
-	bg.valign = "center"
-	l.valign = "center"
 	bg.shape = gears.shape.rounded_bar
 	bg.widget = l
 	return bg

@@ -104,7 +104,7 @@ local themes = {
 	"holo", -- 4
 	"multicolor", -- 5
 	"powerarrow", -- 6
-	"powerarrow-dark", -- 7
+	"bubbles", -- 7
 	"rainbow", -- 8
 	"steamburn", -- 9
 	"vertex", -- 10
@@ -387,7 +387,7 @@ globalkeys = mytable.join(
 			os.execute(
 				-- Solution found in https://github.com/davatorium/rofi/issues/38#issuecomment-596037267 and https://superuser.com/a/1602025
 				[[
-			       rofi -modi window -show window -hide-scrollbar -padding 50 -line-padding 4 -auto-select \
+			       rofi -modi window -show window -show-icons -hide-scrollbar -padding 50 -line-padding 4 -auto-select \
 			       -kb-cancel "Alt+Escape,Escape" \
 			       -kb-accept-entry "!Alt-Tab,!Alt+Alt_L,Return"\
 			       -kb-row-down "Alt+Tab,Alt+Down" \
@@ -657,7 +657,7 @@ globalkeys = mytable.join(
 	-- check https://github.com/DaveDavenport/rofi for more details
 	-- rofi
 	awful.key({ modkey }, "x", function()
-		os.execute(string.format("rofi -show %s", "drun"))
+		os.execute(string.format("rofi -show %s -show-icons", "drun"))
 	end, { description = "show rofi", group = "launcher" }),
 
 	-- Prompt
