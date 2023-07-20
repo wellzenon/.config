@@ -23,6 +23,7 @@ local freedesktop = require("freedesktop")
 local hotkeys_popup = require("awful.hotkeys_popup")
 require("awful.hotkeys_popup.keys")
 local mytable = awful.util.table or gears.table -- 4.{0,1} compatibility
+local common = require("awful.widget.common")
 
 awesome.connect_signal("exit", function(args)
 	awful.util.spawn("touch ~/.awesome-restart")
@@ -941,5 +942,30 @@ end)
 -- 		awful.util.spawn(autorunApps[app])
 -- 	end
 -- end
+
+-- Show only icons on tasklist
+function myupdate(w, buttons, label, data, objects)
+	w:reset()
+	local l = wibox.layout.fixed.horizontal()
+	for i, o in ipairs(objects) do
+		local cache = data[o]
+		if cache then
+			ib = cache.ib
+		else
+			ib = wibox.widget.imagebox()
+			ib:buttons(common.create_buttons(buttons, o))
+
+			data[o] = {
+				ib = ib,
+			}
+		end
+
+		local text, bg, bg_image, icon = label(o)
+		ib:set_image(icon)
+		l:add(ib)
+		--w:add(ib)
+	end
+	w:add(l)
+end
 
 -- }}}

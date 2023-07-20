@@ -16,7 +16,7 @@ local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 
 local theme = {}
 theme.dir = os.getenv("HOME") .. "/.config/awesome/themes/powerarrow-dark"
-theme.wallpaper = theme.dir .. "/wall.png"
+theme.wallpaper = theme.dir .. "/wall.jpg"
 theme.font = "ProggyCleanTTCE Nerd Font Mono 12"
 -- theme.font = "TerminessTTF Nerd Font 9"
 -- theme.tasklist_font_focus = "TerminessTTF Nerd Font, Bold 9"
@@ -30,8 +30,8 @@ theme.border_width = dpi(0)
 theme.border_normal = "#3F3F3F"
 theme.border_focus = "#7F7F7F"
 theme.border_marked = "#CC9393"
-theme.tasklist_bg_focus = theme.fg_focus -- "#2A2D3E"
-theme.tasklist_fg_focus = theme.bg_focus -- "#2A2D3E"
+theme.tasklist_bg_focus = theme.bg_focus -- "#2A2D3E"
+theme.tasklist_fg_focus = theme.fg_focus -- "#2A2D3E"
 theme.titlebar_bg_focus = theme.bg_focus
 theme.titlebar_bg_normal = theme.bg_normal
 theme.titlebar_fg_focus = theme.fg_focus
@@ -74,7 +74,7 @@ theme.widget_mail_on = theme.dir .. "/icons/mail_on.png"
 theme.widget_lamp_on = theme.dir .. "/icons/lamp_on.png"
 theme.widget_lamp_off = theme.dir .. "/icons/lamp_off.png"
 theme.tasklist_plain_task_name = true
-theme.tasklist_disable_icon = true
+theme.tasklist_disable_icon = false
 theme.useless_gap = dpi(1)
 theme.titlebar_close_button_focus = theme.dir .. "/icons/titlebar/close_focus.png"
 theme.titlebar_close_button_normal = theme.dir .. "/icons/titlebar/close_normal.png"
@@ -286,21 +286,20 @@ local myredshift = wibox.widget.imagebox(theme.widget_lamp_off)
 lain.widget.contrib.redshift.attach(myredshift, function(active)
 	if active then
 		myredshift:set_image(theme.widget_lamp_off)
-		-- myredshift:set_bg(theme.bg_normal)
 	else
 		myredshift:set_image(theme.widget_lamp_on)
-		-- myredshift:set_bg(theme.bg_focus)
 	end
 end)
 
 -- Separators
 local spr = wibox.widget.textbox("  ")
-local bar = wibox.widget.textbox("   |   ")
+-- local bar = wibox.widget.textbox("    ")
+local bar = wibox.widget.textbox(" ⼁ ")
 -- local arrl_dl = separators.arrow_left(theme.bg_focus, "alpha")
 -- local arrl_ld = separators.arrow_left("alpha", theme.bg_focus)
 
 -- Bubble like layouts
-local bubble = function(widgets, separator, bg_color, fg_color)
+local bubble = function(widgets, bg_color, fg_color)
 	bg_color = bg_color or theme.bg_focus
 	fg_color = fg_color or theme.fg_focus
 
@@ -311,11 +310,13 @@ local bubble = function(widgets, separator, bg_color, fg_color)
 	local l = wibox.layout.fixed.horizontal()
 
 	l:add(spr)
-	for i, widget in pairs(widgets) do
+	for _, widget in pairs(widgets) do
+		widget.valign = "center"
 		l:add(widget)
 	end
-	l:add(spr)
 
+	bg.valign = "center"
+	l.valign = "center"
 	bg.shape = gears.shape.rounded_bar
 	bg.widget = l
 	return bg
@@ -365,7 +366,12 @@ function theme.at_screen_connect(s)
 	s.mytasklist = awful.widget.tasklist({
 		screen = s,
 		filter = awful.widget.tasklist.filter.currenttags,
-		buttons = awful.util.tasklist_buttons,
+		buttons = awful.util.table.join(
+			awful.util.tasklist_buttons,
+			awful.button({}, 2, function(c)
+				c:kill()
+			end)
+		),
 		style = {
 			shape_border_width = 1,
 			shape_border_color = theme.bg_focus,
@@ -413,6 +419,7 @@ function theme.at_screen_connect(s)
 			id = "background_role",
 			widget = wibox.container.background,
 		},
+		update_function = myupdate,
 	})
 
 	-- Create the wibox
@@ -426,18 +433,25 @@ function theme.at_screen_connect(s)
 
 	-- Add widgets to the wibox
 	s.mywibox:setup({
+		-- expand = "none",
 		layout = wibox.layout.align.horizontal,
 		{ -- Left widgets
 			layout = wibox.layout.fixed.horizontal,
 			bubble({
+				spr,
 				s.mylayoutbox,
+				spr,
 				s.mytaglist,
-			}, " | ", theme.fg_focus, theme.bg_normal),
+				spr,
+			}, theme.fg_focus, theme.bg_normal),
 			s.mypromptbox,
 			spr,
 			spr,
 		},
-		s.mytasklist, -- Middle widget
+		{
+			s.mytasklist, -- Middle widget
+			layout = wibox.layout.fixed.horizontal,
+		},
 		{ -- Right widgets
 			spr,
 			spr,
@@ -484,7 +498,7 @@ function theme.at_screen_connect(s)
 					clock,
 					spr,
 					spr,
-				}, " | ", theme.fg_focus, theme.bg_normal),
+				}, theme.fg_focus, theme.bg_normal),
 			}),
 		},
 	})
