@@ -150,15 +150,15 @@ mpdicon:buttons(my_table.join(
 		awful.spawn(musicplr)
 	end),
 	awful.button({}, 1, function()
-		os.execute("mpc prev")
+		awful.util.spawn_with_shell("mpc prev")
 		theme.mpd.update()
 	end),
 	awful.button({}, 2, function()
-		os.execute("mpc toggle")
+		awful.util.spawn_with_shell("mpc toggle")
 		theme.mpd.update()
 	end),
 	awful.button({}, 3, function()
-		os.execute("mpc next")
+		awful.util.spawn_with_shell("mpc next")
 		theme.mpd.update()
 	end)
 ))
@@ -267,7 +267,13 @@ theme.volume.widget:buttons(awful.util.table.join(
 ))
 
 -- Net
+local net_manager = awful.button({}, 1, function()
+	awful.util.spawn_with_shell("bash ~/bin/rofi-wifi-menu.sh")
+	-- awful.spawn("~/bin/rofi-wifi-menu.sh")
+end)
+
 local neticon = wibox.widget.imagebox(theme.widget_net)
+neticon:buttons(net_manager)
 local net = lain.widget.net({
 	settings = function()
 		widget:set_markup(
@@ -280,6 +286,7 @@ local net = lain.widget.net({
 		)
 	end,
 })
+net.widget:buttons(net_manager)
 
 --Redshift
 local myredshift = wibox.widget.imagebox(theme.widget_lamp_off)

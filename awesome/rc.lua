@@ -375,28 +375,29 @@ globalkeys = mytable.join(
 		{ altkey },
 		"Tab",
 		function()
-			-- os.execute([[
-			--        rofi -modi window -show window -hide-scrollbar -padding 50 -line-padding 4 -auto-select \
-			--        -kb-cancel "Alt+Escape,Escape" \
-			--        -kb-accept-entry "!Alt-Tab,!Alt+Alt_L,Return"\
-			--        -kb-row-down "Alt+Tab,Alt+Down" \
-			--        -kb-row-up "Alt+ISO_Left_Tab,Alt+Up" \
-			--        -timeout-delay 1 -timeout-action "kb-accept-entry" \
-			--        -selected-row 1
-			--      ]])
-			os.execute(
-				-- Solution found in https://github.com/davatorium/rofi/issues/38#issuecomment-596037267 and https://superuser.com/a/1602025
-				[[
-			       rofi -modi window -show window -show-icons -hide-scrollbar -padding 50 -line-padding 4 -auto-select \
+			os.execute([[
+			       ~/.config/rofi/scripts/launcher_t2 -modi window -show window -hide-scrollbar -padding 50 -line-padding 4 -auto-select \
 			       -kb-cancel "Alt+Escape,Escape" \
 			       -kb-accept-entry "!Alt-Tab,!Alt+Alt_L,Return"\
 			       -kb-row-down "Alt+Tab,Alt+Down" \
 			       -kb-row-up "Alt+ISO_Left_Tab,Alt+Up" \
 			       -selected-row 1 &
-			       while for did in $(xinput --list --id-only) ; do xinput query-state $did 2>/dev/null | grep down ; done | egrep -q . ; do sleep 0 ; done
-			       xdotool key --delay 0 Enter
-			     ]]
-			)
+			        while for did in $(xinput --list --id-only) ; do xinput query-state $did 2>/dev/null | grep down ; done | egrep -q . ; do sleep 0 ; done
+			        xdotool key --delay 0 Enter
+			     ]])
+			-- os.execute(
+			-- 	-- Solution found in https://github.com/davatorium/rofi/issues/38#issuecomment-596037267 and https://superuser.com/a/1602025
+			-- 	[[
+			--        rofi -theme "~/.config/rofi/launchers/type-2/style-1.rasi" -modi window -show window -show-icons -hide-scrollbar -padding 50 -line-padding 4 -auto-select \
+			--        -kb-cancel "Alt+Escape,Escape" \
+			--        -kb-accept-entry "!Alt-Tab,!Alt+Alt_L,Return"\
+			--        -kb-row-down "Alt+Tab,Alt+Down" \
+			--        -kb-row-up "Alt+ISO_Left_Tab,Alt+Up" \
+			--        -selected-row 1 &
+			--        while for did in $(xinput --list --id-only) ; do xinput query-state $did 2>/dev/null | grep down ; done | egrep -q . ; do sleep 0 ; done
+			--        xdotool key --delay 0 Enter
+			--      ]]
+			-- )
 		end,
 		--        function ()
 		--            awful.client.focus.byidx( 1)
@@ -657,7 +658,7 @@ globalkeys = mytable.join(
 	-- check https://github.com/DaveDavenport/rofi for more details
 	-- rofi
 	awful.key({ modkey }, "x", function()
-		os.execute(string.format("rofi -show %s -show-icons", "drun"))
+		os.execute(string.format("~/.config/rofi/scripts/launcher_t2 -show drun"))
 	end, { description = "show rofi", group = "launcher" }),
 
 	-- Prompt
