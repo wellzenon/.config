@@ -113,9 +113,9 @@ local themes = {
 local chosen_theme = themes[7]
 local modkey = "Mod4"
 local altkey = "Mod1"
-local terminal = "kitty" -- && tmuxstart"
+local terminal = os.getenv("TERMINAL") or "wezterm" -- && tmuxstart"
 local vi_focus = false -- vi-like client focus https://github.com/lcpz/awesome-copycats/issues/275
-local cycle_prev = true -- cycle with only the previously focused client or all https://github.com/lcpz/awesome-copycats/issues/274
+local cycle_prev = false -- cycle with only the previously focused client or all https://github.com/lcpz/awesome-copycats/issues/274
 local editor = os.getenv("EDITOR") or "nvim"
 local browser = "brave"
 
@@ -314,7 +314,7 @@ local function screenshot(mode)
 		select = "-m select",
 	}
 
-	os.execute("bash ~/bin/screenshot " .. modes[mode] .. " -t " .. path .. " -f " .. filename)
+	awful.util.spawn_with_shell("bash ~/bin/screenshot " .. modes[mode] .. " -t " .. path .. " -f " .. filename)
 
 	-- if mode then
 	-- 	os.execute("bash ~/bin/screenshot -s yes -t " .. path .. " -f " .. filename)
@@ -658,17 +658,17 @@ globalkeys = mytable.join(
 	-- check https://github.com/DaveDavenport/rofi for more details
 	-- rofi
 	awful.key({ modkey }, "x", function()
-		os.execute(string.format("~/.config/rofi/scripts/launcher_t2 -show drun"))
+		awful.util.spawn_with_shell(string.format("~/.config/rofi/scripts/launcher_t2 -show %s", "drun"))
 	end, { description = "show rofi", group = "launcher" }),
 
 	-- Prompt
 	awful.key({ modkey }, "r", function()
-		os.execute(string.format("rofi -show %s", "run"))
+		awful.util.spawn_with_shell(string.format("~/.config/rofi/scripts/launcher_t2 -show %s", "run"))
 	end, { description = "run prompt", group = "launcher" }),
 
 	-- Emoji
 	awful.key({ modkey }, "e", function()
-		os.execute(string.format("rofi -show emoji -modi emoji", "run"))
+		awful.util.spawn_with_shell(string.format("~/.config/rofi/scripts/launcher_t2 -show  %s", "emoji"))
 	end, { description = "emoji selector", group = "launcher" }),
 
 	-- Toggle Redshift with Mod+Shift+t

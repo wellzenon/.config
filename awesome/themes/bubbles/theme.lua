@@ -26,9 +26,9 @@ theme.fg_urgent = "#CC9393"
 theme.bg_normal = "#2A2D3E"
 theme.bg_focus = "#444A73" -- "#3E4450"
 theme.bg_urgent = "#2A2D3E"
-theme.border_width = dpi(0)
+theme.border_width = dpi(1)
 theme.border_normal = "#3F3F3F"
-theme.border_focus = "#7F7F7F"
+theme.border_focus = "#80A0FF"
 theme.border_marked = "#CC9393"
 theme.tasklist_bg_focus = theme.bg_focus -- "#2A2D3E"
 theme.tasklist_fg_focus = theme.fg_focus -- "#2A2D3E"
@@ -73,9 +73,10 @@ theme.widget_mail = theme.dir .. "/icons/mail.png"
 theme.widget_mail_on = theme.dir .. "/icons/mail_on.png"
 theme.widget_lamp_on = theme.dir .. "/icons/lamp_on.png"
 theme.widget_lamp_off = theme.dir .. "/icons/lamp_off.png"
+theme.widget_power = theme.dir .. "/icons/powerbtn.png"
 theme.tasklist_plain_task_name = true
 theme.tasklist_disable_icon = false
-theme.useless_gap = dpi(1)
+theme.useless_gap = dpi(5)
 theme.titlebar_close_button_focus = theme.dir .. "/icons/titlebar/close_focus.png"
 theme.titlebar_close_button_normal = theme.dir .. "/icons/titlebar/close_normal.png"
 theme.titlebar_ontop_button_focus_active = theme.dir .. "/icons/titlebar/ontop_focus_active.png"
@@ -100,15 +101,25 @@ local markup = lain.util.markup
 
 local keyboardlayout = awful.widget.keyboardlayout:new()
 
+-- Powerbutton
+local powericon = wibox.widget.textbox("")
+powericon:buttons(awful.button({}, 1, function()
+	awful.util.spawn_with_shell("~/.config/rofi/scripts/powermenu_t1")
+end))
+
 -- Textclock
-local calendaricon = wibox.widget.imagebox(theme.widget_calendar)
-local clockicon = wibox.widget.imagebox(theme.widget_clock)
+local calendaricon = wibox.widget.textbox("󰃭 ")
+local clockicon = wibox.widget.textbox(" ")
 local calendar = awful.widget.watch("date +'%a %d %b'", 60, function(widget, stdout)
 	widget:set_markup(" " .. markup.font(theme.font, stdout))
 end)
+calendar.valign = "center"
+calendar.align = "center"
 local clock = awful.widget.watch("date +'%R'", 60, function(widget, stdout)
 	widget:set_markup(" " .. markup.font(theme.font, stdout))
 end)
+clock.valign = "center"
+clock.align = "center"
 
 -- Calendar
 theme.cal = lain.widget.cal({
@@ -239,17 +250,17 @@ local bat = lain.widget.bat({
 })
 
 -- ALSA volume
-local volicon = wibox.widget.imagebox(theme.widget_vol)
+local volicon = wibox.widget.textbox("󰕾 ")
 theme.volume = lain.widget.alsa({
 	settings = function()
 		if volume_now.status == "off" then
-			volicon:set_image(theme.widget_vol_mute)
+			volicon:set_text("󰸈 ")
 		elseif tonumber(volume_now.level) == 0 then
-			volicon:set_image(theme.widget_vol_no)
+			volicon:set_text("󰕿 ")
 		elseif tonumber(volume_now.level) <= 50 then
-			volicon:set_image(theme.widget_vol_low)
+			volicon:set_text("󰖀 ")
 		else
-			volicon:set_image(theme.widget_vol)
+			volicon:set_text("󰕾 ")
 		end
 
 		widget:set_markup(markup.font(theme.font, " " .. volume_now.level .. "% "))
@@ -267,34 +278,59 @@ theme.volume.widget:buttons(awful.util.table.join(
 ))
 
 -- Net
-local net_manager = awful.button({}, 1, function()
-	awful.util.spawn_with_shell("bash ~/bin/rofi-wifi-menu.sh")
-	-- awful.spawn("~/bin/rofi-wifi-menu.sh")
-end)
-
-local neticon = wibox.widget.imagebox(theme.widget_net)
-neticon:buttons(net_manager)
+local neticon = wibox.widget.textbox()
 local net = lain.widget.net({
+	notify = "off",
+	wifi_state = "on",
+	eth_state = "on",
 	settings = function()
+		local eth0 = net_now.devices.eth0
+		if eth0 and eth0.ethernet then
+			neticon:set_text("󰈀 ")
+		else
+			neticon:set_text("󰤮 ")
+		end
+
+		local wlan0 = net_now.devices.wlan0
+		if wlan0 and wlan0.wifi then
+			local signal = wlan0.signal
+			if signal < -83 then
+				neticon:set_text("󰤟 ")
+			elseif signal < -70 then
+				neticon:set_text("󰤢 ")
+			elseif signal < -53 then
+				neticon:set_text("󰤥 ")
+			elseif signal >= -53 then
+				neticon:set_text("󰤨 ")
+			end
+		else
+			neticon:set_text("󰤮 ")
+		end
+
 		widget:set_markup(
 			markup.font(
 				theme.font,
-				markup("#7AC82E", " " .. string.format("%06.1f", net_now.received))
+				markup("#7AC82E", "  " .. string.format("%06.1f", net_now.received))
 					.. " "
-					.. markup("#46A8C3", " " .. string.format("%06.1f", net_now.sent) .. " ")
+					.. markup("#46A8C3", " " .. string.format("%06.1f", net_now.sent) .. " ")
 			)
 		)
 	end,
 })
+
+local net_manager = awful.button({}, 1, function()
+	awful.util.spawn_with_shell("bash ~/bin/rofi-wifi-menu.sh")
+end)
+neticon:buttons(net_manager)
 net.widget:buttons(net_manager)
 
 --Redshift
-local myredshift = wibox.widget.imagebox(theme.widget_lamp_off)
+local myredshift = wibox.widget.textbox()
 lain.widget.contrib.redshift.attach(myredshift, function(active)
 	if active then
-		myredshift:set_image(theme.widget_lamp_off)
+		myredshift:set_text("󰃛 ")
 	else
-		myredshift:set_image(theme.widget_lamp_on)
+		myredshift:set_text("󰃠 ")
 	end
 end)
 
@@ -427,80 +463,91 @@ function theme.at_screen_connect(s)
 	s.mywibox = awful.wibar({
 		position = "top",
 		screen = s,
-		height = dpi(18),
+		height = dpi(15),
 		bg = theme.bg_normal .. 00,
 		fg = theme.fg_normal,
 	})
 
 	-- Add widgets to the wibox
 	s.mywibox:setup({
-		-- expand = "none",
-		layout = wibox.layout.align.horizontal,
-		{ -- Left widgets
-			layout = wibox.layout.fixed.horizontal,
-			bubble({
-				spr,
+		widget = wibox.container.margin,
+		-- top = dpi(5),
+		-- left = dpi(5),
+		-- right = dpi(15),
+		{
+			-- expand = "none",
+			layout = wibox.layout.align.horizontal,
+			{ -- Left widgets
+				layout = wibox.layout.fixed.horizontal,
 				s.mylayoutbox,
 				spr,
-				s.mytaglist,
-				spr,
-			}, theme.fg_focus, theme.bg_normal),
-			s.mypromptbox,
-			spr,
-			spr,
-		},
-		{
-			s.mytasklist, -- Middle widget
-			layout = wibox.layout.fixed.horizontal,
-		},
-		{ -- Right widgets
-			spr,
-			spr,
-			layout = wibox.layout.fixed.horizontal,
-			wibox.widget.systray(),
-			keyboardlayout,
-			bar,
-			myredshift,
-			bar,
-			-- arrl_dl,
-			-- mpdicon,
-			-- theme.mpd.widget,
-			-- arrl_ld,
-			-- wibox.container.background(mailicon, theme.bg_focus),
-			--wibox.container.background(theme.mail.widget, theme.bg_focus),
-			memicon,
-			mem.widget,
-			bar,
-			cpuicon,
-			cpu.widget,
-			bar,
-			baticon,
-			bat.widget,
-			bar,
-			tempicon,
-			temp.widget,
-			spr,
-			spr,
-			-- wibox.container.background(fsicon, theme.bg_focus),
-			--wibox.container.background(theme.fs.widget, theme.bg_focus),
-			bubble({
-				volicon,
-				theme.volume.widget,
-				bar,
-				neticon,
-				net.widget,
-				spr,
-				spr,
 				bubble({
-					calendaricon,
-					calendar,
-					bar,
-					clockicon,
-					clock,
 					spr,
+					s.mytaglist,
 					spr,
 				}, theme.fg_focus, theme.bg_normal),
-			}),
+				s.mypromptbox,
+				spr,
+				spr,
+			},
+			{
+				s.mytasklist, -- Middle widget
+				layout = wibox.layout.fixed.horizontal,
+			},
+			{ -- Right widgets
+				spr,
+				spr,
+				layout = wibox.layout.fixed.horizontal,
+				wibox.widget.systray(),
+				keyboardlayout,
+				bar,
+				myredshift,
+				bar,
+				-- arrl_dl,
+				-- mpdicon,
+				-- theme.mpd.widget,
+				-- arrl_ld,
+				-- wibox.container.background(mailicon, theme.bg_focus),
+				--wibox.container.background(theme.mail.widget, theme.bg_focus),
+				-- memicon,
+				-- mem.widget,
+				-- bar,
+				-- cpuicon,
+				-- cpu.widget,
+				-- bar,
+				baticon,
+				-- bat.widget,
+				-- bar,
+				-- tempicon,
+				-- temp.widget,
+				spr,
+				spr,
+				-- wibox.container.background(fsicon, theme.bg_focus),
+				--wibox.container.background(theme.fs.widget, theme.bg_focus),
+				bubble({
+					spr,
+					spr,
+					volicon,
+					-- theme.volume.widget,
+					bar,
+					neticon,
+					-- net.widget,
+					spr,
+					spr,
+					bubble({
+						calendaricon,
+						calendar,
+						bar,
+						clockicon,
+						clock,
+						-- bar,
+						spr,
+						spr,
+					}, theme.fg_focus, theme.bg_normal),
+				}),
+				spr,
+				powericon,
+			},
 		},
 	})
 end

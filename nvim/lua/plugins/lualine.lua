@@ -20,7 +20,7 @@ local bubbles_theme = {
   normal = {
     a = { fg = colors.black, bg = colors.blue },
     b = { fg = colors.blue, bg = colors.greyblue },
-    c = { fg = colors.blue, bg = colors.darkblue },
+    c = { fg = colors.blue, bg = nil },
   },
 
   insert = { a = { fg = colors.black, bg = colors.pink } },
@@ -28,12 +28,9 @@ local bubbles_theme = {
   replace = { a = { fg = colors.black, bg = colors.red } },
 
   inactive = {
-    a = { fg = colors.cyan, bg = colors.darkblue },
-    b = { fg = colors.cyan, bg = colors.darkblue },
-    c = { fg = colors.cyan, bg = colors.darkblue },
-  },
-  winbar = {
-    c = { fg = colors.black, bg = colors.blue },
+    a = { fg = colors.cyan, bg = nil },
+    b = { fg = colors.cyan, bg = nil },
+    c = { fg = colors.cyan, bg = nil },
   },
 }
 
@@ -55,12 +52,12 @@ return {
       lualine_c = {
         {
           "filename",
-          path = 4,
+          -- path = 1,
         },
         {
           "navic",
-          color_correction = nil,
-          navic_opts = nil,
+          color_correction = "static",
+          navic_opts = { highlight = true },
         },
         -- {
         --   "buffers",
@@ -88,11 +85,11 @@ return {
       lualine_y = {},
       lualine_z = { "location" },
     },
-    extensions = {},
+    extensions = { "neo-tree" },
     winbar = {
       lualine_a = {},
       lualine_b = {},
-      lualine_c = { { "filename", path = 4 } },
+      lualine_c = { { "filename", path = 1 } },
       lualine_x = {},
       lualine_y = {},
       lualine_z = {},
@@ -100,7 +97,7 @@ return {
     inactive_winbar = {
       lualine_a = {},
       lualine_b = {},
-      lualine_c = { { "filename", path = 4 } },
+      lualine_c = { { "filename", path = 1 } },
       lualine_x = {},
       lualine_y = {},
       lualine_z = {},
