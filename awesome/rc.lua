@@ -666,12 +666,17 @@ globalkeys = mytable.join(
 		awful.util.spawn_with_shell(string.format("~/.config/rofi/scripts/launcher_t2 -show %s", "run"))
 	end, { description = "run prompt", group = "launcher" }),
 
+	-- Editor
+	awful.key({ modkey }, "v", function()
+		awful.util.spawn_with_shell(string.format("%s -e %s", terminal, editor))
+	end, { description = "run prompt", group = "launcher" }),
+
 	-- Emoji
 	awful.key({ modkey }, "e", function()
 		awful.util.spawn_with_shell(string.format("~/.config/rofi/scripts/launcher_t2 -show  %s", "emoji"))
-	end, { description = "emoji selector", group = "launcher" }),
+	end, { description = "emoji selector 😜", group = "launcher" }),
 
-	-- Toggle Redshift with Mod+Shift+t
+	-- Toggle Redshift with Mod+d
 	awful.key({ modkey }, "d", function()
 		lain.widget.contrib.redshift.toggle()
 	end)
