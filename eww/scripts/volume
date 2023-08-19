@@ -1,0 +1,40 @@
+#!/bin/bash
+
+lvlalt=$(pamixer --get-volume-human | awk -F'%' '{ print $1 }')
+zero="0%"
+half="50%"
+full="100%"
+mute="muted"
+
+icon() {
+	lvl=$(pamixer --get-volume-human)
+	if [ "$lvl" == "$zero" ]; then
+		echo "./images-dark/volume-low.svg"
+	elif [ "$lvl" == "$mute" ]; then
+		echo "./images-dark/volume-off.svg"
+	elif [ "$lvl" "$half" ] <=; then
+		echo "./images-dark/volume-medium.svg"
+	else
+		echo "./images-dark/volume-high.svg"
+	fi
+}
+
+if [[ $1 == icon ]]; then
+	icon
+elif [[ $1 == text ]]; then
+	lvl=$(pamixer --get-volume-human | xargs)
+	if [[ "$lvl" == "$mute" ]]; then
+		echo "0%"
+	else
+		echo $lvl
+	fi
+elif [[ $1 == up ]]; then
+	pamixer -i 2 &
+	pamixer --get-volume-human | xargs -I {} notify-send -r 123 "Volume" "{}"
+elif [[ $1 == down ]]; then
+	pamixer -d 2 &
+	pamixer --get-volume-human | xargs -I {} notify-send -r 123 "Volume" "{}"
+elif [[ $1 == number ]]; then
+	num=$(pamixer --get-volume-human | awk -F'%' '{ print $1 }' | xargs)
+	echo $num
+fi

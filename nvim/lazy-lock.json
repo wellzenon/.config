@@ -46,6 +46,7 @@
   "nvim-ts-context-commentstring": { "branch": "main", "commit": "e9062e2dfb9854e6a927370f2d720de354c88524" },
   "nvim-web-devicons": { "branch": "master", "commit": "efbfed0567ef4bfac3ce630524a0f6c8451c5534" },
   "obsidian.nvim": { "branch": "main", "commit": "b71d1465f2b8bd201210141bbd2bc5fd205f763a" },
+  "parinfer-rust": { "branch": "master", "commit": "3c769707ad3b18d530f696fe42a9d495139149ab" },
   "persistence.nvim": { "branch": "main", "commit": "4b8051c01f696d8849a5cb8afa9767be8db16e40" },
   "plenary.nvim": { "branch": "master", "commit": "267282a9ce242bbb0c5dc31445b6d353bed978bb" },
   "project.nvim": { "branch": "main", "commit": "8c6bad7d22eef1b71144b401c9f74ed01526a4fb" },
@@ -57,5 +58,6 @@
   "vim-illuminate": { "branch": "master", "commit": "a2907275a6899c570d16e95b9db5fd921c167502" },
   "vim-kitty-navigator": { "branch": "master", "commit": "c3d8aaaa61717b2c142ff39553fcab709fd606a7" },
   "vim-startuptime": { "branch": "master", "commit": "454b3de856b7bd298700de33d79774ca9b9e3875" },
-  "which-key.nvim": { "branch": "main", "commit": "7ccf476ebe0445a741b64e36c78a682c1c6118b7" }
+  "which-key.nvim": { "branch": "main", "commit": "7ccf476ebe0445a741b64e36c78a682c1c6118b7" },
+  "yuck.vim": { "branch": "master", "commit": "9b5e0370f70cc30383e1dabd6c215475915fe5c3" }
 }
