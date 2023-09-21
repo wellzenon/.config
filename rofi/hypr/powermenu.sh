@@ -18,11 +18,11 @@ if [ "$selected_option" == "$lock" ]; then
 elif [ "$selected_option" == "$logout" ]; then
 	loginctl terminate-user $(whoami)
 elif [ "$selected_option" == "$shutdown" ]; then
-	loginctl poweroff
+	poweroff
 elif [ "$selected_option" == "$reboot" ]; then
-	loginctl reboot
+	reboot
 elif [ "$selected_option" == "$sleep" ]; then
-	loginctl suspend
+	suspend
 else
 	echo "No match"
 fi

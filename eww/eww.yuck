@@ -1,162 +1,157 @@
-(include "./yuck/variables.yuck")
-(include "./yuck/vertical-bar.yuck")
-(include "./yuck/screenshot.yuck")
-;
-; (defwidget bar [screen]
-;   (centerbox :orientation "v"
-;     (box :class "segment-top"
-;          :valign "start"
-;       (top :screen screen))
-;     (box :valign "center"
-;          :class "middle"
-;       (middle :screen screen))
-;     (box :valign "end"
-;          :class "segment-bottom"
-;       (bottom :screen screen))))
-;
-; (defwidget top [screen]
-;   (image :path "./images-dark/0.svg" :image-width "14" :image-height "14"))
-;   ; (workspaces :wsp_yuck {screen == 1 ? workspaces_1_yuck : workspaces_2_yuck}))
-;
-; (defwidget workspaces [wsp_yuck]
-;   (literal :content wsp_yuck))
-;
-; (defwidget middle [] (time))
-; (defwidget time []
-;   (box :orientation "v"
-;        :class "time"
-;     hour min sec))
-;
-;
-; (defwidget metric [icon ?font-size]
-;   (box :class "metric"
-;        :orientation "v"
-;     (label :class "metric-icon"
-;            :style {font-size != "" ? "font-size: ${font-size}rem;" : ""}
-;            :text icon)
-;     (children)))
-;
-; (defwidget bottom [screen]
-;   (box :orientation "v"
-;        :valign "end"
-;        :space-evenly true
-;        :spacing "5"
-;
-;     (metric :icon "" :font-size 1 (music-button))
-;
-;     (volume)
-;
-;     (metric :icon ""
-;             :font-size 0.8
-;       "${round((1 - (EWW_DISK["/"].free / EWW_DISK["/"].total)) * 100, 0)}%")
-;
-;     (metric :icon "" "${round(EWW_RAM.used_mem_perc, 0)}%")
-;
-;     (metric :icon "" "${round(EWW_CPU.avg, 0)}%")
-;
-;     (box :class "metric" (date))))
-;
-; (defwidget music-button []
-;   (button :onclick "playerctl play-pause"
-;     "${music_data == "" ? "⏸" : music_data.status == "Playing" ? "⏸" : "▶"}"))
-;
-; (defwidget volume []
-;   (box :class "volume-metric"
-;        :orientation "v"
-;        :space-evenly false
-;        :valign "fill"
-;        :vexpand false
-;     (scale :orientation "h"
-;            :min 0
-;            :max 100
-;            :onchange "pamixer --set-volume $(echo {} | sed 's/\\..*//g')"
-;            :value volume)
-;     (eventbox :onscroll "if [ '{}' == 'up' ]; then pamixer -i 5; else pamixer -d 5; fi"
-;               :vexpand true
-;               :valign "fill"
-;       (box :orientation "v"
-;            :valign "fill"
-;            :vexpand true
-;         (button :onclick "./audio.sh toggle"
-;           (label :style "font-size: 1.2em; font-family: DejaVuSansMono Nerd Font Mono"
-;                  :text audio_sink))
-;         (button :onclick "pavucontrol &"
-;           "${volume}%")))))
-;
-;
-;
-;
-; (defwidget large-sym [sym]
-;   (label :class "metric-icon large-symbol" :text sym))
-;
-; (defwidget date []
-;   (box :orientation "v"
-;        :halign "center"
-;     day_word day month year))
-;
-; ; TODO make this not hacky
-; (defvar audio_sink "")
-;
-; (deflisten volume :initial "0" "./audio.sh volume")
-;
-; (deflisten music_data
-;   :initial `{"status": ""}`
-;   `
-;   playerctl          metadata --format '{ "status": "{{status}}", "artist": "{{artist}}", "title": "{{title}}"}' || echo '{"status": ""}';
-;   # playerctl --follow metadata --format '{ "status": "{{status}}", "artist": "{{artist}}", "title": "{{title}}"}'
-;   `)
-;
-; (defpoll hour :interval "1s" "date +%H")
-; (defpoll min  :interval "1s" "date +%M")
-; (defpoll sec  :interval "1s" "date +%S")
-;
-; (defpoll day_word :interval "10m" "date +%a | tr [:upper:] [:lower:]")
-; (defpoll day      :interval "10m" "date +%d")
-; (defpoll month    :interval "1h"  "date +%m")
-; (defpoll year     :interval "1h"  "date +%y")
-;
-; (defvar workspaces_1_yuck "")
-; (defvar workspaces_2_yuck "")
-;
-;
-; (defwindow bar_1
-;   :monitor 0
-;   :stacking "fg"
-;   :geometry (geometry :x 0 :y 0 :width "40px" :height "100%" :anchor "left center")
-;   :reserve (struts :distance "40px" :side "left")
-;   :exclusive true
-;   (bar :screen 1))
-;
-; (defwindow bar_2
-;   :monitor 1
-;   :geometry (geometry :x 0 :y 0 :width "40px" :height "100%" :anchor "left center")
-;   :reserve (struts :distance "40px" :side "left")
-;   (bar :screen 2))
-;
-; (defwindow bar_3
-;   :monitor 0
-;   :stacking "fg"
-;   :geometry (geometry :x 0 :y 0 :width "50px" :height "100%" :anchor "left center")
-;   :reserve (struts :distance "50px" :side "left")
-;   :exclusive true
-;   :window-type "dock"
-;   "yes")
-;
-;
-;
-; ;(defwidget music-popup []
-; ;(if-else :cond {music_data.status == "Stopped" || music_data.status == ""}
-; ;"No music playing"
-; ;(box :orientation "h"
-; ;:valign "fill"
-; ;:space-evenly false
-; ;:spacing 10
-; ;(button :onclick "playerctl previous" "⏮")
-; ;"${music_data.artist} - ${music_data.title}"
-; ;(button :onclick "playerctl next" "⏭"))))
-;
-; ;(defwindow music_popup
-; ;:monitor 1
-; ;:anchor "bottom left"
-; ;:geometry (geometry :x "30px" :y "10px" :height "65px")
-; ;(music-popup))
+(deflisten workspaces "./scripts/workspaces")
+(deflisten activewindow "./scripts/activewindow")
+(defpoll wifi-icon :interval "10s" "./scripts/wifi icon")
+(defpoll wifi-name :interval "10s" "./scripts/wifi name")
+(defpoll wifi-strength :interval "10s" "./scripts/wifi percentage")
+(defpoll wifi-number :interval "10s" "./scripts/wifi number")
+(defpoll vol-icon :interval "1s" "./scripts/volume icon")
+(defpoll mic-icon :interval "1s" "./scripts/mic-volume icon")
+(defpoll bat-icon :interval "1m" "./scripts/battery icon")
+(defpoll bat-lvl :interval "1m" "./scripts/battery number")
+(defpoll volume :interval "1s" "./scripts/volume number")
+(defpoll mic-volume :interval "1s" "./scripts/mic-volume number")
+(defpoll hours :interval "1m" 'date "+%H"')
+(defpoll mins :interval "1s" 'date "+%M"')
+(defpoll bt-icon :interval "1s" "./scripts/bluetooth")
+(defpoll br-lvl :interval "1s" `./scripts/brightness number`)
+
+(defvar volup "./scripts/volume up")
+(defvar voldown "./scripts/volume down")
+(defvar micup "./scripts/mic-volume up")
+(defvar micdown "./scripts/mic-volume down")
+(defvar arch-icon "./images/archlinux-icon.svg")
+(defvar br-icon "./images/brightness.svg" )
+(defvar snowflake-icon "./images/snowflake-icon.svg")
+(defvar icon-size "13")
+
+(defvar open-rofi "~/.config/rofi/launchers/type-2/launcher.sh -show drun")
+
+; (defvar bg-color "#16161E")
+(defvar bg-color "black")
+(defvar fg-color "#5F71AE")
+
+(defwidget workspaces []
+  (literal :valign "fill" :content workspaces))
+
+(defwidget date []
+  (box
+    :orientation "v"
+    :space-evenly false
+    :spacing 0
+
+     (box
+       :orientation "v"
+       :class "bar-time"
+       :tooltip (hours + mins)
+       :space-evenly false
+       :spacing 1
+       (label :text hours :class "hours")
+       (label :text mins :class "mins"))))
+
+(defwidget wifi []
+  (circle 
+    :icon wifi-icon
+    :value wifi-number
+    :onclick `notify-send -r 123 'Wifi ${wifi-name}' '${wifi-strength}'`))
+
+(defwidget vol []
+  (circle 
+    :icon vol-icon
+    :value volume
+    :onscrollup volup
+    :onscrolldown voldown
+    :onclick "pamixer -t"))
+
+(defwidget mic []
+  (circle 
+    :icon mic-icon
+    :value mic-volume
+    :onscrollup micup
+    :onscrolldown micdown
+    :onclick "pamixer -t --default-source"))
+
+(defwidget br []
+  (circle 
+    :icon br-icon
+    :onclick "notify-send -r 123 'Brightness' '${br-lvl}%'"
+    :onscrollup "brillo -A 5 && notify-send -r 123 'Brightness' '${br-lvl}%'"
+    :onscrolldown "brillo -U 5 && notify-send -r 123 'Brightness' '${br-lvl}%'" 
+    :value br-lvl))
+
+(defwidget bat []
+  (circle 
+    :icon bat-icon
+    :onclick "notify-send -r 324934 'Battery' '${bat-lvl}%'"
+    :value bat-lvl))
+
+(defwidget rofi []
+  (box
+    :orientation "v"
+    :class "bar-rofi-widget"
+    (button 
+      :class "bar-rofi-btn" 
+      :tooltip "open rofi" 
+      :onclick open-rofi
+      (image :path arch-icon :image-width icon-size :image-width icon-size))))
+
+(defwidget circle [
+                   ?value 
+                   ?icon 
+                   ?circle-bg-color 
+                   ?circle-color 
+                   ?onscrollup 
+                   ?onscrolldown
+                   ?onclick]
+  (eventbox
+    :timeout "15ms"
+    :onscroll "[[ {} == 'up' ]] && ${onscrollup} || ${onscrolldown}"
+    :onclick onclick
+   (overlay
+    (circular-progress :start-at 75 :value value :thickness icon-size :style "color: ${circle-bg-color ?: bg-color }; opacity: 0;")
+    (circular-progress :start-at 75 :value value :thickness 1 :style "color: ${circle-color ?: fg-color}; opacity: 0.5;")
+    (image :class "bar-icon" :path icon :image-width icon-size :image-height icon-size))))
+
+(defwidget left []
+  (box
+    :class "bar-left"
+    :orientation "v"
+    :valign "start"
+    :spacing 20
+    :space-evenly false
+    (workspaces)))
+
+(defwidget right []
+  (box
+    :class "bar-right"
+    :orientation "v"
+    :valign "end"
+    :spacing 10
+    :space-evenly false
+    (wifi)
+    (vol)
+    (mic)
+    (br)
+    (bat)
+    (image :class "bar-icon" :path snowflake-icon :image-width icon-size :image-height icon-size)
+    (date)))
+
+(defwidget bar []
+  (centerbox :orientation "v"
+    :style "color: ${fg-color}; background-color: ${bg-color}"
+    :class "bar"
+    (left)
+    (label :angle 90 :yalign 1 :justify "right" :text activewindow)
+    (right)))
+
+(defwindow bar
+  :stacking "fg"
+  :monitor "0"
+  :exclusive true
+  :namespace "vert-bar"
+  :geometry (geometry
+              :x "0px"
+              :y "0px"
+              :width "20px"
+              :height "100%"
+              :anchor "left center")
+  (bar))

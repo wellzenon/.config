@@ -3,4 +3,5 @@
 theme="$HOME/.config/rofi/hypr/launcher.rasi"
 
 rofi -show drun \
-	-theme ${theme}
+	-theme ${theme} \
+	-rofi-sensible-terminal

@@ -9,22 +9,18 @@ icon() {
 	state=$(upower -d | grep "state" | awk -F":" 'NR==1{ print $2 }' | xargs)
 	batlvl=$(upower -d | grep "percentage" | awk -F":" 'NR==1{ print $2 }' | awk -F"%" '{ print $1 }' | xargs)
 	if [ "$state" == "$nc" ]; then
-		echo "./images-dark/battery-charging.svg"
+		echo "./images-v2/battery-charging.svg"
 	elif [ "$state" == "$dc" ]; then
-		echo "./images-dark/battery-charging.svg"
+		echo "./images-v2/battery-charging.svg"
 	elif [ "$state" == "$batyes" ]; then
-		echo "./images-dark/battery-charging.svg"
+		echo "./images-v2/battery-charging.svg"
 	elif [ "$state" == "$batno" ]; then
-		if [[ $batlvl -lt 20 ]]; then
-			echo "./images-dark/battery-20.svg"
-		elif [[ $batlvl -lt 40 ]]; then
-			echo "./images/battery-40.svg"
-		elif [[ $batlvl -lt 60 ]]; then
-			echo "./images-dark/battery-60.svg"
-		elif [[ $batlvl -lt 80 ]]; then
-			echo "./images-dark/battery-80.svg"
+		if [[ $batlvl -lt 33 ]]; then
+			echo "./images-v2/battery-low.svg"
+		elif [[ $batlvl -lt 66 ]]; then
+			echo "./images-v2/battery-medium.svg"
 		elif [[ $batlvl -lt 100 ]]; then
-			echo "./images-dark/battery-100.svg"
+			echo "./images-v2/battery-max.svg"
 		fi
 	else
 		echo "󰑓"

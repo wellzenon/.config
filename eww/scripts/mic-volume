@@ -1,0 +1,43 @@
+#!/bin/bash
+
+lvlalt=$(pamixer --get-volume --default-source)
+zero="0"
+third="33"
+twothirds="66"
+full="100"
+mute="muted"
+
+icon() {
+	lvl=$(pamixer --get-volume)
+	if [ "$lvl" == "$zero" ]; then
+		echo "./images-v2/mic-zero.svg"
+	elif [ "$(pamixer --get-mute --default-source)" == "true" ]; then
+		echo "./images-v2/mic-off.svg"
+	elif [ "$lvl" -lt "$third" ]; then
+		echo "./images-v2/mic-low.svg"
+	elif [ "$lvl" -lt "${twothirds}" ]; then
+		echo "./images-v2/mic-medium.svg"
+	else
+		echo "./images-v2/mic-max.svg"
+	fi
+}
+
+if [[ $1 == icon ]]; then
+	icon
+elif [[ $1 == text ]]; then
+	lvl=$(pamixer --get-volume-human --default-source | xargs)
+	if [[ "$lvl" == "$mute" ]]; then
+		echo "0%"
+	else
+		echo $lvl
+	fi
+elif [[ $1 == up ]]; then
+	pamixer --allow-boost -i 2 --default-source &
+	pamixer --get-volume-human --default-source | xargs -I {} notify-send -r 123 "Volume" "{}"
+elif [[ $1 == down ]]; then
+	pamixer -d 2 --default-source &
+	pamixer --get-volume-human --default-source | xargs -I {} notify-send -r 123 "Volume" "{}"
+elif [[ $1 == number ]]; then
+	num=$(pamixer --get-volume --default-source | xargs)
+	echo $num
+fi

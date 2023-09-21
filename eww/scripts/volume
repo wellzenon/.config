@@ -1,21 +1,24 @@
 #!/bin/bash
 
-lvlalt=$(pamixer --get-volume-human | awk -F'%' '{ print $1 }')
-zero="0%"
-half="50%"
-full="100%"
+lvlalt=$(pamixer --get-volume)
+zero="0"
+third="33"
+twothirds="66"
+full="100"
 mute="muted"
 
 icon() {
-	lvl=$(pamixer --get-volume-human)
+	lvl=$(pamixer --get-volume)
 	if [ "$lvl" == "$zero" ]; then
-		echo "./images-dark/volume-low.svg"
-	elif [ "$lvl" == "$mute" ]; then
-		echo "./images-dark/volume-off.svg"
-	elif [ "$lvl" "$half" ] <=; then
-		echo "./images-dark/volume-medium.svg"
+		echo "./images-v2/volume-zero.svg"
+	elif [ "$(pamixer --get-mute)" == "true" ]; then
+		echo "./images-v2/volume-off.svg"
+	elif [ "$lvl" -lt "$third" ]; then
+		echo "./images-v2/volume-low.svg"
+	elif [ "$lvl" -lt "${twothirds}" ]; then
+		echo "./images-v2/volume-medium.svg"
 	else
-		echo "./images-dark/volume-high.svg"
+		echo "./images-v2/volume-max.svg"
 	fi
 }
 
@@ -29,7 +32,7 @@ elif [[ $1 == text ]]; then
 		echo $lvl
 	fi
 elif [[ $1 == up ]]; then
-	pamixer -i 2 &
+	pamixer --allow-boost -i 2 &
 	pamixer --get-volume-human | xargs -I {} notify-send -r 123 "Volume" "{}"
 elif [[ $1 == down ]]; then
 	pamixer -d 2 &

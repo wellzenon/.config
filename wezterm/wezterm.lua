@@ -7,7 +7,7 @@ local config = {}
 -- In newer versions of wezterm, use the config_builder which will
 -- help provide clearer error messages
 if wezterm.config_builder then
-	config = wezterm.config_builder()
+  config = wezterm.config_builder()
 end
 
 -- This is where you actually apply your config choices
@@ -17,18 +17,18 @@ config.use_dead_keys = false
 -- config.color_scheme = "Catppuccin Mocha (Gogh)"
 config.color_scheme = "Night Owl (Gogh)"
 config.window_padding = {
-	left = "0",
-	right = "0",
-	top = "0.5cell",
-	bottom = "0",
+  left = "0",
+  right = "0",
+  top = "0.5cell",
+  bottom = "0",
 }
 
 -- config.color_scheme = "AdventureTime"
 config.hide_tab_bar_if_only_one_tab = true
 config.font = wezterm.font({
-	family = "JetBrains Mono",
-	weight = "Book",
-	stretch = "Condensed",
+  family = "JetBrains Mono",
+  weight = "Medium",
+  stretch = "Condensed",
 })
 config.font_size = 10
 config.line_height = 1.2

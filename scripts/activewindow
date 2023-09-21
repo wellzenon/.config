@@ -1,0 +1,10 @@
+#!/bin/bash
+
+activewindow() {
+	echo $(hyprctl activewindow | grep title | awk -F ':' '{ print $2 }')
+}
+
+activewindow
+socat -U - UNIX-CONNECT:/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock | while read -r _; do
+	activewindow
+done

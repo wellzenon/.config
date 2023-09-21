@@ -1,0 +1,9 @@
+# GIMP gimp-convolve-tool options
+
+(brush "2. Hardness 050")
+(dynamics "Dynamics Off")
+(palette "Histórico de cor")
+(brush-size 1)
+(brush-hardness 0.11)
+
+# end of gimp-convolve-tool options

@@ -1,30 +1,27 @@
 #!/bin/bash
-
-strength=$(iwconfig wlan0 | grep "Link Quality=" | awk -F'=' '{ print $2 }' | awk -F'/' '{ print $1 }')
-state=$(iwconfig wlan0 | grep ESSID | awk -F':' '{ print $2 }' | xargs)
+# strenght=$(nmcli -t -f IN-USE,SIGNAL dev wifi | grep '*' | cut -d: -f2)
+strength=$(nmcli dev wifi | grep \* | awk -F'/' '{print $2}' | awk '{print $2}')
+ssid=$(nmcli -f IN-USE,SSID -p dev wifi | grep \* | sed 's/\*  *//')
+# state=$(iwconfig wlan0 | grep ESSID | awk -F':' '{ print $2 }' | xargs)
 wf=$(echo "$strength*100/70" | bc)
 
 icon() {
 	if [[ $wf -eq 0 ]]; then
-		echo "./images-dark/wifi-off.svg"
+		echo "./images-v2/wifi-off.svg"
 	elif [[ $wf -le 30 ]]; then
 		#   echo "./images/wifi-none.svg"
-		echo "./images-dark/wifi-low"
+		echo "./images-v2/wifi-low"
 	elif [[ $wf -le 60 ]]; then
 		#   echo "./images/wifi-low.svg"
-		echo "./images-dark/wifi-medium.svg"
+		echo "./images-v2/wifi-medium.svg"
 	elif [[ $wf -gt 60 ]]; then
 		#   echo "./images/wifi-medium.svg"
-		echo "./images-dark/wifi-high.svg"
+		echo "./images-v2/wifi-max.svg"
 		# elif [[ $wf -gt 75 ]]; then
 		#   echo "./images/wifi-high.svg"
 	else
-		echo "./images-dark/wifi-off.svg"
+		echo "./images-v2/wifi-off.svg"
 	fi
-}
-
-percentage() {
-	echo "$wf%"
 }
 
 if [[ $1 == icon ]]; then
@@ -32,11 +29,7 @@ if [[ $1 == icon ]]; then
 elif [[ $1 == number ]]; then
 	echo $wf
 elif [[ $1 == percentage ]]; then
-	percentage
+	echo "$wf%"
 elif [[ $1 == name ]]; then
-	if [[ $state == "off/any" ]]; then
-		echo "Disconnected"
-	else
-		iwconfig wlan0 | grep ESSID | awk -F'"' '{ print $2 }' | xargs
-	fi
+	echo "${ssid:-'Disconected'}"
 fi
