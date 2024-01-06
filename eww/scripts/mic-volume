@@ -8,10 +8,16 @@ full="100"
 mute="muted"
 
 icon() {
-	lvl=$(pamixer --get-volume)
-	if [ "$lvl" == "$zero" ]; then
-		echo "./images-v2/mic-zero.svg"
-	elif [ "$(pamixer --get-mute --default-source)" == "true" ]; then
+	if [ "$(pamixer --get-mute --default-source)" == "true" ]; then
+		echo ""
+	else
+		echo ""
+	fi
+}
+
+svg() {
+	lvl=$(pamixer --get-volume --default-source)
+	if [ "$(pamixer --get-mute --default-source)" == "true" ]; then
 		echo "./images-v2/mic-off.svg"
 	elif [ "$lvl" -lt "$third" ]; then
 		echo "./images-v2/mic-low.svg"
@@ -32,11 +38,9 @@ elif [[ $1 == text ]]; then
 		echo $lvl
 	fi
 elif [[ $1 == up ]]; then
-	pamixer --allow-boost -i 2 --default-source &
-	pamixer --get-volume-human --default-source | xargs -I {} notify-send -r 123 "Volume" "{}"
+	pamixer --allow-boost -i 2 --default-source --get-volume | xargs -I {} notify-send -r 123 "Volume" "{}%"
 elif [[ $1 == down ]]; then
-	pamixer -d 2 --default-source &
-	pamixer --get-volume-human --default-source | xargs -I {} notify-send -r 123 "Volume" "{}"
+	pamixer --allow-boost -d 2 --default-source --get-volume | xargs -I {} notify-send -r 123 "Volume" "{}%"
 elif [[ $1 == number ]]; then
 	num=$(pamixer --get-volume --default-source | xargs)
 	echo $num

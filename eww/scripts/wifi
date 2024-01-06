@@ -7,6 +7,22 @@ wf=$(echo "$strength*100/70" | bc)
 
 icon() {
 	if [[ $wf -eq 0 ]]; then
+		echo "󰤭"
+	elif [[ $wf -le 40 ]]; then
+		echo "󰤟"
+	elif [[ $wf -le 60 ]]; then
+		echo "󰤢"
+	elif [[ $wf -le 80 ]]; then
+		echo "󰤥"
+	elif [[ $wf -gt 80 ]]; then
+		echo "󰤨"
+	else
+		echo "󰤯"
+	fi
+}
+
+svg() {
+	if [[ $wf -eq 0 ]]; then
 		echo "./images-v2/wifi-off.svg"
 	elif [[ $wf -le 30 ]]; then
 		#   echo "./images/wifi-none.svg"
@@ -20,7 +36,7 @@ icon() {
 		# elif [[ $wf -gt 75 ]]; then
 		#   echo "./images/wifi-high.svg"
 	else
-		echo "./images-v2/wifi-off.svg"
+		echo "./images-v2/wifi-zero.svg"
 	fi
 }
 

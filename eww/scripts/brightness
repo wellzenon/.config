@@ -1,9 +1,36 @@
 #!/bin/bash
 
-br=`brillo -G | awk -F"." '{ print $1 }'`
+quarter="25"
+half="50"
+threequarters="75"
+br=$(brillo -G | awk -F"." '{ print $1 }')
+
+icon() {
+	if [ "$lvl" -lt "$quarter" ]; then
+		echo "󰃞"
+	elif [ "$lvl" -lt "${half}" ]; then
+		echo "󰃟"
+	else
+		echo "󰃠"
+	fi
+}
+
+svg() {
+	if [ "$lvl" -lt "$quarter" ]; then
+		echo "./images-v2/brightness-zero.svg"
+	elif [ "$lvl" -lt "${half}" ]; then
+		echo "./images-v2/brightness-low.svg"
+	elif [ "$lvl" -lt "${threequarters}" ]; then
+		echo "./images-v2/brightness-medium.svg"
+	else
+		echo "./images-v2/brightness-max.svg"
+	fi
+}
 
 if [[ $1 == level ]]; then
-  echo "$br%"
+	echo "$br%"
 elif [[ $1 == number ]]; then
-  echo $br
+	echo $br
+elif [[ $1 == icon ]]; then
+	icon
 fi

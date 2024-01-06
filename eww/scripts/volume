@@ -3,11 +3,25 @@
 lvlalt=$(pamixer --get-volume)
 zero="0"
 third="33"
+half="50"
 twothirds="66"
 full="100"
 mute="muted"
 
 icon() {
+	lvl=$(pamixer --get-volume)
+	if [ "$(pamixer --get-mute)" == "true" ]; then
+		echo "󰝟"
+	elif [ "$lvl" -lt "$third" ]; then
+		echo "󰕿"
+	elif [ "$lvl" -lt "$twothirds" ]; then
+		echo "󰖀"
+	else
+		echo "󰕾"
+	fi
+}
+
+svg() {
 	lvl=$(pamixer --get-volume)
 	if [ "$lvl" == "$zero" ]; then
 		echo "./images-v2/volume-zero.svg"

@@ -52,16 +52,27 @@ workspaces() {
 		w10=bar-active-ws
 	fi
 
-	l1="(label :class \"$w1\" :text \"1\")"
-	l2="(label :class \"$w2\" :text \"2\")"
-	l3="(label :class \"$w3\" :text \"3\")"
-	l4="(label :class \"$w4\" :text \"4\")"
-	l5="(label :class \"$w5\" :text \"5\")"
-	l6="(label :class \"$w6\" :text \"6\")"
-	l7="(label :class \"$w7\" :text \"7\")"
-	l8="(label :class \"$w8\" :text \"8\")"
-	l9="(label :class \"$w9\" :text \"9\")"
-	l10="(label :class \"$w10\" :text \"10\")"
+	# l1="(label :class \"$w1\" :text \"1\")"
+	# l2="(label :class \"$w2\" :text \"2\")"
+	# l3="(label :class \"$w3\" :text \"3\")"
+	# l4="(label :class \"$w4\" :text \"4\")"
+	# l5="(label :class \"$w5\" :text \"5\")"
+	# l6="(label :class \"$w6\" :text \"6\")"
+	# l7="(label :class \"$w7\" :text \"7\")"
+	# l8="(label :class \"$w8\" :text \"8\")"
+	# l9="(label :class \"$w9\" :text \"9\")"
+	# l10="(label :class \"$w10\" :text \"10\")"
+
+	l1="(label :class \"$w1\" :text \"\")"
+	l2="(label :class \"$w2\" :text \"\")"
+	l3="(label :class \"$w3\" :text \"\")"
+	l4="(label :class \"$w4\" :text \"󰮍\")"
+	l5="(label :class \"$w5\" :text \"󰻞\")"
+	l6="(label :class \"$w6\" :text \"󰲫\")"
+	l7="(label :class \"$w7\" :text \"󰲭\")"
+	l8="(label :class \"$w8\" :text \"󰲯\")"
+	l9="(label :class \"$w9\" :text \"󰲱\")"
+	l10="(label :class \"$w10\" :text \"󰿭\")"
 
 	if [[ $w1 == 'bar-ws' ]]; then
 		l1=""

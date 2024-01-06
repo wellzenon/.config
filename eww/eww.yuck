@@ -10,25 +10,28 @@
 (defpoll bat-lvl :interval "1m" "./scripts/battery number")
 (defpoll volume :interval "1s" "./scripts/volume number")
 (defpoll mic-volume :interval "1s" "./scripts/mic-volume number")
+(defpoll week :interval "1m" 'date "+%a" | tr "[:upper:]" "[:lower:]"')
+(defpoll day :interval "1m" 'date "+%d.%m"')
 (defpoll hours :interval "1m" 'date "+%H"')
 (defpoll mins :interval "1s" 'date "+%M"')
 (defpoll bt-icon :interval "1s" "./scripts/bluetooth")
 (defpoll br-lvl :interval "1s" `./scripts/brightness number`)
+(defpoll br-icon :interval "1s" `./scripts/brightness icon`)
 
 (defvar volup "./scripts/volume up")
 (defvar voldown "./scripts/volume down")
 (defvar micup "./scripts/mic-volume up")
 (defvar micdown "./scripts/mic-volume down")
 (defvar arch-icon "./images/archlinux-icon.svg")
-(defvar br-icon "./images/brightness.svg" )
 (defvar snowflake-icon "./images/snowflake-icon.svg")
-(defvar icon-size "13")
+(defvar icon-size "15")
 
 (defvar open-rofi "~/.config/rofi/launchers/type-2/launcher.sh -show drun")
 
 ; (defvar bg-color "#16161E")
 (defvar bg-color "black")
-(defvar fg-color "#5F71AE")
+(defvar fg-color "#959299")
+; (defvar fg-color "#5F71AE")
 
 (defwidget workspaces []
   (literal :valign "fill" :content workspaces))
@@ -37,7 +40,7 @@
   (box
     :orientation "v"
     :space-evenly false
-    :spacing 0
+    :spacing 5
 
      (box
        :orientation "v"
@@ -46,17 +49,30 @@
        :space-evenly false
        :spacing 1
        (label :text hours :class "hours")
-       (label :text mins :class "mins"))))
+       (label :text mins :class "mins"))
+
+     (box
+       :orientation "v"
+       :class "bar-date"
+       :tooltip (hours + mins)
+       :space-evenly false
+       :spacing 3
+       (label :text week :class "hours")
+       (label :text day :class "mins"))))
 
 (defwidget wifi []
   (circle 
+    :class "bar-wifi"
     :icon wifi-icon
+    :xalign 0.39
     :value wifi-number
     :onclick `notify-send -r 123 'Wifi ${wifi-name}' '${wifi-strength}'`))
 
 (defwidget vol []
   (circle 
+    :class "bar-vol"
     :icon vol-icon
+    :xalign 0.44
     :value volume
     :onscrollup volup
     :onscrolldown voldown
@@ -64,7 +80,9 @@
 
 (defwidget mic []
   (circle 
+    :class "bar-mic"
     :icon mic-icon
+    :xalign 0.50
     :value mic-volume
     :onscrollup micup
     :onscrolldown micdown
@@ -72,7 +90,9 @@
 
 (defwidget br []
   (circle 
+    :class "bar-br"
     :icon br-icon
+    :xalign 0.43
     :onclick "notify-send -r 123 'Brightness' '${br-lvl}%'"
     :onscrollup "brillo -A 5 && notify-send -r 123 'Brightness' '${br-lvl}%'"
     :onscrolldown "brillo -U 5 && notify-send -r 123 'Brightness' '${br-lvl}%'" 
@@ -80,7 +100,9 @@
 
 (defwidget bat []
   (circle 
+    :class "bar-bat"
     :icon bat-icon
+    :xalign 0.52
     :onclick "notify-send -r 324934 'Battery' '${bat-lvl}%'"
     :value bat-lvl))
 
@@ -97,6 +119,7 @@
 (defwidget circle [
                    ?value 
                    ?icon 
+                   ?xalign 
                    ?circle-bg-color 
                    ?circle-color 
                    ?onscrollup 
@@ -107,9 +130,26 @@
     :onscroll "[[ {} == 'up' ]] && ${onscrollup} || ${onscrolldown}"
     :onclick onclick
    (overlay
-    (circular-progress :start-at 75 :value value :thickness icon-size :style "color: ${circle-bg-color ?: bg-color }; opacity: 0;")
-    (circular-progress :start-at 75 :value value :thickness 1 :style "color: ${circle-color ?: fg-color}; opacity: 0.5;")
-    (image :class "bar-icon" :path icon :image-width icon-size :image-height icon-size))))
+    (circular-progress :start-at 75 :value value :thickness "${icon-size - 2}" :style "color: ${circle-bg-color ?: bg-color }; opacity: 0;")
+    (circular-progress :start-at 75 :value value :thickness 3.3 :style "color: ${circle-color ?: fg-color}; opacity: 0.5;")
+    (label :class "bar-icon" :text icon :xalign "${xalign ?: 0.4}"))))
+
+; (defwidget circle [
+;                    ?value 
+;                    ?icon 
+;                    ?circle-bg-color 
+;                    ?circle-color 
+;                    ?onscrollup 
+;                    ?onscrolldown
+;                    ?onclick]
+;   (eventbox
+;     :timeout "15ms"
+;     :onscroll "[[ {} == 'up' ]] && ${onscrollup} || ${onscrolldown}"
+;     :onclick onclick
+;    ; (overlay
+;    ;  (circular-progress :start-at 75 :value value :thickness "${icon-size - 3}" :style "color: ${circle-bg-color ?: bg-color }; opacity: 0;")
+;    ;  (circular-progress :start-at 75 :value value :thickness 3 :style "color: ${circle-color ?: fg-color}; opacity: 0.5;")
+;     (image :class "bar-icon" :path icon :image-width icon-size :image-height icon-size)))
 
 (defwidget left []
   (box
@@ -122,25 +162,30 @@
 
 (defwidget right []
   (box
+    :orientation "v"
+    :valign "end"
+    :spacing 30
+    :space-evenly false
+  (box
     :class "bar-right"
     :orientation "v"
     :valign "end"
-    :spacing 10
+    :spacing 15
     :space-evenly false
     (wifi)
     (vol)
     (mic)
     (br)
-    (bat)
-    (image :class "bar-icon" :path snowflake-icon :image-width icon-size :image-height icon-size)
-    (date)))
+    (bat))
+  (date)))
 
 (defwidget bar []
   (centerbox :orientation "v"
-    :style "color: ${fg-color}; background-color: ${bg-color}"
+    :style "color: ${fg-color}; "
     :class "bar"
+    :spacing 20
     (left)
-    (label :angle 90 :yalign 1 :justify "right" :text activewindow)
+    (label :angle 90 :yalign 1 :justify "right" :text activewindow :limit-width 35)
     (right)))
 
 (defwindow bar
@@ -151,7 +196,7 @@
   :geometry (geometry
               :x "0px"
               :y "0px"
-              :width "20px"
+              :width "22px"
               :height "100%"
               :anchor "left center")
   (bar))
