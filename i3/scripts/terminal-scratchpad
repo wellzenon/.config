@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# Substitua pela classe que você quer checar
+CLASS_TO_CHECK="com.terminal.scratchpad" 
+
+# Comando corrigido
+i3-msg -t get_tree | jq -e --arg target_class "$CLASS_TO_CHECK" \
+  '.. | select(.type? == "workspace" and .name? == "__i3_scratch") | ..? | select(.type? == "con" and .window? != null and .window_properties?.class == $target_class)' > /dev/null
+
+# Para usar em um if no shell:
+if i3-msg -t get_tree | jq -e --arg target_class "$CLASS_TO_CHECK" \
+  '.. | select(.type? == "workspace" and .name? == "__i3_scratch") | ..? | select(.type? == "con" and .window? != null and .window_properties?.class == $target_class)' > /dev/null; then
+  echo "Achou"
+  i3-msg scratchpad show
+else
+  echo "Nam"
+  ghostty --class="$CLASS_TO_CHECK"
+  sleep 0.5
+  i3-msg scratchpad show
+fi
