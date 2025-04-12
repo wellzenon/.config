@@ -22,3 +22,5 @@ application/xhtml+xml=zen.desktop;
 application/x-extension-xhtml=zen.desktop;
 application/x-extension-xht=zen.desktop;
 text/x-lua=org.x.editor.desktop;
+text/x-systemd-unit=org.x.editor.desktop;
+text/plain=org.x.editor.desktop;

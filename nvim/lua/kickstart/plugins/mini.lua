@@ -17,6 +17,12 @@ return {
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup()
 
+      -- Save sessions
+      require('mini.sessions').setup { autoread = true, autowrite = true }
+
+      -- Git info
+      -- require('mini.git').setup {}
+
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
       --  and try some other statusline plugin

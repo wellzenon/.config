@@ -3,6 +3,9 @@
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
+-- Set window title
+vim.opt.title = true
+vim.opt.titlestring = 'nvim'
 -- Make line numbers default
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
@@ -20,6 +23,18 @@ vim.opt.showmode = false
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
 vim.schedule(function()
+  vim.g.clipboard = {
+    name = 'slackadays-clipboard',
+    copy = {
+      ['+'] = 'cb copy', -- Comando para copiar para a área de transferência do sistema (+)
+      ['*'] = 'cb copy', -- Comando para copiar para a seleção primária (*) - pode ser igual ou diferente
+    },
+    paste = {
+      ['+'] = 'cb paste', -- Comando para colar da área de transferência do sistema (+)
+      ['*'] = 'cb paste', -- Comando para colar da seleção primária (*)
+    },
+    cache_enabled = 1, -- Habilita o cache (geralmente recomendado)
+  }
   vim.opt.clipboard = 'unnamedplus'
 end)
 
@@ -46,11 +61,20 @@ vim.opt.timeoutlen = 300
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 
+-- Hide tabs
+vim.opt.showtabline = 0 -- Nunca mostrar a linha de abas
 -- Sets how neovim will display certain whitespace characters in the editor.
 --  See `:help 'list'`
 --  and `:help 'listchars'`
 vim.opt.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.listchars = {
+  tab = '» ',
+  trail = '·',
+  nbsp = '␣',
+  eol = '↲',
+  precedes = '←',
+  extends = '→',
+}
 
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = 'split'

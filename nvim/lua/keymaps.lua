@@ -45,7 +45,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
   callback = function()
-    vim.highlight.on_yank()
+    vim.hl.on_yank()
   end,
 })
 
@@ -90,6 +90,9 @@ map('n', 'gcO', 'O<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>', { desc = 'Add Commen
 
 -- lazy
 map('n', '<leader>l', '<cmd>Lazy<cr>', { desc = 'Lazy' })
+
+-- Neogit
+map('n', '<leader>gg', '<cmd>Neogit kind=floating<cr>', { desc = 'Open Neogit' })
 
 -- formatting
 map({ 'n', 'v' }, '<leader>cf', function()

@@ -6,29 +6,42 @@ return {
     ---@type snacks.Config
     opts = {
       bigfile = { enabled = true },
-      dashboard = {
-        sections = {
-          {
-            -- { section = 'header' },
-            { icon = ' ', title = 'Keymaps', section = 'keys', indent = 2, padding = 1 },
-            { icon = ' ', title = 'Recent Files', section = 'recent_files', indent = 2, padding = 1 },
-            { icon = ' ', title = 'Projects', section = 'projects', indent = 2, padding = 1 },
-            { section = 'startup' },
-          },
-          {
-            section = 'terminal',
-            cmd = 'chafa ~/Downloads/profi.jpg --format symbols --symbols vhalf --size 60x25 --stretch; sleep .1',
-            -- cmd = 'chafa ~/Downloads/des.jpg --format symbols --symbols vhalf --size 60x40 --stretch; sleep .1',
-            pane = 2,
-            height = 25,
-            padding = 4,
+      -- dashboard = {
+      --   sections = {
+      --     {
+      --       -- { section = 'header' },
+      --       { icon = ' ', title = 'Keymaps', section = 'keys', indent = 2, padding = 1 },
+      --       { icon = ' ', title = 'Recent Files', section = 'recent_files', indent = 2, padding = 1 },
+      --       { icon = ' ', title = 'Projects', section = 'projects', indent = 2, padding = 1 },
+      --       { section = 'startup' },
+      --     },
+      --     {
+      --       section = 'terminal',
+      --       cmd = 'chafa ~/Downloads/profi.jpg --format symbols --symbols vhalf --size 60x25 --stretch; sleep .1',
+      --       -- cmd = 'chafa ~/Downloads/des.jpg --format symbols --symbols vhalf --size 60x40 --stretch; sleep .1',
+      --       pane = 2,
+      --       height = 25,
+      --       padding = 4,
+      --     },
+      --   },
+      -- },
+      explorer = {},
+      image = { enabled = true },
+      lazygit = { enabled = true },
+      picker = {
+        sources = {
+          explorer = {
+            auto_close = true,
+            hidden = true,
+            layout = {
+              preset = 'default',
+              hidden = { 'input' },
+              auto_hide = { 'input' },
+              preview = { win = 'preview' },
+            },
           },
         },
       },
-      explorer = { enabled = true },
-      image = { enabled = true },
-      lazygit = { enabled = true },
-      picker = { enabled = true },
       quickfile = { enabled = true },
       scope = { enabled = true },
       scroll = { enabled = true },

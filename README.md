@@ -14,4 +14,10 @@ sudo pacman -S imagemagick chafa picom tectonic xdotool fd ripgrep fzf lazygit n
 
 ```bash
 sudo pacman -S ttf-firacode-nerd ttf-iosevka-nerd ttf-jetbrains-mono ttf-jetbrains-mono-nerd ttf-monofur-nerd ttf-proggyclean-nerd ttf-roboto ttf-space-mono-nerd ttf-terminus-nerd
+````
+
+## Links
+
+```bash
+ln -s .config/i3/i3-resurrect/ .i3/i3-resurrect/
 ```

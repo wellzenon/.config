@@ -48,14 +48,16 @@ workspace_layout default
 ##############################
 
 #border indicator on windows:
-new_window pixel 1
+default_border pixel 0
 
 # thin borders
-# hide_edge_borders both
+hide_edge_borders both
 
 # Set inner/outer gaps
-gaps inner 2
-gaps outer 2
+gaps inner 10
+gaps outer 0
+# gaps top 2
+smart_gaps on
 
 # show window title bars (not officially supported with i3gaps)
 #default_border normal
@@ -172,7 +174,10 @@ bindcode $mod+Shift+90 	 move container to workspace  $ws10
 ######################################
 
 # start a terminal
-bindsym $mod+Return exec --no-startup-id ghostty
+bindsym $mod+Return exec ghostty
+
+#terminal for scratchpad
+bindsym $mod+space exec --no-startup-id ~/.config/i3/scripts/terminal-scratchpad
 
 # kill focused window
 # bindsym $mod+q kill
@@ -180,6 +185,8 @@ bindsym $mod+q exec --no-startup-id ~/.config/i3/scripts/smartkill.sh
 
 # exit-menu
 bindsym $mod+Shift+e exec --no-startup-id ~/.config/i3/scripts/powermenu
+bindsym $mod+Shift+h exec --no-startup-id /usr/bin/systemctl hibernate
+bindsym $mod+Shift+q exec --no-startup-id systemctl poweroff
 
 # Lock the system
 # lock with a picture:
@@ -187,7 +194,7 @@ bindsym $mod+Shift+e exec --no-startup-id ~/.config/i3/scripts/powermenu
 # lock by blurring the screen:
 bindsym $mod+l exec --no-startup-id ~/.config/i3/scripts/blur-lock
 # lock in case after sleep
-exec --no-startup-id xss-lock -l ~/.config/i3/scripts/blur-lock
+# exec --no-startup-id xss-lock -l ~/.config/i3/scripts/blur-lock
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -250,7 +257,7 @@ bindsym $mod+g layout tabbed
 bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+# bindsym $mod+space focus mode_toggle
 
 # focus the parent container
 bindsym $mod+a focus parent
@@ -290,9 +297,10 @@ bindsym XF86AudioPrev exec --no-startup-id playerctl previous
 bindsym $mod+p exec --no-startup-id /usr/local/bin/switch-audio-port
 
 ## App shortcuts
-bindsym $mod+e exec --no-startup-id /usr/bin/ghostty -e /usr/bin/nvim
-bindsym $mod+w exec --no-startup-id /usr/bin/zen-browser
-bindsym $mod+n exec --no-startup-id /usr/bin/thunar
+bindsym $mod+e exec /usr/bin/ghostty -e /usr/bin/nvim
+bindsym $mod+w exec /usr/bin/zen-browser
+bindsym $mod+c exec /usr/bin/thunar
+bindsym $mod+n exec /usr/bin/firefox -P notion-mobile --kiosk --new-window https://keep.google.com/u/0/#LIST/1g5Bb0XIGQTL9lz9yS0CP4TMHmR4Ocui7Qn0mImax7HLSTae5OIVR7F-YbQex1ds
 bindsym Print exec --no-startup-id scrot ~/%Y-%m-%d-%T-screenshot.png && notify-send "Screenshot saved to ~/$(date +"%Y-%m-%d-%T")-screenshot.png"
 
 # Power Profiles menu switcher (rofi)
@@ -318,8 +326,8 @@ set $ws10 "10"
 # use workspaces on different displays:
 # where you have to replace VGA-0/HDMI-0 with the names for your displays
 # you can get from xrandr command
-#workspace $ws1 output VGA-0
-#workspace $ws2 output VGA-0
+workspace $ws1 output eDP-1
+workspace $ws2 output HDMI-1-0
 #workspace $ws3 output HDMI-0
 #workspace $ws4 output HDMI-0
 #workspace $ws5 output HDMI-0
@@ -328,6 +336,8 @@ set $ws10 "10"
 assign [class="Xfce4-terminal"] $ws1
 assign [class="ghostty"] $ws1
 assign [class="(?i)zen-browser"] $ws2
+assign [class="(?i)firefox"] $ws2
+assign [class="(?i)Navigator"] $ws2
 assign [class="Thunar"] $ws3
 assign [class="thunderbird"] $ws4
 assign [class="TelegramDesktop"] $ws5
@@ -396,12 +406,18 @@ exec --no-startup-id dex --autostart --environment i3
 #exec_always --no-startup-id conky
 
 # start a script to setup displays
-# uncomment the next line, use arandr to setup displays and save the file as monitor:
-exec --no-startup-id ~/.screenlayout/monitor.sh
+exec_always --no-startup-id ~/.screenlayout/monitor.sh
+
+# LISTENERS
+exec_always --no-startup-id /bin/bash /home/ton/.config/i3/scripts/i3-title-listener
+
+# start a script to a better tiling layout
+# exec_always --no-startup-id i3-auto-layout
 
 # set wallpaper
 # exec --no-startup-id sleep 2 && nitrogen --restore
-exec --no-startup-id sleep 1 && feh --bg-fill /usr/share/endeavouros/backgrounds/endeavouros-wallpaper.png
+exec --no-startup-id sleep 1 && feh --bg-fill ~/.config/wallpaper/space-blue-galaxy.webp
+# exec --no-startup-id sleep 1 && feh --bg-fill /usr/share/endeavouros/backgrounds/endeavouros-wallpaper.png
 
 # set powersavings for display:
 exec --no-startup-id xset s 480 dpms 600 600 600
@@ -474,6 +490,8 @@ for_window [window_role="About"] floating enable
 # set border of floating window
 for_window [class="urxvt"] border pixel 1
 
+# set terminal scratchpad functionality
+for_window [class="^com.terminal.scratchpad$"] move scratchpad
 # set size of floating window
 #for_window [window_role="(?i)GtkFileChooserDialog"] resize set 640 480 #to set size of file choose dialog
 #for_window [class=".*"] resize set 640 480 #to change size of all floating windows 
@@ -515,11 +533,11 @@ bar {
 		font pango: Noto Sans 10
 		status_command i3blocks -c ~/.config/i3/i3blocks.conf
 	    	position top
-#	    	i3bar_command i3bar --transparency
+	    	# i3bar_command i3bar --transparency
 # it could be that you have no primary display set: set one (xrandr --output <output> --primary)
 # reference: https://i3wm.org/docs/userguide.html#_tray_output
 		    #tray_output primary
-		    tray_padding 1
+		    # tray_padding 1
 
 # When strip_workspace_numbers is set to yes,
 # any workspace that has a name of the form
@@ -529,13 +547,13 @@ strip_workspace_numbers yes
 
 		    colors {
 		    separator          $purple
-		    background         $darkgrey
+		    background         $black
 		    statusline         $white
 #                          		border 		        bg		txt		indicator
-		focused_workspace	$mediumgrey	   	$grey		$darkgrey	$purple
-		active_workspace	$lightblue      	$mediumgrey	$darkgrey	$purple
-		inactive_workspace	$darkgrey   		$darkgrey	$grey		$purple
-		urgent_workspace	$urgentred	    	$urgentred	$white		$purple
+		focused_workspace	$black		   	$black		$white		$white
+		active_workspace	$black		   	$black		$white		$white
+		inactive_workspace	$black		   	$black		$mediumgrey	$white
+		urgent_workspace	$black		   	$black		$red		$white
 	}
 }
 
@@ -590,8 +608,16 @@ bindsym $mod+t exec --no-startup-id rofi -show window \
 #bindsym F10 exec --no-startup-id rofi -show window \
 #		-config ~/.config/rofi/rofidmenu.rasi
 
-## rofi bindings to manage clipboard (install rofi-greenclip from the AUR)
+# rofi bindings to manage clipboard (install rofi-greenclip from the AUR)
 
-#exec --no-startup-id greenclip daemon>/dev/null
-#bindsym $mod+c exec --no-startup-id rofi -modi "clipboard:greenclip print" -show clipboard \
-#		-config ~/.config/rofi/rofidmenu.rasi
+exec --no-startup-id greenclip daemon>/dev/null
+bindsym $mod+Shift+v exec --no-startup-id rofi -modi "clipboard:greenclip print" -show clipboard \
+		-config ~/.config/rofi/rofidmenu.rasi
+
+#i3-layout swallows
+# exec --no-startup-id "i3-msg 'workspace 1; append_layout ~/.i3/i3-resurrect/monitor-1-layout.json'"
+# exec --no-startup-id "i3-msg 'workspace 2; append_layout ~/.i3/i3-resurrect/monitor-2-layout.json'"
+
+#i3-ressurect
+exec_always --no-startup-id i3-resurrect ls | sed -n '/programs/!p' | awk '{print $2}' | xargs -I {} i3-resurrect restore -nw "{}" --programs-only
+# exec_always --no-startup-id i3-resurrect ls | sed -n '/programs/!p' | awk '{print $2}' | xargs -I {} i3-resurrect restore -nw "{}" --layout-only
