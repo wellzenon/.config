@@ -5,9 +5,9 @@
 
 -- Set window title
 vim.opt.title = true
-vim.opt.titlestring = 'nvim'
+vim.opt.titlestring = 'notes'
 -- Make line numbers default
-vim.opt.number = true
+-- vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
 -- vim.opt.relativenumber = true
@@ -48,8 +48,8 @@ vim.opt.undofile = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
--- Keep signcolumn on by default
-vim.opt.signcolumn = 'yes'
+-- Keep signcolumn off  by default
+vim.opt.signcolumn = 'no'
 
 -- Decrease update time
 vim.opt.updatetime = 250
@@ -62,22 +62,23 @@ vim.opt.splitright = true
 vim.opt.splitbelow = true
 
 -- views can only be fully collapsed with the global statusline
-vim.opt.laststatus = 3
+vim.opt.laststatus = 0
+-- vim.opt.statusline = '%m'
 
 -- Hide tabs
 vim.opt.showtabline = 0 -- Nunca mostrar a linha de abas
 -- Sets how neovim will display certain whitespace characters in the editor.
 --  See `:help 'list'`
 --  and `:help 'listchars'`
-vim.opt.list = true
-vim.opt.listchars = {
-  tab = '» ',
-  trail = '·',
-  nbsp = '␣',
-  precedes = '←',
-  extends = '→',
-  -- eol = '↲',
-}
+-- vim.opt.list = true
+-- vim.opt.listchars = {
+--   tab = '» ',
+--   trail = '·',
+--   nbsp = '␣',
+--   eol = '↲',
+--   precedes = '←',
+--   extends = '→',
+-- }
 
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = 'split'

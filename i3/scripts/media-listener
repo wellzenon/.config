@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Signal to send to i3blocks when media state changes
+SIGNAL=10
+
+# Function to send signal to i3blocks
+send_signal() {
+    pkill -RTMIN+$SIGNAL i3blocks
+}
+
+# Monitor playerctl for changes
+playerctl -F metadata &>/dev/null &
+PLAYERCTL_PID=$!
+
+# Monitor volume changes using amixer
+VOL_CONTROL="Master"
+amixer -D pulse sset $VOL_CONTROL 0% &>/dev/null  # Initialize
+amixer -D pulse sset $VOL_CONTROL 100% &>/dev/null # Reset to original volume
+amixer -D pulse sset $VOL_CONTROL 0% &>/dev/null  # Initialize again
+amixer -D pulse sset $VOL_CONTROL 100% &>/dev/null # Reset to original volume
+
+# Cleanup on exit
+cleanup() {
+    kill $PLAYERCTL_PID 2>/dev/null
+    exit 0
+}
+
+trap cleanup EXIT
+
+# Main loop
+while true; do
+    # Wait for playerctl changes
+    wait $PLAYERCTL_PID
+    send_signal
+    
+    # Restart playerctl monitoring
+    playerctl -F metadata &>/dev/null &
+    PLAYERCTL_PID=$!
+done 

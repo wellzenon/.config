@@ -8,6 +8,7 @@ return {
   opts = {
     completions = { blink = { enabled = true } },
     file_types = { 'markdown' },
+    sign = { enabled = false },
     checkbox = {
       checked = { scope_highlight = '@markup.strikethrough' },
       custom = {

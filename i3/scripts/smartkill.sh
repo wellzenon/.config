@@ -1,49 +1,77 @@
 #!/bin/bash
 
 # --- Configuration ---
-# Keys Neovim expects for quit (e.g., <leader>q where leader is space)
-# Adjust "space q" if your <leader> is not space or you chose a different keymap.
-NVIM_QUIT_KEYS="F9"
-
-# Window class for YOUR terminal emulator.
-# Find with: xprop | grep WM_CLASS (then click the terminal)
-# Use the *first* value in quotes, e.g., "ghostty", "Alacritty", "kitty"
-TERMINAL_WM_CLASS="ghostty" # <-- IMPORTANT: Confirm this is correct for your terminal!
-
-# The process name to look for in the process tree
-NVIM_PROCESS_NAME="nvim"
+TERMINAL_WM_CLASS="ghostty"  # Window class of the target terminal
+NVIM_PROCESS_NAME="nvim"     # Process name for Neovim
+QUIT_COMMAND='<F9>'       # Command to quit Neovim (:xa<CR>, :qa<CR>, :qa!<CR>)
 # --- End Configuration ---
 
-# Get active window ID
-active_win_id=$(xdotool getactivewindow)
-if [[ -z "$active_win_id" ]]; then
-  i3-msg kill # Fallback
-  exit 0
+# --- Main Script ---
+SHOULD_I3_KILL=1 # Assume fallback (i3-msg kill) unless Neovim is controlled
+
+# Get active window XID
+active_win_xid=$(xdotool getactivewindow)
+if [[ -z "$active_win_xid" ]]; then
+    # If we can't get the window, fallback immediately
+    i3-msg kill
+    exit 1
 fi
 
-# Get window class using the active window ID
-win_class=$(xprop -id "$active_win_id" WM_CLASS | awk -F '"' '{print $2}')
-
-# Check if the focused window is the target terminal emulator (case-insensitive)
+# Get window class to check if it's the target terminal
+win_class=$(xprop -id "$active_win_xid" WM_CLASS | awk -F '"' '{print $2}')
 if [[ "${win_class,,}" == "${TERMINAL_WM_CLASS,,}" ]]; then
-  # Get the PID of the terminal process itself
-  win_pid=$(xdotool getwindowpid "$active_win_id")
+    # It's the target terminal, try to find and control Nvim
 
-  if [[ -n "$win_pid" ]]; then
-    # Check if NVIM_PROCESS_NAME exists in the process tree of the terminal's PID
-    # pstree -ps <PID> shows the tree including process names (nvim) and PIDs
-    # grep -q makes it quiet (no output), just returns exit status 0 if found, 1 if not
-    if pstree -ps "$win_pid" | grep -q "$NVIM_PROCESS_NAME"; then
-      # Found nvim running under this terminal: send the configured quit keys
-      # Using --clearmodifiers is important!
-      xdotool key --clearmodifiers --window "$activwin_id" "$NVIM_QUIT_KEYS"  "$NVIM_QUIT_KEYS" "$NVIM_QUIT_KEYS"
-      exit 0 # Exit after successfully sending keys
+    # Get PID of the terminal process itself
+    term_pid=$(xdotool getwindowpid "$active_win_xid")
+    if [[ -n "$term_pid" ]]; then
+
+        # Find all nvim PIDs running as descendants of the terminal PID
+        mapfile -t nvim_pids < <(pstree -ps "$term_pid" | grep -o "${NVIM_PROCESS_NAME}.*([0-9]\+)" | grep -o "[0-9]\+")
+
+        if [[ ${#nvim_pids[@]} -gt 0 ]]; then
+            # Found potential Nvim PIDs, now look for the server socket
+
+            server_path_found=0
+            nvim_listen_address=""
+            runtime_dir="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}" # Base dir for sockets
+
+            if [[ -d "$runtime_dir" ]]; then
+                # Try constructing potential server socket paths based on common pattern
+                for pid_to_try in "${nvim_pids[@]}"; do
+                     possible_server_path="${runtime_dir}/nvim.${pid_to_try}.0"
+
+                     # Check if the path exists and is a socket file
+                     if [[ -S "$possible_server_path" ]]; then
+                         nvim_listen_address="$possible_server_path"
+                         server_path_found=1
+                         break # Use the first valid socket found
+                     fi
+                done
+            fi # End check for runtime_dir
+
+            if [[ "$server_path_found" -eq 1 ]]; then
+                # Found a valid socket, attempt to send the quit command
+                nvim --server "$nvim_listen_address" --remote-send "<C-\\><C-N>${QUIT_COMMAND}"
+                nvim_exit_status=$?
+
+                if [[ $nvim_exit_status -eq 0 ]]; then
+                    # Successfully sent command to Nvim, prevent fallback kill
+                    SHOULD_I3_KILL=0
+                # else: Sending failed, SHOULD_I3_KILL remains 1 for fallback
+                fi
+            # else: No valid socket found, SHOULD_I3_KILL remains 1 for fallback
+            fi
+        # else: No nvim PIDs found, SHOULD_I3_KILL remains 1 for fallback
+        fi
+    # else: Could not get terminal PID, SHOULD_I3_KILL remains 1 for fallback
     fi
-    # If nvim wasn't found in the process tree, just fall through to the default kill
-  fi
-  # If we couldn't get PID, or nvim wasn't found, also fall through to the default kill
+# else: Not the target terminal, SHOULD_I3_KILL remains 1 for fallback
 fi
 
-# Default action: If it's not the target terminal OR nvim wasn't found inside it
-i3-msg kill
+# Fallback action: If Neovim wasn't successfully controlled, kill the window via i3
+if [[ "$SHOULD_I3_KILL" -eq 1 ]]; then
+  i3-msg kill
+fi
+
 exit 0

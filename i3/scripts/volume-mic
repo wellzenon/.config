@@ -11,7 +11,7 @@ MIC_CONTROL="Capture"
 # Ícones (requer fonte com suporte a Font Awesome, Nerd Fonts ou Emojis)
 # Opção 1: Font Awesome / Nerd Fonts
 ICON_MIC_ON=""  # fa-microphone
-ICON_MIC_OFF="" # fa-microphone-slash
+ICON_MIC_OFF=" " # fa-microphone-slash
 # Opção 2: Emojis
 # ICON_MIC_ON="🎤"
 # ICON_MIC_OFF="🔇"

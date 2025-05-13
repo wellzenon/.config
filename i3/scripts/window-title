@@ -80,7 +80,7 @@ if active_win_id:
         window_title_decoded = decode_robustly(window_title_bytes)
         # Só prossegue se conseguiu decodificar o título
         if window_title_decoded is not None:
-            final_output = process_title(window_title_decoded)
+            final_output = " " + process_title(window_title_decoded) + " "
 
 # --- Imprime Resultado Final ---
 # Garante que a saída para o i3blocks seja UTF-8

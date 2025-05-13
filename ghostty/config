@@ -19,8 +19,20 @@
 # ==========================
 # # The config file consists of simple key-value pairs,
 # # separated by equals signs.
-font-family = JetBrainsMono Nerd Font
+font-family = JetBrainsMono Nerd Font 
+# font-style = Medium
+# font-style-italic = Italic
+# font-style-bold-italic = Bold Oblique
 font-size = 10
+adjust-cell-height=15%
+
+# font-family = VictorMono Nerd Font
+# font-style = Medium
+# font-style-italic = Medium Oblique
+# font-style-bold-italic = Bold Oblique
+# font-size = 12
+# adjust-cell-height=15%
+
 window-padding-x = 8
 window-padding-y = 4
 
