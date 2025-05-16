@@ -53,7 +53,7 @@ return {
   },
   build = 'make', -- if you want to build from source then do make BUILD_FROM_SOURCE=true
   dependencies = {
-    'stevearc/dressing.nvim',
+    -- 'stevearc/dressing.nvim',
     'nvim-lua/plenary.nvim',
     'MunifTanjim/nui.nvim',
     --- The below dependencies are optional,

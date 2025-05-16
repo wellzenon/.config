@@ -3,6 +3,7 @@ font pango: Noto Sans Regular 10
 
 # set the mod key to the winkey:
 set $mod Mod4
+set $alt Mod1
 
 #####################
 # workspace layout: #
@@ -47,17 +48,20 @@ floating_modifier $mod
 # i3bar autoshow function
 # exec_always --no-startup-id ~/.config/i3/scripts/i3bar-autoshow
 
+#move workspace to right screen
+bindsym $mod+Shift+a move workspace to output right
+
 # switch/iterate between workspaces
 bindsym $mod+Tab workspace next
 bindsym $mod+Shift+Tab workspace prev
 
 # cycle through windows in the current workspace
-# bindsym Mod1+Tab focus prev
-# bindsym Mod1+Shift+Tab focus next
+# bindsym $alt+Tab focus prev
+# bindsym $alt+Shift+Tab focus next
 exec_always --no-startup-id i3-focus-last server
-bindsym Mod1+Tab exec --no-startup-id i3-focus-last
+bindsym $alt+Tab exec --no-startup-id i3-focus-last
 # exec_always --no-startup-id ~/.config/i3/scripts/alttab.py --active-workspace
-# bindsym Mod1+Tab exec --no-startup-id ~/.config/i3/scripts/alttab.py --switch 
+# bindsym $alt+Tab exec --no-startup-id ~/.config/i3/scripts/alttab.py --switch 
 
 # switch to workspace
 bindcode $mod+10 workspace number 1
@@ -290,7 +294,7 @@ bindsym $mod+e exec /usr/bin/ghostty -e /usr/bin/nvim
 bindsym $mod+w exec /usr/bin/zen-browser
 bindsym $mod+c exec /usr/bin/thunar
 # bindsym $mod+n exec /usr/bin/firefox -P notion-mobile --kiosk --new-window https://keep.google.com/u/0/#LIST/1g5Bb0XIGQTL9lz9yS0CP4TMHmR4Ocui7Qn0mImax7HLSTae5OIVR7F-YbQex1ds
-bindsym $mod+n exec /usr/bin/ghostty -e NVIM_APPNAME=nvim-notes /usr/bin/nvim ~/Documentos/obsidian/tudo/TODO.md
+bindsym $mod+n exec /usr/bin/ghostty --theme=GruvboxLight -e NVIM_APPNAME=nvim-notes /usr/bin/nvim ~/Documentos/obsidian/TODO.md
 bindsym Print exec --no-startup-id scrot ~/%Y-%m-%d-%T-screenshot.png && notify-send "Screenshot saved to ~/$(date +"%Y-%m-%d-%T")-screenshot.png"
 
 # Power Profiles menu switcher (rofi)
@@ -504,7 +508,7 @@ exec --no-startup-id i3-msg "workspace number 1; exec ghostty -e nvim"
 ######################################
 
 # Define colors variables:
-set $darkbluetrans	#08052b90
+set $darkbluetrans	#08052b00
 set $darkblue		#08052b
 set $lightblue		#5294e2
 set $urgentred		#e53935
@@ -530,7 +534,8 @@ client.urgent		    	$urgentred	$urgentred	$white		$yellowbrown	$yellowbrown
 # Start i3bar to display a workspace bar
 # (plus the system information i3status finds out, if available)
 bar {
-		font pango: JetBrainsMono Nerd Font 10
+		# font pango: JetBrainsMono Nerd Font 10
+		font pango: Maple Mono Normal NF 9
 		mode dock
 		# hidden_state show
 		# modifier $mod

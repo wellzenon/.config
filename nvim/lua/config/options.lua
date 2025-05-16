@@ -5,7 +5,14 @@
 
 -- Set window title
 vim.opt.title = true
-vim.opt.titlestring = 'nvim'
+vim.opt.titlestring = "nvim"
+
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
+-- Set to true if you have a Nerd Font installed and selected in the terminal
+vim.g.have_nerd_font = true
+
 -- Make line numbers default
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
@@ -13,7 +20,7 @@ vim.opt.number = true
 -- vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
-vim.opt.mouse = 'a'
+vim.opt.mouse = "a"
 
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
@@ -24,18 +31,18 @@ vim.opt.showmode = false
 --  See `:help 'clipboard'`
 vim.schedule(function()
   vim.g.clipboard = {
-    name = 'slackadays-clipboard',
+    name = "slackadays-clipboard",
     copy = {
-      ['+'] = 'cb copy', -- Comando para copiar para a área de transferência do sistema (+)
-      ['*'] = 'cb copy', -- Comando para copiar para a seleção primária (*) - pode ser igual ou diferente
+      ["+"] = "cb copy", -- Comando para copiar para a área de transferência do sistema (+)
+      ["*"] = "cb copy", -- Comando para copiar para a seleção primária (*) - pode ser igual ou diferente
     },
     paste = {
-      ['+'] = 'cb paste', -- Comando para colar da área de transferência do sistema (+)
-      ['*'] = 'cb paste', -- Comando para colar da seleção primária (*)
+      ["+"] = "cb paste", -- Comando para colar da área de transferência do sistema (+)
+      ["*"] = "cb paste", -- Comando para colar da seleção primária (*)
     },
     cache_enabled = 1, -- Habilita o cache (geralmente recomendado)
   }
-  vim.opt.clipboard = 'unnamedplus'
+  vim.opt.clipboard = "unnamedplus"
 end)
 
 -- Enable break indent
@@ -49,7 +56,7 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 -- Keep signcolumn on by default
-vim.opt.signcolumn = 'yes'
+vim.opt.signcolumn = "yes"
 
 -- Decrease update time
 vim.opt.updatetime = 250
@@ -62,7 +69,8 @@ vim.opt.splitright = true
 vim.opt.splitbelow = true
 
 -- views can only be fully collapsed with the global statusline
-vim.opt.laststatus = 3
+vim.opt.laststatus = 2
+vim.opt.cmdheight = 1
 
 -- Hide tabs
 vim.opt.showtabline = 0 -- Nunca mostrar a linha de abas
@@ -71,16 +79,16 @@ vim.opt.showtabline = 0 -- Nunca mostrar a linha de abas
 --  and `:help 'listchars'`
 vim.opt.list = true
 vim.opt.listchars = {
-  tab = '» ',
-  trail = '·',
-  nbsp = '␣',
-  precedes = '←',
-  extends = '→',
+  tab = "» ",
+  trail = "·",
+  nbsp = "␣",
+  precedes = "←",
+  extends = "→",
   -- eol = '↲',
 }
 
 -- Preview substitutions live, as you type!
-vim.opt.inccommand = 'split'
+vim.opt.inccommand = "split"
 
 -- Show which line your cursor is on
 vim.opt.cursorline = true

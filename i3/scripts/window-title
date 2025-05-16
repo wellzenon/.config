@@ -6,7 +6,7 @@ import html
 # import string # Não é mais necessário se não fizermos filtragem extra
 
 # --- Configuração ---
-MAX_LEN = 80  # Largura máxima do título exibido
+MAX_LEN = 50  # Largura máxima do título exibido
 FALLBACK_ENCODING = "latin-1"  # Codificação para tentar se UTF-8 falhar
 
 
@@ -80,7 +80,7 @@ if active_win_id:
         window_title_decoded = decode_robustly(window_title_bytes)
         # Só prossegue se conseguiu decodificar o título
         if window_title_decoded is not None:
-            final_output = " " + process_title(window_title_decoded) + " "
+            final_output = process_title(window_title_decoded)
 
 # --- Imprime Resultado Final ---
 # Garante que a saída para o i3blocks seja UTF-8

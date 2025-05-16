@@ -1,3 +1,4 @@
+---@module "snacks"
 return {
   {
     'folke/snacks.nvim',
@@ -30,6 +31,18 @@ return {
       lazygit = {},
       picker = {
         sources = {
+          lsp_symbols = {
+            auto_close = false,
+            layout = {
+              preset = 'sidebar',
+              layout = {
+                position = 'right',
+                width = 25,
+              },
+              hidden = { 'input' },
+              auto_hide = { 'input' },
+            },
+          },
           explorer = {
             auto_close = true,
             hidden = true,
@@ -37,7 +50,6 @@ return {
               preset = 'default',
               hidden = { 'input' },
               auto_hide = { 'input' },
-              preview = { win = 'preview' },
             },
           },
         },
