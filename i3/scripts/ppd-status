@@ -7,6 +7,17 @@
 
 # script to show current power profile
 
+#captura clicks
+if [ -n "$BLOCK_BUTTON" ]; then
+    case "$BLOCK_BUTTON" in
+        1) bash ~/.config/i3/scripts/power-profiles ;;			# Open profiles selector
+        2) bash ~/.config/i3/scripts/power-profiles ;;			# Open profiles selector
+        3) bash ~/.config/i3/scripts/power-profiles ;;			# Open profiles selector
+    esac
+    # Pequena pausa pode ser útil se o sistema demorar a refletir
+    # sleep 0.1
+fi
+
 # assign tags or translations to each profile
 declare -A tags
 tags=(

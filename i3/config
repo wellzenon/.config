@@ -294,7 +294,7 @@ bindsym $mod+e exec /usr/bin/ghostty -e /usr/bin/nvim
 bindsym $mod+w exec /usr/bin/zen-browser
 bindsym $mod+c exec /usr/bin/thunar
 # bindsym $mod+n exec /usr/bin/firefox -P notion-mobile --kiosk --new-window https://keep.google.com/u/0/#LIST/1g5Bb0XIGQTL9lz9yS0CP4TMHmR4Ocui7Qn0mImax7HLSTae5OIVR7F-YbQex1ds
-bindsym $mod+n exec /usr/bin/ghostty --theme=GruvboxLight -e NVIM_APPNAME=nvim-notes /usr/bin/nvim ~/Documentos/obsidian/TODO.md
+bindsym $mod+n exec /usr/bin/bash ~/.config/i3/scripts/toggle-notes "NVIM_APPNAME=nvim-notes /usr/bin/nvim ~/Documentos/obsidian/TODO.md"
 bindsym Print exec --no-startup-id scrot ~/%Y-%m-%d-%T-screenshot.png && notify-send "Screenshot saved to ~/$(date +"%Y-%m-%d-%T")-screenshot.png"
 
 # Power Profiles menu switcher (rofi)
@@ -364,7 +364,7 @@ for_window [class=Thunar] focus
 # For modifications, it can be copied to ~/.config/picom/picom.conf or ~/.config/picom.conf
 # install picom package (yay -S picom)
 # start using default config 
-exec_always --no-startup-id picom -GCb
+# exec_always --no-startup-id picom -GCb
 #
 # for custom config:
 #exec_always --no-startup-id picom --config  ~/.config/picom.conf
@@ -597,7 +597,7 @@ strip_workspace_numbers yes
 #}
 
 # start autonaming workspaces daemon
-exec_always --no-startup-id ~/.config/i3/scripts/i3-ws-autoname-d.py
+exec_always --no-startup-id ~/.config/i3/scripts/i3-ws-autoname-d.py --delimiter "  "
 
 #####################################
 # Application menu handled by rofi: #
