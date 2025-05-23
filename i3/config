@@ -31,7 +31,7 @@ default_border pixel 0
 hide_edge_borders both
 
 # Set inner/outer gaps
-gaps inner 10
+gaps inner 5
 gaps outer 0
 # gaps top 2
 smart_gaps on
@@ -167,9 +167,6 @@ bindcode $mod+Shift+90 move container to workspace  number 10
 # start a terminal
 bindsym $mod+Return exec ghostty
 
-#terminal for scratchpad
-bindsym $mod+space scratchpad show
-
 # kill focused window
 # bindsym $mod+q kill
 # bindsym $mod+q exec --no-startup-id i3-msg kill
@@ -185,7 +182,7 @@ bindsym $mod+Shift+q exec --no-startup-id systemctl hibernate
 # lock with a picture:
 #bindsym $mod+l exec --no-startup-id i3lock -i  ~/.config/i3/i3-lock-screen.png -p default|win -t
 # lock by blurring the screen:
-bindsym $mod+l exec --no-startup-id ~/.config/i3/scripts/blur-lock
+# bindsym $mod+l exec --no-startup-id ~/.config/i3/scripts/blur-lock
 # lock in case after sleep
 # exec --no-startup-id xss-lock -l ~/.config/i3/scripts/blur-lock
 
@@ -293,12 +290,14 @@ bindsym $mod+p exec --no-startup-id /usr/local/bin/switch-audio-port
 bindsym $mod+e exec /usr/bin/ghostty -e /usr/bin/nvim
 bindsym $mod+w exec /usr/bin/zen-browser
 bindsym $mod+c exec /usr/bin/thunar
-# bindsym $mod+n exec /usr/bin/firefox -P notion-mobile --kiosk --new-window https://keep.google.com/u/0/#LIST/1g5Bb0XIGQTL9lz9yS0CP4TMHmR4Ocui7Qn0mImax7HLSTae5OIVR7F-YbQex1ds
-bindsym $mod+n exec /usr/bin/bash ~/.config/i3/scripts/toggle-notes "NVIM_APPNAME=nvim-notes /usr/bin/nvim ~/Documentos/obsidian/TODO.md"
 bindsym Print exec --no-startup-id scrot ~/%Y-%m-%d-%T-screenshot.png && notify-send "Screenshot saved to ~/$(date +"%Y-%m-%d-%T")-screenshot.png"
 
 # Power Profiles menu switcher (rofi)
 bindsym $mod+Shift+p exec --no-startup-id ~/.config/i3/scripts/power-profiles
+
+#terminal for scratchpad
+bindsym $mod+space exec ~/.config/i3/scripts/sidepanel toggle_term bottom 70 20
+bindsym $mod+n exec ~/.config/i3/scripts/sidepanel toggle_notes right 30 95
 
 ##########################################
 # configuration for workspace behaviour: #
@@ -411,7 +410,7 @@ exec_always --no-startup-id /bin/bash /home/ton/.config/i3/scripts/i3-title-list
 
 # set wallpaper
 # exec --no-startup-id sleep 2 && nitrogen --restore
-exec --no-startup-id sleep 1 && feh --bg-fill ~/.config/wallpaper/space-blue-galaxy.webp
+exec --no-startup-id sleep 1 && feh --bg-fill ~/.config/wallpaper/peakpx.jpg
 # exec --no-startup-id sleep 1 && feh --bg-fill /usr/share/endeavouros/backgrounds/endeavouros-wallpaper.png
 
 # set powersavings for display:
@@ -486,12 +485,11 @@ for_window [window_role="About"] floating enable
 for_window [class="urxvt"] border pixel 1
 
 # set terminal scratchpad functionality
-for_window [class="^com.terminal.scratchpad$"] floating enable
-for_window [class="^com.terminal.scratchpad$"] resize set 1200 700
-for_window [class="^com.terminal.scratchpad$"] move scratchpad
-for_window [class="^com.terminal.scratchpad$"] border pixel 3
-exec --no-startup-id ghostty --class=com.terminal.scratchpad
+for_window [class="^com.terminal.scratchpad$"] floating enable, move scratchpad, mark "toggle_term"
+exec --no-startup-id ghostty --class=com.terminal.scratchpad --background=#3e4045 
 
+for_window [class="^com.terminal.notes$"] floating enable, move scratchpad, mark "toggle_notes"
+exec --no-startup-id ghostty --class=com.terminal.notes --background=#3e4045 -e "NVIM_APPNAME=nvim-notes /usr/bin/nvim ~/Documentos/obsidian/TODO.md"
 # start apps
 exec --no-startup-id i3-msg "workspace number 2; exec zen-browser"
 exec --no-startup-id i3-msg "workspace number 1; exec ghostty -e nvim"
@@ -509,22 +507,25 @@ exec --no-startup-id i3-msg "workspace number 1; exec ghostty -e nvim"
 
 # Define colors variables:
 set $darkbluetrans	#08052b00
+set $darkgreytrans	#282c3400
+set $darkgrey		#2C2D30
+# set $darkgrey		#282c34
 set $darkblue		#08052b
 set $lightblue		#5294e2
 set $urgentred		#e53935
-set $white		#ffffff
+set $white		#abb2bf
 set $black		#000000
 set $purple		#e345ff
-set $darkgrey		#383c4a
+# set $darkgrey		#383c4a
 set $grey		#b0b5bd
 set $mediumgrey		#8b8b8b
 set $yellowbrown	#e1b700
 
 # define colors for windows:
 #class		        	border		bground		text		indicator	child_border
-client.focused		    	$lightblue	$darkblue	$white		$mediumgrey	$mediumgrey
-client.unfocused	    	$darkblue	$darkblue	$grey		$darkgrey	$darkgrey
-client.focused_inactive		$darkblue	$darkblue	$grey		$black		$black
+client.focused		    	$white		$darkblue	$white		$mediumgrey	$mediumgrey
+client.unfocused	    	$grey		$darkblue	$grey		$darkgrey	$darkgrey
+client.focused_inactive		$grey		$darkblue	$grey		$black		$black
 client.urgent		    	$urgentred	$urgentred	$white		$yellowbrown	$yellowbrown
 
 ############################################
@@ -554,14 +555,14 @@ strip_workspace_numbers yes
 ##strip_workspace_name no
 
 		    colors {
-		    separator          $darkbluetrans
-		    background         $darkbluetrans
+		    separator          $darkgrey
+		    background         $darkgrey
 		    statusline         $white
 #                          		border 		        bg		txt		indicator
-		focused_workspace	$darkbluetrans	   	$darkbluetrans	$white		$white
-		active_workspace	$darkbluetrans	   	$darkbluetrans	$white		$white
-		inactive_workspace	$darkbluetrans	   	$darkbluetrans	$mediumgrey	$white
-		urgent_workspace	$darkbluetrans	   	$darkbluetrans	$red		$white
+		focused_workspace	$darkgrey	   	$darkgrey	$white		$white
+		active_workspace	$darkgrey	   	$darkgrey	$white		$white
+		inactive_workspace	$darkgrey	   	$darkgrey	$mediumgrey	$white
+		urgent_workspace	$darkgrey	   	$darkgrey	$red		$white
 	}
 }
 

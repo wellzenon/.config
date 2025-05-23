@@ -47,7 +47,7 @@ return {
           enable_auto_complete = false,
         },
         blink = {
-          enable_auto_complete = true,
+          enable_auto_complete = false,
         },
         virtualtext = {
           enabled = false,

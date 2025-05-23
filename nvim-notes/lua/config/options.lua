@@ -4,7 +4,7 @@
 --  For more options, you can see `:help option-list`
 
 --light mode
-vim.o.background = 'light'
+-- vim.o.background = 'light'
 
 -- Set window title
 vim.opt.title = true
@@ -74,6 +74,9 @@ vim.opt.splitbelow = true
 -- views can only be fully collapsed with the global statusline
 vim.opt.laststatus = 0
 vim.opt.cmdheight = 0
+
+vim.opt.conceallevel = 2
+vim.opt.concealcursor = 'n'
 
 -- Hide tabs
 vim.opt.showtabline = 0 -- Nunca mostrar a linha de abas

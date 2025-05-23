@@ -6,28 +6,9 @@ return {
     lazy = false,
     ---@type snacks.Config
     opts = {
-      bigfile = { enabled = true },
-      -- dashboard = {
-      --   sections = {
-      --     {
-      --       -- { section = 'header' },
-      --       { icon = ' ', title = 'Keymaps', section = 'keys', indent = 2, padding = 1 },
-      --       { icon = ' ', title = 'Recent Files', section = 'recent_files', indent = 2, padding = 1 },
-      --       { icon = ' ', title = 'Projects', section = 'projects', indent = 2, padding = 1 },
-      --       { section = 'startup' },
-      --     },
-      --     {
-      --       section = 'terminal',
-      --       cmd = 'chafa ~/Downloads/profi.jpg --format symbols --symbols vhalf --size 60x25 --stretch; sleep .1',
-      --       -- cmd = 'chafa ~/Downloads/des.jpg --format symbols --symbols vhalf --size 60x40 --stretch; sleep .1',
-      --       pane = 2,
-      --       height = 25,
-      --       padding = 4,
-      --     },
-      --   },
-      -- },
+      -- bigfile = { enabled = true },
       explorer = {},
-      image = { enabled = true },
+      image = {},
       lazygit = {},
       picker = {
         -- focus = 'list',
@@ -54,8 +35,6 @@ return {
         },
       },
       quickfile = { enabled = true },
-      scroll = { enabled = true },
-      statuscolumn = { enabled = true },
     },
   -- stylua: ignore
   keys = {

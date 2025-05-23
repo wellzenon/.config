@@ -45,9 +45,9 @@ return {
 
             return MiniStatusline.combine_groups {
               { hl = mode_hl, strings = { mode } },
-              { hl = 'MiniStatuslineFilename', strings = { filename } },
+              { hl = '@text', strings = { filename } },
               '%=', -- End left alignment
-              { hl = 'MiniStatuslineFilename', strings = { git, diff, diagnostics, lsp } },
+              { hl = '@text', strings = { git, diff, diagnostics, lsp } },
               -- { hl = 'MiniStatuslineFileinfo', strings = { fileinfo } },
               { hl = mode_hl, strings = { search, location } },
             }
@@ -68,14 +68,14 @@ return {
         local navic_location = ''
         local ok_navic, navic = pcall(require, 'nvim-navic')
         if ok_navic and navic.is_available() then
-          navic_location = ' ' .. navic.get_location()
+          navic_location = navic.get_location()
         end
 
         if dir and dir ~= '.' then
           return '%#NavicIconsFolder#'
             .. folder_icon
             .. ' '
-            .. '%#Conceal#'
+            .. '%#@text#'
             .. '%<'
             .. dir
             .. '%>'
@@ -83,12 +83,13 @@ return {
             .. '%#NavicIconsFile#'
             .. file_icon
             .. ' '
-            .. '%#MiniTestEmphasis#'
+            .. '%#@text.strong#'
             .. filename
-            .. '%*'
+            .. '%#@text#'
+            .. '  '
             .. navic_location
         else
-          return '%#NavicIconsFile#' .. file_icon .. ' ' .. '%#MiniTestEmphasis#' .. filename .. '%*' .. navic_location
+          return '%#NavicIconsFile#' .. file_icon .. ' ' .. '%#@text.strong#' .. filename .. '%#@text#' .. navic_location
         end
       end
       -- You can configure sections in the statusline by overriding their

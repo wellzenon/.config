@@ -38,11 +38,14 @@ window-padding-x = 2
 window-padding-y = 2
 window-padding-balance = true
 
-# gtk-titlebar = false
+gtk-titlebar = false
 window-decoration = none
-# background-opacity = 0.9
+# background-opacity = 0
 
-theme = tokyonight-storm
+gtk-custom-css = ./no-window-padding.css
+theme = Atom
+window-padding-color = extend
+background = 30302e
 # background = 1A1C1E
 #
 # # Spacing around the equals sign does not matter.
@@ -64,3 +67,17 @@ theme = tokyonight-storm
 # # which is explained in the docs for that config option.
 # # Just for example:
 # resize-overlay-duration = 4s 200ms
+
+bold-is-bright = true
+gtk-tabs-location = hidden
+
+keybind = ctrl+t=new_tab
+keybind = ctrl+shift+w=close_surface
+keybind = ctrl+shift+tab=toggle_tab_overview
+
+### SHADERS ###
+# custom-shader = ./ghostty-shaders/gradient-background.glsl
+# custom-shader = ./shaders/glow-rgbsplit-twitchy.glsl
+
+# only set this during testing, defaults to "true" which animates only active windows
+# custom-shader-animation = always

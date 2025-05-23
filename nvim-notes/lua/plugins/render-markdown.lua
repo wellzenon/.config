@@ -9,7 +9,11 @@ return {
     completions = { blink = { enabled = true } },
     file_types = { 'markdown' },
     checkbox = {
-      checked = { scope_highlight = '@markup.strikethrough' },
+      checked = {
+        highlight = 'Comment',
+        scope_highlight = 'Comment',
+        -- rendered = ''
+      },
       custom = {
         starred = {
           raw = '[~]',
@@ -25,17 +29,17 @@ return {
     },
     heading = {
       sign = false,
-      below = '█',
-      above = '█',
-      left_pad = { 0.5, 0, 0, 0, 0, 0 },
-      right_pad = 7,
-      border = true,
-      border_virtual = true,
-      border_prefix = true,
+      -- below = '█',
+      -- above = '█',
+      -- left_pad = { 0.5, 0, 0, 0, 0, 0 },
+      -- right_pad = 7,
+      -- border = true,
+      -- border_virtual = true,
+      -- -- border_prefix = true,
       position = 'inline',
-      width = { 'full', 'block', 'block', 'block', 'block', 'block', 'block' },
+      -- width = { 'full', 'block', 'block', 'block', 'block', 'block', 'block' },
       icons = {
-        '█ ',
+        '█ ',
         '██ ',
         '███ ',
         '████ ',

@@ -8,8 +8,20 @@ return {
   opts = {
     completions = { blink = { enabled = true } },
     file_types = { 'markdown' },
+    heading = {
+      icons = { ' 󰎤  ', ' 󰎧  ', ' 󰎪  ', ' 󰎭  ', ' 󰎱  ', ' 󰎳  ' },
+      position = 'inline',
+      backgrounds = {
+        'Visual',
+        'DiffChange',
+        'CursorColumn',
+        'DiffAdd',
+        'DiffDelete',
+        'DiffDelete',
+      },
+    },
     checkbox = {
-      checked = { scope_highlight = '@markup.strikethrough' },
+      checked = { highlight = 'Comment', scope_highlight = 'Comment' },
       custom = {
         starred = {
           raw = '[~]',
