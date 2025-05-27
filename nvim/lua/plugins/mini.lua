@@ -20,6 +20,7 @@ return {
       -- Save sessions
       require('mini.sessions').setup { autoread = true, autowrite = true }
       require('mini.icons').setup {}
+      -- require('mini.indentscope').setup { symbol = '│', }
 
       -- Git info
       -- require('mini.git').setup {}
@@ -43,13 +44,25 @@ return {
             local location = MiniStatusline.section_location { trunc_width = 75 }
             local search = MiniStatusline.section_searchcount { trunc_width = 75 }
 
+            -- Obter a definição do destaque para o modo
+            local hl_def = vim.api.nvim_get_hl(0, { name = mode_hl })
+            local mode_hl_to_use = mode_hl -- Padrão para o destaque original
+
+            -- Verificar se a definição do destaque é válida e tem fg/bg
+            if hl_def and hl_def.fg and hl_def.bg then
+              -- Definir um grupo de destaque temporário com cores invertidas
+              local inverted_hl_name = mode_hl .. '_inverted'
+              vim.api.nvim_set_hl(0, inverted_hl_name, { fg = hl_def.bg, bg = 'NONE', bold = true })
+              mode_hl_to_use = inverted_hl_name -- Usar o destaque invertido
+            end
+
             return MiniStatusline.combine_groups {
-              { hl = mode_hl, strings = { mode } },
-              { hl = '@text', strings = { filename } },
+              { hl = mode_hl_to_use, strings = { mode } },
+              { strings = { filename } },
               '%=', -- End left alignment
-              { hl = '@text', strings = { git, diff, diagnostics, lsp } },
+              { strings = { git, diff, diagnostics, lsp } },
               -- { hl = 'MiniStatuslineFileinfo', strings = { fileinfo } },
-              { hl = mode_hl, strings = { search, location } },
+              { hl = mode_hl_to_use, strings = { search, location } },
             }
           end,
         },
@@ -63,7 +76,6 @@ return {
 
         local ok, mini_icons = pcall(require, 'mini.icons')
         local file_icon = ok and mini_icons and mini_icons.get('file', full_path) or ''
-        local folder_icon = ok and mini_icons and mini_icons.get('directory', dir) or ''
 
         local navic_location = ''
         local ok_navic, navic = pcall(require, 'nvim-navic')
@@ -71,26 +83,15 @@ return {
           navic_location = navic.get_location()
         end
 
+        local full_location = ''
+
         if dir and dir ~= '.' then
-          return '%#NavicIconsFolder#'
-            .. folder_icon
-            .. ' '
-            .. '%#@text#'
-            .. '%<'
-            .. dir
-            .. '%>'
-            .. '/ '
-            .. '%#NavicIconsFile#'
-            .. file_icon
-            .. ' '
-            .. '%#@text.strong#'
-            .. filename
-            .. '%#@text#'
-            .. '  '
-            .. navic_location
-        else
-          return '%#NavicIconsFile#' .. file_icon .. ' ' .. '%#@text.strong#' .. filename .. '%#@text#' .. navic_location
+          full_location = full_location .. '%*' .. '%<' .. dir .. '%>' .. '/ '
         end
+
+        full_location = full_location .. '%#NavicIconsFile#' .. file_icon .. ' ' .. '%#@text.strong#' .. filename .. ' %M' .. '  ' .. navic_location .. '%*'
+
+        return full_location
       end
       -- You can configure sections in the statusline by overriding their
       -- default behavior. For example, here we set the section for

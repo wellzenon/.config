@@ -10,6 +10,8 @@ return {
       explorer = {},
       image = {},
       lazygit = {},
+      indent = { animate = { enabled = false } },
+      quickfile = { enabled = true },
       picker = {
         -- focus = 'list',
         ui_select = true, -- replace `vim.ui.select` with the snacks picker
@@ -34,7 +36,6 @@ return {
           },
         },
       },
-      quickfile = { enabled = true },
     },
   -- stylua: ignore
   keys = {

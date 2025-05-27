@@ -11,6 +11,16 @@
 --
 -- Then, because we use the `opts` key (recommended), the configuration runs
 -- after the plugin has been loaded as `require(MODULE).setup(opts)`.
+vim.api.nvim_create_autocmd({
+  'ColorScheme',
+}, {
+  pattern = '*',
+  callback = function()
+    vim.api.nvim_set_hl(0, 'WhichKeyFloat', { ctermbg = 'BLACK' })
+    vim.api.nvim_set_hl(0, 'WhichKeyNormal', { ctermbg = 'BLACK' })
+    vim.api.nvim_set_hl(0, 'WhichKeyBorder', { ctermbg = 'BLACK' })
+  end,
+})
 
 return {
   { -- Useful plugin to show you pending keybinds.

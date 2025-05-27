@@ -1,8 +1,8 @@
 vim.api.nvim_create_autocmd('ColorScheme', {
   pattern = '*',
   callback = function()
-    local statusline_hl = vim.api.nvim_get_hl(0, { name = 'MiniStatuslineFilename', link = false })
-    local statusline_bg = statusline_hl.bg
+    local statusline_hl = vim.api.nvim_get_hl(0, { name = 'Delimiter', link = false })
+    local statusline_bg = vim.api.nvim_get_hl(0, { name = 'Normal', link = false }).bg
 
     local navic_highlight_groups = {
       'NavicIconsFile',

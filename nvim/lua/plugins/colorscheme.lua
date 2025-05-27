@@ -24,7 +24,7 @@ return {
       }
 
       require('notify').setup {
-        background_colour = '#000000',
+        background_colour = '#00000000',
       }
       -- Enable theme
       require('onedark').load()

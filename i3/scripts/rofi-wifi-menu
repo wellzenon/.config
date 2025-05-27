@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+
+if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
+  echo "⚠️  Este script não deve ser executado com 'source'. Use './script.sh' ou 'bash script.sh'."
+  return 1
+fi
+
+export LANG=en_US.UTF-8
+
+WIFI_ICONS=("󰤭 " "󰤯 " "󰤟 " "󰤢 " "󰤨 ")
+
+if [ -n "$BLOCK_BUTTON" ]; then
+  nmcli -t d wifi rescan
+  ACTIVE_ROW=$(nmcli -t -f active,ssid device wifi | grep -v '^no:\s*$' | awk '/^yes:/ { print NR }')
+  LIST=$(nmcli --fields SSID,SECURITY,BARS device wifi list | sed '/^--/d' | sed 1d | sed -E "s/WPA*.?\S/~~/g" | sed "s/~~ ~~/~~/g;s/802\.1X//g;s/--/~~/g;s/  *~/~/g;s/~  */~/g;s/_/ /g" | column -t -s '~')
+
+  DISABLE="Disable WiFi ${WIFI_ICONS[0]} "
+  ENABLE="Enable WiFi ${WIFI_ICONS[4]} "
+
+  # get current connection status
+  CONSTATE=$(nmcli -fields WIFI g)
+  if [[ "$CONSTATE" =~ "enabled" ]]; then
+    TOGGLE="$DISABLE"
+  elif [[ "$CONSTATE" =~ "disabled" ]]; then
+    TOGGLE="$ENABLE"
+  fi
+
+  # display menu; store user choice
+  CHENTRY=$(echo -e "$TOGGLE\n$LIST" | uniq -u | rofi -dmenu -selected-row "$ACTIVE_ROW" -p "Select Wifi" -config "~/.config/rofi/rofiwifi.rasi")
+  # store selected SSID
+  CHSSID=$(echo "$CHENTRY" | sed  's/\s\{2,\}/\|/g' | awk -F "|" '{print $1}')
+
+  if [ "$CHENTRY" = "$ENABLE" ]; then
+    nmcli radio wifi on
+  elif [ "$CHENTRY" = "$DISABLE" ]; then
+    nmcli radio wifi off
+  else
+    nmcli dev wifi con "$CHSSID" --ask >/dev/null
+  fi
+fi
+# Called by i3blocks for status update
+# Get current connection status
+CONSTATE=$(nmcli -fields WIFI g)
+
+if [[ "$CONSTATE" =~ "enabled" ]]; then
+# Get connected SSID and signal strength
+WIFI_INFO=$(nmcli -t -f active,ssid,bars device wifi | grep '^yes')
+
+if [ -n "$WIFI_INFO" ]; then
+
+    # # Parse SSID and bars
+    # SSID=$(echo "$WIFI_INFO" | cut -d':' -f2)
+    # # Remove spaces and line breaks
+    # SSID=$(echo "$SSID" | tr -d '\n')
+    # #Format string
+    # if [[ "$SSID" =~ (2\.4g|5g)$ ]]; then
+    #     BAND="${BASH_REMATCH[1]}"
+    #     PREFIX_LEN=$((10 - ${#BAND} - 3))  # 3 = "..."
+    #     PREFIX=$(echo "$SSID" | cut -c1-"$PREFIX_LEN")
+    #     SSID_FORMATTED="${PREFIX}.${BAND}"
+    # else
+    #     SSID_FORMATTED=$(echo "$SSID" | cut -c1-5)
+    # fi
+
+    BARS=$(echo "$WIFI_INFO" | cut -d':' -f3 | tr -d ' ')
+    # Output for i3blocks
+    INDEX=$(( 4 - $(grep -o "_" <<< "$BARS" | wc -l) ))
+    if [[ $INDEX -ge 0 && $INDEX -lt ${#WIFI_ICONS[@]} ]]; then
+      ICON=${WIFI_ICONS[$INDEX]}
+    else
+      ICON=${WIFI_ICONS[0]}
+    fi
+    echo "$ICON"
+else
+    # WiFi enabled but not connected
+    echo "${WIFI_ICONS[0]} No connection"
+fi
+elif [[ "$CONSTATE" =~ "disabled" ]]; then
+# WiFi is disabled
+echo "${WIFI_ICONS[0]} Disabled"
+else
+# Unknown state
+echo "${WIFI_ICONS[0]} Unknown"
+fi

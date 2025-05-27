@@ -1,5 +1,6 @@
 # Font for window titles. Will also be used by the bar unless a different font
-font pango: Noto Sans Regular 10
+# font pango: Noto Sans Regular 10
+font pango: JetBrainsMono Nerd Font 10
 
 # set the mod key to the winkey:
 set $mod Mod4
@@ -47,21 +48,6 @@ floating_modifier $mod
 
 # i3bar autoshow function
 # exec_always --no-startup-id ~/.config/i3/scripts/i3bar-autoshow
-
-#move workspace to right screen
-bindsym $mod+Shift+a move workspace to output right
-
-# switch/iterate between workspaces
-bindsym $mod+Tab workspace next
-bindsym $mod+Shift+Tab workspace prev
-
-# cycle through windows in the current workspace
-# bindsym $alt+Tab focus prev
-# bindsym $alt+Shift+Tab focus next
-exec_always --no-startup-id i3-focus-last server
-bindsym $alt+Tab exec --no-startup-id i3-focus-last
-# exec_always --no-startup-id ~/.config/i3/scripts/alttab.py --active-workspace
-# bindsym $alt+Tab exec --no-startup-id ~/.config/i3/scripts/alttab.py --switch 
 
 # switch to workspace
 bindcode $mod+10 workspace number 1
@@ -164,39 +150,39 @@ bindcode $mod+Shift+90 move container to workspace  number 10
 # keybindings for different actions: #
 ######################################
 
+#move workspace to right screen
+bindsym $mod+Shift+a move workspace to output right
+
+# switch/iterate between workspaces
+bindsym $mod+Tab workspace next
+bindsym $mod+Shift+Tab workspace prev
+# cycle through all windows with rofi
+bindsym $alt+Tab exec --no-startup-id rofi -show window -config ~/.config/rofi/rofitabmenu.rasi
+
+# cycle through windows in the current workspace
+# bindsym $alt+Tab focus prev
+# bindsym $alt+Shift+Tab focus next
+# exec_always --no-startup-id i3-focus-last server
+# bindsym $alt+Tab exec --no-startup-id i3-focus-last
+# exec_always --no-startup-id ~/.config/i3/scripts/alttab.py --active-workspace
+# bindsym $alt+Tab exec --no-startup-id ~/.config/i3/scripts/alttab.py --switch 
+
 # start a terminal
 bindsym $mod+Return exec ghostty
 
 # kill focused window
-# bindsym $mod+q kill
-# bindsym $mod+q exec --no-startup-id i3-msg kill
 bindsym $mod+q exec --no-startup-id ~/.config/i3/scripts/smartkill.sh
 bindsym --whole-window $mod+button2 exec --no-startup-id ~/.config/i3/scripts/smartkill.sh
 
 # exit-menu
 bindsym $mod+Shift+e exec --no-startup-id ~/.config/i3/scripts/powermenu
-bindsym $mod+Shift+h exec --no-startup-id /usr/bin/systemctl hibernate
 bindsym $mod+Shift+q exec --no-startup-id systemctl hibernate
-
-# Lock the system
-# lock with a picture:
-#bindsym $mod+l exec --no-startup-id i3lock -i  ~/.config/i3/i3-lock-screen.png -p default|win -t
-# lock by blurring the screen:
-# bindsym $mod+l exec --no-startup-id ~/.config/i3/scripts/blur-lock
-# lock in case after sleep
-# exec --no-startup-id xss-lock -l ~/.config/i3/scripts/blur-lock
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
 
 # restart i3 inplace (preserves your layout/session, can be used to update i3)
 bindsym $mod+Shift+r restart
-
-# keybinding in fancy rofi (automated):
-bindsym F1 exec --no-startup-id ~/.config/i3/scripts/keyhint-2
-# alternative
-# keybinding list in editor:
-# bindsym $mod+F1 exec --no-startup-id xed ~/.config/i3/keybindings
 
 # Backlight control
 #bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight +10 && notify-send "Brightness - $(xbacklight -get | cut -d '.' -f 1)%"
@@ -206,10 +192,10 @@ bindsym XF86MonBrightnessUp exec --no-startup-id ~/.config/i3/scripts/volume_bri
 bindsym XF86MonBrightnessDown exec --no-startup-id ~/.config/i3/scripts/volume_brightness.sh brightness_down
 
 # change focus
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+b focus up
-bindsym $mod+o focus right
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -218,10 +204,10 @@ bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # move focused window
-bindsym $mod+Shift+j move left
-bindsym $mod+Shift+k move down
-bindsym $mod+Shift+b move up
-bindsym $mod+Shift+o move right
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -230,7 +216,7 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+h split h
+bindsym $mod+s split h
 
 # split in vertical orientation
 bindsym $mod+v split v
@@ -239,9 +225,9 @@ bindsym $mod+v split v
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
-bindsym $mod+g layout tabbed
-# bindsym $mod+e layout toggle split
+# bindsym $mod+s layout stacking
+# bindsym $mod+g layout tabbed
+bindsym $mod+Shift+s layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
@@ -287,10 +273,11 @@ bindsym XF86AudioPrev exec --no-startup-id playerctl previous
 bindsym $mod+p exec --no-startup-id /usr/local/bin/switch-audio-port
 
 ## App shortcuts
+# bindsym $mod+c exec /usr/bin/thunar
+bindsym $mod+c exec /usr/bin/ghostty --title=yazi -e /usr/bin/yazi
 bindsym $mod+e exec /usr/bin/ghostty -e /usr/bin/nvim
 bindsym $mod+w exec /usr/bin/zen-browser
-bindsym $mod+c exec /usr/bin/thunar
-bindsym Print exec --no-startup-id scrot ~/%Y-%m-%d-%T-screenshot.png && notify-send "Screenshot saved to ~/$(date +"%Y-%m-%d-%T")-screenshot.png"
+bindsym Print exec --no-startup-id scrot -fs ~/%Y-%m-%d-%T-screenshot.png && notify-send "Screenshot saved to ~/$(date +"%Y-%m-%d-%T")-screenshot.png"
 
 # Power Profiles menu switcher (rofi)
 bindsym $mod+Shift+p exec --no-startup-id ~/.config/i3/scripts/power-profiles
@@ -298,6 +285,39 @@ bindsym $mod+Shift+p exec --no-startup-id ~/.config/i3/scripts/power-profiles
 #terminal for scratchpad
 bindsym $mod+space exec ~/.config/i3/scripts/sidepanel toggle_term bottom 70 20
 bindsym $mod+n exec ~/.config/i3/scripts/sidepanel toggle_notes right 30 95
+
+
+#####################################
+# Application menu handled by rofi: #
+#####################################
+
+## rofi bindings fancy application menu ($mod+d /F9 optional disabled)
+
+# keybinding in fancy rofi (automated):
+bindsym F1 exec --no-startup-id ~/.config/i3/scripts/keyhint-2
+# alternative
+# keybinding list in editor:
+# bindsym $mod+F1 exec --no-startup-id xed ~/.config/i3/keybindings
+
+bindsym $mod+d exec --no-startup-id rofi -modi drun -show drun \
+		-config ~/.config/rofi/rofidmenu.rasi
+
+#bindsym F9 exec --no-startup-id rofi -modi drun -show drun \
+#		-config ~/.config/rofi/rofidmenu.rasi
+
+## rofi bindings for window menu ($mod+t /F10 optional disabled)
+
+bindsym $mod+t exec --no-startup-id rofi -show window \
+		-config ~/.config/rofi/rofitabmenu.rasi
+
+#bindsym F10 exec --no-startup-id rofi -show window \
+#		-config ~/.config/rofi/rofidmenu.rasi
+
+# rofi bindings to manage clipboard (install rofi-greenclip from the AUR)
+
+exec --no-startup-id greenclip daemon>/dev/null
+bindsym $mod+Shift+v exec --no-startup-id rofi -modi "clipboard:greenclip print" -show clipboard \
+		-config ~/.config/rofi/rofikeyhint.rasi
 
 ##########################################
 # configuration for workspace behaviour: #
@@ -366,7 +386,7 @@ for_window [class=Thunar] focus
 # exec_always --no-startup-id picom -GCb
 #
 # for custom config:
-#exec_always --no-startup-id picom --config  ~/.config/picom.conf
+# exec_always --no-startup-id picom --config  ~/.config/picom/picom.conf
 
 #############################################
 # autostart applications/services on login: #
@@ -508,7 +528,8 @@ exec --no-startup-id i3-msg "workspace number 1; exec ghostty -e nvim"
 # Define colors variables:
 set $darkbluetrans	#08052b00
 set $darkgreytrans	#282c3400
-set $darkgrey		#2C2D30
+set $darkgrey		#30302e
+# set $darkgrey		#2C2D30
 # set $darkgrey		#282c34
 set $darkblue		#08052b
 set $lightblue		#5294e2
@@ -535,8 +556,8 @@ client.urgent		    	$urgentred	$urgentred	$white		$yellowbrown	$yellowbrown
 # Start i3bar to display a workspace bar
 # (plus the system information i3status finds out, if available)
 bar {
-		# font pango: JetBrainsMono Nerd Font 10
-		font pango: Maple Mono Normal NF 9
+		font pango: JetBrainsMono Nerd Font 9
+		# font pango: Maple Mono Normal NF 9
 		mode dock
 		# hidden_state show
 		# modifier $mod
@@ -545,8 +566,8 @@ bar {
 	    	i3bar_command i3bar --transparency
 # it could be that you have no primary display set: set one (xrandr --output <output> --primary)
 # reference: https://i3wm.org/docs/userguide.html#_tray_output
-		    tray_output primary
-		    tray_padding 3
+		    tray_output none
+		    # tray_padding 3
 
 # When strip_workspace_numbers is set to yes,
 # any workspace that has a name of the form
@@ -599,30 +620,3 @@ strip_workspace_numbers yes
 
 # start autonaming workspaces daemon
 exec_always --no-startup-id ~/.config/i3/scripts/i3-ws-autoname-d.py --delimiter "  "
-
-#####################################
-# Application menu handled by rofi: #
-#####################################
-
-## rofi bindings fancy application menu ($mod+d /F9 optional disabled)
-
-bindsym $mod+d exec --no-startup-id rofi -modi drun -show drun \
-		-config ~/.config/rofi/rofidmenu.rasi
-
-#bindsym F9 exec --no-startup-id rofi -modi drun -show drun \
-#		-config ~/.config/rofi/rofidmenu.rasi
-
-## rofi bindings for window menu ($mod+t /F10 optional disabled)
-
-bindsym $mod+t exec --no-startup-id rofi -show window \
-		-config ~/.config/rofi/rofidmenu.rasi
-
-#bindsym F10 exec --no-startup-id rofi -show window \
-#		-config ~/.config/rofi/rofidmenu.rasi
-
-# rofi bindings to manage clipboard (install rofi-greenclip from the AUR)
-
-exec --no-startup-id greenclip daemon>/dev/null
-bindsym $mod+Shift+v exec --no-startup-id rofi -modi "clipboard:greenclip print" -show clipboard \
-		-config ~/.config/rofi/rofidmenu.rasi
-

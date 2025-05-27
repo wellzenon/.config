@@ -19,13 +19,13 @@
 # ==========================
 # # The config file consists of simple key-value pairs,
 # # separated by equals signs.
-# font-family = JetBrainsMono Nerd Font 
-font-family = Maple Mono Normal NF
+font-family = JetBrainsMono Nerd Font 
+# font-family = Maple Mono Normal NF
 # font-style = Medium
 # font-style-italic = Italic
 # font-style-bold-italic = Bold Oblique
 font-size = 10
-adjust-cell-height=15%
+adjust-cell-height=40%
 
 # font-family = VictorMono Nerd Font
 # font-style = Medium
@@ -35,16 +35,17 @@ adjust-cell-height=15%
 # adjust-cell-height=15%
 
 window-padding-x = 2
-window-padding-y = 2
+window-padding-y = 0
 window-padding-balance = true
 
 gtk-titlebar = false
 window-decoration = none
-# background-opacity = 0
+# background-opacity = 0.9
 
 gtk-custom-css = ./no-window-padding.css
 theme = Atom
-window-padding-color = extend
+# window-padding-color = extend
+# background = 2c2d30
 background = 30302e
 # background = 1A1C1E
 #

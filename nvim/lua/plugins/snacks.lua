@@ -9,7 +9,10 @@ return {
       bigfile = { enabled = true },
       explorer = {},
       image = { enabled = true },
+      indent = { animate = { enabled = false } },
       lazygit = {},
+      quickfile = { enabled = true },
+      statuscolumn = { enabled = true },
       picker = {
         -- focus = 'list',
         ui_select = true, -- replace `vim.ui.select` with the snacks picker
@@ -32,10 +35,9 @@ return {
             focus = 'list',
             current = false,
           },
+          qflist = { layout = { preset = 'default' } },
         },
       },
-      quickfile = { enabled = true },
-      statuscolumn = { enabled = true },
       -- scroll = { enabled = true },
     },
   -- stylua: ignore
