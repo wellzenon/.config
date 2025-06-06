@@ -19,7 +19,7 @@ brightness_icon() {
 read_brightness_and_temp() {
   OUT=$(redshift -p 2>/dev/null)
   BRIGHT=$(echo "$OUT" | grep "Brightness:" | awk '{print $2}')
-  TEMP=$(echo "$OUT" | grep "Color temperature:" | awk '{print $3}')
+  TEMP=$(echo "$OUT" | grep "Color temperature:" | awk '{gsub(/K/, "", $3); print $3}')
   notify-send "$BRIGHT $TEMP"
   echo "$BRIGHT $TEMP"
 }
