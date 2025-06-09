@@ -37,7 +37,7 @@ return {
           },
           qflist = {
             layout = { preset = 'default' },
-            action = require('snacks.picker.actions').open_file, -- Adicionado para garantir que os itens sejam abertos
+            -- action = require('snacks.picker.actions').open_file, -- Removido para evitar o erro 'not found'
           },
         },
       },
