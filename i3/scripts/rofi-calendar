@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# === CONFIGURAÇÕES ===
+dias_passados=0
+dias_futuros=14
+cor_hoje="#99BC80"
+temp_file="/tmp/agenda_rofi.tmp"
+
+
+# === FUNÇÃO: Atualiza a agenda ===
+atualizar_agenda() {
+    today=$(date +"%a %b %d")
+    gcalcli --nocolor agenda "$(date --date="-$dias_passados days" +%Y-%m-%d)" "$(date --date="+$dias_futuros days" +%Y-%m-%d)" \
+        | sed '/^\s*$/d' \
+        | sed "/^$today/ s/^\($today.*\)$/<b><span foreground='$cor_hoje'>\1<\/span><\/b>/" > "$temp_file"
+}
+
+# === FUNÇÃO: Adiciona novo evento ===
+adicionar_evento() {
+    data_default=$(date +%Y-%m-%d)
+    hora_default=$(date +%H:%M)
+    titulo_default="Novo evento"
+
+    data=$(rofi -dmenu -p " Data (YYYY-MM-DD)" -config ~/.config/rofi/rofiwifi.rasi -theme-str "window { width: 35%; } listview { enabled: false; } entry { placeholder: '$data_default'; }" <<< "")
+    [[ -z "$data" ]] && data="$data_default"
+
+    hora=$(rofi -dmenu -p " Hora (HH:MM)" -config ~/.config/rofi/rofiwifi.rasi -theme-str "window { width: 35%; } listview { enabled: false; } entry { placeholder: '$hora_default'; }" <<< "")
+    [[ -z "$hora" ]] && hora="$hora_default"
+
+    titulo=$(rofi -dmenu -p "󰑕 Título" -config ~/.config/rofi/rofiwifi.rasi -theme-str "window { width: 35%; } listview { enabled: false; } entry { placeholder: '$titulo_default'; }" <<< "")
+    [[ -z "$titulo" ]] && titulo="$titulo_default"
+
+    gcalcli add --default-calendar "wellington.zenon@gmail.com" --title "$titulo" --when "$data $hora" --duration 60 --noprompt
+    atualizar_agenda # Atualiza logo após adicionar, no foreground
+}
+
+main() {
+    # === Se o arquivo não existe, cria vazio para não quebrar a leitura ===
+    if [[ ! -f "$temp_file" ]]; then
+        echo "Carregando agenda..." > "$temp_file"
+        atualizar_agenda
+    fi
+
+    # === Mostra o arquivo temporário imediatamente ===
+    menu=" Adicionar evento"$'\n'"$(cat "$temp_file")"
+
+    # === Atualiza o arquivo em background para próxima vez ===
+    atualizar_agenda &
+
+    # === Exibe o menu e trata seleção ===
+    selecao=$(echo -e "$menu" | rofi -markup-rows -dmenu -p "Agenda" -config ~/.config/rofi/rofiwifi.rasi -theme-str 'window{width:35%;}')
+
+    if [[ "$selecao" == " Adicionar evento" ]]; then
+        adicionar_evento
+        main
+    fi
+}
+
+if [ -n "$BLOCK_BUTTON" ]; then
+    main
+fi
+
+echo "$(date '+%H:%M')"

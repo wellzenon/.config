@@ -19,7 +19,9 @@
 # ==========================
 # # The config file consists of simple key-value pairs,
 # # separated by equals signs.
-font-family = JetBrainsMono Nerd Font 
+
+font-family = JetBrainsMono Nerd Font
+# font-family = ZedMono NF
 # font-family = Maple Mono Normal NF
 # font-style = Medium
 # font-style-italic = Italic
@@ -48,26 +50,6 @@ theme = Atom
 # background = 2c2d30
 background = 30302e
 # background = 1A1C1E
-#
-# # Spacing around the equals sign does not matter.
-# # All of these are identical:
-# key=value
-# key= value
-# key =value
-# key = value
-#
-# # Any line beginning with a # is a comment. It's not possible to put
-# # a comment after a config option, since it would be interpreted as a
-# # part of the value. For example, this will have a value of "#123abc":
-# background = #123abc
-#
-# # Empty values are used to reset config keys to default.
-# key =
-#
-# # Some config options have unique syntaxes for their value,
-# # which is explained in the docs for that config option.
-# # Just for example:
-# resize-overlay-duration = 4s 200ms
 
 bold-is-bright = true
 gtk-tabs-location = hidden
@@ -82,3 +64,4 @@ keybind = ctrl+shift+tab=toggle_tab_overview
 
 # only set this during testing, defaults to "true" which animates only active windows
 # custom-shader-animation = always
+keybind = shift+enter=text:\n

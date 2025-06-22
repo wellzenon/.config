@@ -20,6 +20,9 @@ return {
         'DiffDelete',
       },
     },
+    bullet = {
+      icons = { '󰁕 ', '󰦺', '󱞪', '', '󱞩' },
+    },
     checkbox = {
       checked = { highlight = 'Comment', scope_highlight = 'Comment' },
       custom = {

@@ -76,6 +76,9 @@ return {
 
         local ok, mini_icons = pcall(require, 'mini.icons')
         local file_icon = ok and mini_icons and mini_icons.get('file', full_path) or ''
+        -- local folder_icon = ok and mini_icons and mini_icons.get('directory', dir) or ''
+
+        local modified = vim.bo.modified and ' ' or ''
 
         local navic_location = ''
         local ok_navic, navic = pcall(require, 'nvim-navic')
@@ -89,7 +92,7 @@ return {
           full_location = full_location .. '%*' .. '%<' .. dir .. '%>' .. '/ '
         end
 
-        full_location = full_location .. '%#NavicIconsFile#' .. file_icon .. ' ' .. '%#@text.strong#' .. filename .. ' %M' .. '  ' .. navic_location .. '%*'
+        full_location = full_location .. '%#NavicIconsFile#' .. file_icon .. ' ' .. '%#@text.strong#' .. filename .. modified .. '  ' .. navic_location .. '%*'
 
         return full_location
       end

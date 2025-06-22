@@ -283,8 +283,8 @@ bindsym Print exec --no-startup-id scrot -fs ~/%Y-%m-%d-%T-screenshot.png && not
 bindsym $mod+Shift+p exec --no-startup-id ~/.config/i3/scripts/power-profiles
 
 #terminal for scratchpad
-bindsym $mod+space exec ~/.config/i3/scripts/sidepanel toggle_term bottom 70 20
-bindsym $mod+n exec ~/.config/i3/scripts/sidepanel toggle_notes right 30 95
+bindsym $mod+space exec ~/.config/i3/scripts/sidepanel toggle_term bottomright 40 98
+bindsym $mod+n exec ~/.config/i3/scripts/sidepanel toggle_notes bottomright 40 98
 
 
 #####################################
@@ -339,8 +339,8 @@ bindsym $mod+Shift+v exec --no-startup-id rofi -modi "clipboard:greenclip print"
 # use workspaces on different displays:
 # where you have to replace VGA-0/HDMI-0 with the names for your displays
 # you can get from xrandr command
-workspace 1 output eDP-1
-workspace 2 output HDMI-1-0
+# workspace 1 output eDP-1
+# workspace 2 output HDMI-1-0
 #workspace $ws3 output HDMI-0
 #workspace $ws4 output HDMI-0
 #workspace $ws5 output HDMI-0
@@ -392,6 +392,9 @@ for_window [class=Thunar] focus
 # autostart applications/services on login: #
 #############################################
 
+# output detection
+exec_always --no-startup-id ~/.config/i3/scripts/output-hotplug
+
 #get auth work with polkit-gnome
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
@@ -421,16 +424,17 @@ exec_always --no-startup-id setxkbmap -option caps:swapescape
 # start a script to setup displays
 exec_always --no-startup-id ~/.screenlayout/monitor.sh
 
-# TODO clean listeners, curently signals 2 and 6 are not being used
 # LISTENERS
 exec_always --no-startup-id /bin/bash /home/ton/.config/i3/scripts/i3-title-listener
+exec_always --no-startup-id playerctl --follow status | while read -r; do pkill -RTMIN+10 i3blocks; done &
 
 # start a script to a better tiling layout
 # exec_always --no-startup-id i3-auto-layout
 
 # set wallpaper
 # exec --no-startup-id sleep 2 && nitrogen --restore
-exec --no-startup-id sleep 1 && feh --bg-fill ~/.config/wallpaper/peakpx.jpg
+exec --no-startup-id sleep 1 && feh --bg-fill ~/.config/wallpaper/wp4657401-solarized-wallpapers.jpg
+# exec --no-startup-id sleep 1 && feh --bg-fill ~/.config/wallpaper/peakpx.jpg
 # exec --no-startup-id sleep 1 && feh --bg-fill /usr/share/endeavouros/backgrounds/endeavouros-wallpaper.png
 
 # set powersavings for display:
@@ -466,7 +470,7 @@ exec --no-startup-id /usr/bin/dunst
 # Autostart apps as you like
 #exec --no-startup-id sleep 2 && xfce4-terminal
 # exec --no-startup-id sleep 7 && firefox https://github.com/endeavouros-team/endeavouros-i3wm-setup/blob/main/force-knowledge.md
-#exec --no-startup-id sleep 3 && thunar
+exec --no-startup-id sleep 3 && syncthing serve --no-browser
 
 ###############
 # system tray #
@@ -556,7 +560,10 @@ client.urgent		    	$urgentred	$urgentred	$white		$yellowbrown	$yellowbrown
 # Start i3bar to display a workspace bar
 # (plus the system information i3status finds out, if available)
 bar {
-		font pango: JetBrainsMono Nerd Font 9
+		font pango: ZedMono NF Extd 9
+		# font pango: VictorMono NF Medium 9
+		# font pango: ProFont IIx Nerd Font 7
+		# font pango: JetBrainsMono Nerd Font 9
 		# font pango: Maple Mono Normal NF 9
 		mode dock
 		# hidden_state show

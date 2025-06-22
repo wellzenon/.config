@@ -4,22 +4,13 @@ return {
   version = false, -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
   opts = {
     provider = 'gemini',
-    cursor_applying_provider = 'groq',
-    gemini = {
-      model = 'gemini-2.5-flash-preview-04-17',
-      timeout = 30000, -- timeout in milliseconds
-      temperature = 0, -- adjust if needed
-      max_tokens = 1048576,
-    },
-    behaviour = {
-      auto_suggestions = false, -- Experimental stage
-      auto_set_highlight_group = true,
-      auto_set_keymaps = true,
-      auto_apply_diff_after_generation = false,
-      support_paste_from_clipboard = true,
-      enable_cursor_planning_mode = true,
-    },
-    vendors = {
+    providers = {
+      gemini = {
+        model = 'gemini-2.5-flash-preview-04-17',
+        timeout = 30000, -- timeout in milliseconds
+        temperature = 0, -- adjust if needed
+        max_tokens = 1048576,
+      },
       ['gemini 2.5 PP'] = {
         __inherited_from = 'gemini',
         model = 'gemini-2.5-pro-exp-03-25',
@@ -47,7 +38,30 @@ return {
         api_key_name = 'GROQ_API_KEY',
         endpoint = 'https://api.groq.com/openai/v1/',
         model = 'llama-3.3-70b-versatile',
-        max_completion_tokens = 32768,
+        extra_request_body = {
+          max_completion_tokens = 32768,
+        },
+      },
+    },
+    behaviour = {
+      auto_suggestions = false, -- Experimental stage
+      auto_set_highlight_group = true,
+      auto_set_keymaps = true,
+      auto_apply_diff_after_generation = false,
+      support_paste_from_clipboard = true,
+      enable_cursor_planning_mode = true,
+      mappings = {
+        sidebar = {
+          close_from_input = { normal = '<Esc>' },
+        },
+      },
+    },
+    windows = {
+      width = 40,
+      sidebar_header = {
+        -- enabled = false,
+        rounded = false,
+        align = 'center',
       },
     },
   },

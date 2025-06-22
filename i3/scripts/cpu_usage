@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-usage=$(LC_ALL=C sar -u 1 1 | awk '/^Average:/ { printf "%02i% ", 100 - $8 }')
+usage=$(LC_ALL=C sar -u 1 1 | awk '/^Average:/ { printf "%02i", 100 - $8 }')
 
-temp=$(sensors | awk '/Package id 0:/ { gsub(/[+°C]/, "", $4); printf " %.0f°C", $4; exit } /Core 0:/ { gsub(/[+°C]/, "", $3); printf " %.0f°C", $3; exit }')
+temp=$(sensors | awk '/Package id 0:/ { gsub(/[+°C]/, "", $4); printf "%.0f", $4; exit } /Core 0:/ { gsub(/[+°C]/, "", $3); printf "%.0f", $3; exit }')
 
 if [ -n "$BLOCK_BUTTON" ]; then
 	case "$BLOCK_BUTTON" in
@@ -12,4 +12,4 @@ if [ -n "$BLOCK_BUTTON" ]; then
 	esac
 fi
 
-echo " <b>CPU:</b> $usage$temp "
+echo "<b>CPU </b>$usage<small>% </small>$temp<small>°C</small>"

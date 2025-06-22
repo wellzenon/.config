@@ -125,7 +125,8 @@ return {
       -- Default list of enabled providers defined so that you can extend it
       -- elsewhere in your config, without redefining it, due to `opts_extend`
       sources = {
-        default = { 'lsp', 'minuet', 'avante', 'path', 'mkdnflow', 'snippets', 'buffer' },
+        default = { 'lsp', 'minuet', 'path', 'snippets', 'avante', 'mkdnflow', 'buffer' },
+        per_filetype = { sql = { 'snippets', 'dadbod', 'buffer' } },
         providers = {
           avante = {
             module = 'blink-cmp-avante',
@@ -157,6 +158,7 @@ return {
           mkdnflow = {
             module = 'blink.compat.source',
           },
+          dadbod = { name = 'Dadbod', module = 'vim_dadbod_completion.blink' },
         },
       },
       appearance = {

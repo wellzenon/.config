@@ -132,7 +132,7 @@ FINAL_OUTPUT="$VOLUME_INFO" # Começa sempre com a info do volume
 
 # Adiciona a info do player se ela existir
 if [ -n "$PLAYBACK_INFO" ]; then
-    FINAL_OUTPUT="$FINAL_OUTPUT$SEPARATOR$PLAYBACK_INFO"
+    FINAL_OUTPUT="$FINAL_OUTPUT$SEPARATOR<small>$PLAYBACK_INFO</small>"
 fi
 
 echo "$FINAL_OUTPUT"

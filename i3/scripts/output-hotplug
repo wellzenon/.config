@@ -1,0 +1,22 @@
+#!/bin/bash
+
+export DISPLAY=:0
+export XAUTHORITY=/home/ton/.Xauthority
+
+# Define os nomes das saídas de vídeo
+NOTEBOOK_DISPLAY="eDP-1"
+EXTERNAL_DISPLAY=$(xrandr | grep " connected" | grep -v "$NOTEBOOK_DISPLAY" | cut -d" " -f1)
+
+# Verifica se o monitor externo está conectado e ativo
+if xrandr | grep "$EXTERNAL_DISPLAY connected"; then
+  if grep -q "closed" /proc/acpi/button/lid/LID1/state 2>/dev/null; then
+    # Tampa fechada: desliga o monitor do notebook e usa apenas o externo
+    xrandr --output "$NOTEBOOK_DISPLAY" --off --output "$EXTERNAL_DISPLAY" --auto --primary
+  else
+    # Tampa aberta: usa ambos os monitores, com o externo como primário e à esquerda
+    xrandr --output "$NOTEBOOK_DISPLAY" --auto --output "$EXTERNAL_DISPLAY" --auto --primary --left-of "$NOTEBOOK_DISPLAY"
+  fi
+else
+  # Monitor externo não conectado: usa apenas o monitor do notebook
+  xrandr --output "$EXTERNAL_DISPLAY" --off --output "$NOTEBOOK_DISPLAY" --auto --primary
+fi

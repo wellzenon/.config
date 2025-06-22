@@ -99,11 +99,6 @@ map('n', 'gcO', 'O<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>', { desc = 'Add Commen
 -- lazy
 map('n', '<leader>l', '<cmd>Lazy<cr>', { desc = 'Lazy' })
 
--- formatting
-map({ 'n', 'v' }, '<leader>cf', function()
-  LazyVim.format { force = true }
-end, { desc = 'Format' })
-
 -- quickfix list
 map('n', '<leader>xq', function()
   local success, err = pcall(vim.fn.getqflist({ winid = 0 }).winid ~= 0 and vim.cmd.cclose or vim.cmd.copen)
@@ -123,7 +118,7 @@ local diagnostic_goto = function(next, severity)
     go { severity = severity }
   end
 end
-map('n', '<leader>cd', vim.diagnostic.open_float, { desc = 'Line Diagnostics' })
+-- map('n', '<leader>cd', vim.diagnostic.open_float, { desc = 'Line Diagnostics' })
 map('n', ']d', diagnostic_goto(true), { desc = 'Next Diagnostic' })
 map('n', '[d', diagnostic_goto(false), { desc = 'Prev Diagnostic' })
 map('n', ']e', diagnostic_goto(true, 'ERROR'), { desc = 'Next Error' })
@@ -145,6 +140,9 @@ map('n', '[w', diagnostic_goto(false, 'WARN'), { desc = 'Prev Warning' })
 
 -- new file
 map('n', '<leader>fn', '<cmd>enew<cr>', { desc = 'New File' })
+
+-- Toggle DadBod
+map('n', '<leader>d', '<cmd>DBUIToggle<cr>', { desc = '[D]adBod UI' })
 
 -- save file
 map({ 'i', 'x', 'n', 's' }, '<C-s>', '<cmd>w<cr><esc>', { desc = 'Save File' })

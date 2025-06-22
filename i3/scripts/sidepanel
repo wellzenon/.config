@@ -18,13 +18,13 @@ scratch_h=$((res_y * height_pct / 100))
 
 # Posição horizontal
 case "$position" in
-    left)
+    left|topleft|bottomleft)
         scratch_x=$offset_x
         ;;
-    right)
+    right|topright|bottomright)
         scratch_x=$((offset_x + res_x - scratch_w))
         ;;
-    top|bottom|center)
+    center|top|bottom)
         scratch_x=$((offset_x + (res_x - scratch_w) / 2))
         ;;
     *)
@@ -35,10 +35,10 @@ esac
 
 # Posição vertical
 case "$position" in
-    top)
+    top|topleft|topright)
         scratch_y=$offset_y
         ;;
-    bottom)
+    bottom|bottomleft|bottomright)
         scratch_y=$((offset_y + res_y - scratch_h))
         ;;
     left|right|center)
