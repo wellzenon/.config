@@ -283,7 +283,7 @@ bindsym Print exec --no-startup-id scrot -fs ~/%Y-%m-%d-%T-screenshot.png && not
 bindsym $mod+Shift+p exec --no-startup-id ~/.config/i3/scripts/power-profiles
 
 #terminal for scratchpad
-bindsym $mod+space exec ~/.config/i3/scripts/sidepanel toggle_term bottomright 40 98
+bindsym $mod+space exec ~/.config/i3/scripts/sidepanel toggle_term bottom 50 30
 bindsym $mod+n exec ~/.config/i3/scripts/sidepanel toggle_notes bottomright 40 98
 
 

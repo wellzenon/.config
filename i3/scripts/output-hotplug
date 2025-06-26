@@ -1,22 +1,97 @@
 #!/bin/bash
 
-export DISPLAY=:0
 export XAUTHORITY=/home/ton/.Xauthority
+if [[ -z "$DISPLAY" ]]; then
+    export DISPLAY=:0
+fi
 
-# Define os nomes das saídas de vídeo
+MOBILE_ICON="󰌢"
+DOCK_ICON="󰍹"
+MULTI_ICON="󰍺"
+ERROR_ICON="󰶐"
+
+
 NOTEBOOK_DISPLAY="eDP-1"
-EXTERNAL_DISPLAY=$(xrandr | grep " connected" | grep -v "$NOTEBOOK_DISPLAY" | cut -d" " -f1)
+EXTERNAL_DISPLAY=$(xrandr | grep " connected" | grep -v "$NOTEBOOK_DISPLAY" | awk '{print $1}' | head -n 1)
 
-# Verifica se o monitor externo está conectado e ativo
-if xrandr | grep "$EXTERNAL_DISPLAY connected"; then
-  if grep -q "closed" /proc/acpi/button/lid/LID1/state 2>/dev/null; then
-    # Tampa fechada: desliga o monitor do notebook e usa apenas o externo
-    xrandr --output "$NOTEBOOK_DISPLAY" --off --output "$EXTERNAL_DISPLAY" --auto --primary
+is_external_connected() {
+  [ -n "$EXTERNAL_DISPLAY" ] && xrandr | grep -q "$EXTERNAL_DISPLAY connected"
+}
+
+is_lid_closed() {
+  grep -q "closed" /proc/acpi/button/lid/LID1/state 2>/dev/null
+}
+
+is_display_active() {
+  xrandr | awk -v display_name="$1" '
+    $0 ~ display_name " connected" { found_display = 1; exit_code = 1; next }
+    found_display && /^[[:space:]]+/ {
+      if (index($0, "*+")) {
+        exit_code = 0
+        found_display = 0
+      }
+    }
+    found_display && !/^[[:space:]]+/ { found_display = 0 }
+    END { exit exit_code }
+    '
+}
+
+
+get_current_mode() {
+  local notebook_active=$(is_display_active "$NOTEBOOK_DISPLAY" && echo "true" || echo "false")
+  local external_active=$(is_display_active "$EXTERNAL_DISPLAY" && echo "true" || echo "false")
+
+  if ! is_external_connected; then
+    echo "$MOBILE_ICON"
+  elif [ "$notebook_active" = "true" ] && [ "$external_active" = "true" ]; then
+    echo "$MULTI_ICON"
+  elif [ "$notebook_active" = "false" ] && [ "$external_active" = "true" ]; then
+    echo "$DOCK_ICON"
+  elif [ "$notebook_active" = "true" ] && [ "$external_active" = "false" ]; then
+    echo "$MOBILE_ICON"
   else
-    # Tampa aberta: usa ambos os monitores, com o externo como primário e à esquerda
-    xrandr --output "$NOTEBOOK_DISPLAY" --auto --output "$EXTERNAL_DISPLAY" --auto --primary --left-of "$NOTEBOOK_DISPLAY"
+    echo "$ERROR_ICON"
+  fi
+}
+
+apply_docked_mode() {
+  xrandr --output "$NOTEBOOK_DISPLAY" --off --output "$EXTERNAL_DISPLAY" --auto --primary
+}
+
+apply_mobile_mode() {
+  xrandr --output "$EXTERNAL_DISPLAY" --off --output "$NOTEBOOK_DISPLAY" --auto --primary
+}
+
+apply_multiscreen_mode() {
+  xrandr --output "$NOTEBOOK_DISPLAY" --auto --output "$EXTERNAL_DISPLAY" --auto --primary --left-of "$NOTEBOOK_DISPLAY"
+}
+
+if [ -n "$BLOCK_BUTTON" ]; then
+  if ! is_external_connected; then
+    exit 0
+  elif is_lid_closed; then
+    apply_docked_mode
+  else
+    current_mode=$(get_current_mode)
+
+    case "$current_mode" in
+      "$MULTI_ICON")
+        apply_docked_mode
+        ;;
+      "$MOBILE_ICON")
+        apply_multiscreen_mode
+        ;;
+      *)
+        apply_mobile_mode
+        ;;
+    esac
   fi
 else
-  # Monitor externo não conectado: usa apenas o monitor do notebook
-  xrandr --output "$EXTERNAL_DISPLAY" --off --output "$NOTEBOOK_DISPLAY" --auto --primary
+  if is_external_connected; then
+    apply_docked_mode
+  else
+    apply_mobile_mode
+  fi
 fi
+
+get_current_mode
