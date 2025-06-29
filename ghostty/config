@@ -20,12 +20,14 @@
 # # The config file consists of simple key-value pairs,
 # # separated by equals signs.
 
+# font-family = monospace
 font-family = JetBrainsMono Nerd Font
 # font-family = ZedMono NF
 # font-family = Maple Mono Normal NF
-# font-style = Medium
+# font-style = ExtraLight
 # font-style-italic = Italic
-# font-style-bold-italic = Bold Oblique
+# font-style-bold= ExtraBold
+# font-style-bold-italic = ExtraBold Oblique
 font-size = 10
 adjust-cell-height=40%
 
@@ -36,7 +38,7 @@ adjust-cell-height=40%
 # font-size = 12
 # adjust-cell-height=15%
 
-window-padding-x = 2
+window-padding-x = 5
 window-padding-y = 0
 window-padding-balance = true
 

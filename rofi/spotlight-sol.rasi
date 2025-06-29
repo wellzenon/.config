@@ -9,25 +9,30 @@
 
 /**----- Configuration -----**/
 configuration {
-    modi:                       "drun,run,filebrowser,window";
-    show-icons:                 true;
-    display-drun:               "";
-    display-run:                "";
-    display-filebrowser:        "";
-    display-window:             "";
+    modi:                       "drun,run,filebrowser,window,systemd:~/.config/i3/scripts/rofi-systemd";
+    show-icons:                 false;
+    display-drun:               " ";
+    display-run:                " ";
+    display-filebrowser:        " ";
+    display-window:             " ";
+    display-windowcd:           " ";
+    display-systemd:            " ";
     drun-display-format:        "{name}";
-    window-format:              "{w} · {c} · {t}";
+    window-format:              "{w:1} · {t:30}";
+    hover-select:               true;
+    me-select-entry:            "";
+    me-accept-entry:            "MousePrimary";
 }
 
 /**----- Global Properties -----**/
 * {
-    font:           "JetBrainsMono Nerd Font Mono 16";
+    font:           "JetBrainsMono Nerd Font 16";
     background:     #131412FF;
     background-alt: #131412FF;
     foreground:     #8C9485FF;
     faded:          #8C948570;
     selected:       #252624FF;
-    active:         #25262480;
+    active:         #8C948570;
     urgent:         #25262460;
 }
 
@@ -42,14 +47,14 @@ configuration {
     normal-foreground:           var(foreground);
     urgent-background:           var(urgent);
     urgent-foreground:           var(foreground);
-    active-background:           var(foreground);
+    active-background:           var(active);
     active-foreground:           var(background);
     selected-normal-background:  var(selected);
     selected-normal-foreground:  var(foreground);
     selected-urgent-background:  var(active);
     selected-urgent-foreground:  var(background);
-    selected-active-background:  var(foreground);
-    selected-active-foreground:  var(background);
+    selected-active-background:  var(selected);
+    selected-active-foreground:  var(foreground);
     alternate-normal-background: var(background);
     alternate-normal-foreground: var(foreground);
     alternate-urgent-background: var(urgent);
@@ -62,31 +67,22 @@ configuration {
 window {
     /* properties for window widget */
     transparency:                "real";
-    location:                    center;
-    anchor:                      center;
+    location:                    north east;
+    anchor:                      north east;
     fullscreen:                  false;
-    width:                       30em;
-    x-offset:                    0px;
-    y-offset:                    0px;
+    width:                       35em;
+    x-offset:                    -0.5em;
+    y-offset:                    1.5em;
 
     /* properties for all widgets */
     enabled:                     true;
     margin:                      0px;
-    padding:                     0 0 0.5em;
+    padding:                     1em;
     border:                      0px solid;
     border-radius:               0.5em;
     border-color:                @border-colour;
     cursor:                      "default";
-    /* Backgroud Colors */
     background-color:            @background-colour;
-    /* Backgroud Image */
-    //background-image:          url("/path/to/image.png", none);
-    /* Simple Linear Gradient */
-    //background-image:          linear-gradient(red, orange, pink, purple);
-    /* Directional Linear Gradient */
-    //background-image:          linear-gradient(to bottom, pink, yellow, magenta);
-    /* Angle Linear Gradient */
-    //background-image:          linear-gradient(45, cyan, purple, indigo);
 }
 
 /**----- Main Box -----**/
@@ -94,7 +90,7 @@ mainbox {
     enabled:                     true;
     spacing:                     0.5em;
     margin:                      0px;
-    padding:                     0.1em 0.9em;
+    padding:                     0em 0.9em;
     border:                      0px solid;
     border-radius:               0px 0px 0px 0px;
     border-color:                @border-colour;
@@ -106,8 +102,8 @@ mainbox {
 inputbar {
     enabled:                     true;
     spacing:                     0.0em;
-    margin:                      0px;
-    padding:                     0.4em 0em;
+    margin:                      0 0.5em 0.2em;
+    padding:                     0 0 1em 0em;
     border:                      0 0 1px solid;
     border-radius:               0px;
     border-color:                @border-colour;
@@ -125,7 +121,7 @@ textbox-prompt-colon {
     enabled:                     true;
     padding:                     0em;
     expand:                      false;
-    str:                         " ";
+    str:                         "   ";
     background-color:            inherit;
     text-color:                  inherit;
 }
@@ -166,16 +162,10 @@ case-indicator {
 /**----- Listview -----**/
 listview {
     enabled:                     true;
-    columns:                     2;
-    lines:                       8;
     cycle:                       true;
-    dynamic:                     true;
-    scrollbar:                   true;
+    scrollbar:                   false;
     layout:                      vertical;
     reverse:                     false;
-    fixed-height:                true;
-    fixed-columns:               true;
-    
     spacing:                     0.25em;
     margin:                      0px;
     padding:                     0px;

@@ -43,7 +43,7 @@ if [ -n "$BLOCK_BUTTON" ]; then
       if (indice > 4) indice = 4;
       signal_icon = icons[indice + 1];
 
-      linha = security_icon "\t" signal_icon "\t" ssid;
+      linha = security_icon " " signal_icon " " ssid;
 
       if (ssid == active) {
         printf("<b><span foreground=\"%s\">%s</span></b>\n", cor, linha);
@@ -61,8 +61,9 @@ if [ -n "$BLOCK_BUTTON" ]; then
     TOGGLE="$ENABLE"
   fi
 
+  LINES=$(echo -e "$TOGGLE\n$LIST" | wc -l || 2)
   # display menu; store user choice
-  CHENTRY=$(echo -e "$TOGGLE\n$LIST" | uniq -u | rofi -dmenu -selected-row "$ACTIVE_ROW" -p "Select Wifi" -config "~/.config/rofi/rofiwifi.rasi" | cut -f3-)
+  CHENTRY=$(echo -e "$TOGGLE\n$LIST" | uniq -u | rofi -dmenu -l "$LINES" -selected-row "$ACTIVE_ROW" -config "~/.config/rofi/rofiwifi.rasi" | cut -f3-)
   # store selected SSID
   CHSSID=$(echo "$CHENTRY" | sed  's/\s\{2,\}/\|/g' | awk -F "|" '{print $1}')
 

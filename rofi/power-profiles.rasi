@@ -2,76 +2,13 @@
  * ROFI configs i3 powermenu for EndeavourOS
  * Maintainer: joekamprad [joekamprad //a_t// endeavouros.com]
  *******************************************************/
-configuration {
-    // font:            "Noto Sans Regular 10";
-    show-icons:      false;
-    icon-theme:      "Qogir";
-    scroll-method:   0;
-    disable-history: false;
-    sidebar-mode:    false;
-}
 
 @import "~/.config/rofi/config.rasi"
 /* Insert theme modifications after this */
 
 window {
-    border:           0;
-    padding:          10;
-    width:            30em;
-    /*y-offset:       18;*/
-    /*x-offset:       850;*/
+    width: 15em;
 }
-listview {
-    spacing: 1em;
-    lines:     4;
-    columns:   1;
-    scrollbar: false;
-}
-element {
-    border:  0;
-    padding: 1em;
-}
-element-text {
-    horizontal-align: 0;
-    text-color:       inherit;
-    background-color: transparent;
-}
-scrollbar {
-    width:        4px;
-    border:       0;
-    handle-width: 8px;
-    padding:      0;
-}
-mode-switcher {
-    border:       2px 0px 0px;
-}
-button {
-    spacing:    0;
-}
-button.selected {
-}
-inputbar {
-    spacing:    0;
-    padding:    1px;
-}
-case-indicator {
-    spacing:    0;
-}
-entry {
-    spacing:    0;
-}
-prompt {
-    spacing:    0;
-}
-inputbar {
-    children:   [ prompt,textbox-prompt-colon,entry,case-indicator ];
-}
-textbox-prompt-colon {
-    expand:     false;
-    str:        ":";
-    margin:     0px 0.3em 0em 0em;
-}
-
 /*removes the text input line*/
 mainbox {
   children: [listview];
