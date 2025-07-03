@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+usage=$(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits | awk '{ printf "%02i", $0}')
+temp=$(nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits | awk '{ printf "%i\n", $0}')
+
+if [ -n "$BLOCK_BUTTON" ]; then
+	case "$BLOCK_BUTTON" in
+		1) ghostty -e "btop --preset 2" >/dev/null 2>&1;;	# Opens btop
+		2) ghostty -e "btop --preset 2" >/dev/null 2>&1;;	# Opens btop
+		3) ghostty -e "btop --preset 2" >/dev/null 2>&1;;	# Opens btop
+	esac
+fi
+
+echo "<b>GPU </b>$usage<small>% </small>$temp<small>°C</small>"

@@ -1,0 +1,35 @@
+#!/bin/bash
+
+NEOVIM_COMMAND="${1:-nvim}" # Ou o caminho completo para o seu nvim
+TARGET_TITLE="${2:-notes}"
+TERM_CLASS="com.mitchellh.ghostty"
+
+# Define o script jq
+JQ_SCRIPT='
+  def find_window:
+    .. |
+    select(
+      type == "object" and
+      .window_properties? and
+      .window_properties.class == $GHOSTTY_CLASS and
+      .name? == $TARGET_TITLE
+    ) | .window;
+  find_window
+'
+
+# Obtém o ID da janela
+WINDOW_ID_RAW=$(i3-msg -t get_tree | jq \
+  --raw-output --arg GHOSTTY_CLASS "$TERM_CLASS" \
+  --arg TARGET_TITLE "$TARGET_TITLE" \
+  "$JQ_SCRIPT")
+
+WINDOW_ID=$(echo "$WINDOW_ID_RAW" | head -n 1 | tr -d '[:space:]')
+
+if [[ -n "$WINDOW_ID" ]] && [[ "$WINDOW_ID" =~ ^[0-9]+$ ]]; then
+  # Janela encontrada, fecha ela
+  ~/.config/i3/scripts/smartkill.sh "$WINDOW_ID"
+else
+  ghostty --title="$TARGET_TITLE" -e "$NEOVIM_COMMAND"
+fi
+
+exit 0

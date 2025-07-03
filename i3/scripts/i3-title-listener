@@ -1,0 +1,6 @@
+#!/bin/bash
+
+i3-msg -t subscribe -m '["window"]' | while IFS= read -r event; do
+        pkill -RTMIN+1 i3blocks
+        sleep 0.1
+done

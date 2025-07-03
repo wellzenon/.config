@@ -1,0 +1,10 @@
+#!/bin/bash
+# ~/.config/i3/scripts/audio_listener.sh
+AUDIO_SIGNAL=2
+pactl subscribe | while IFS= read -r event; do
+  if [[ "$event" == *"sink"* ]] || [[ "$event" == *"source"* ]]; then
+     pkill -RTMIN+${AUDIO_SIGNAL} i3blocks
+     # Poderia também atualizar o bloco mediaplayer se o volume dele mudar
+     pkill -RTMIN+10 i3blocks
+  fi
+done

@@ -1,0 +1,89 @@
+#!/bin/bash
+
+# === Configuração ===
+# IMPORTANTE: Descubra o nome correto do seu controle de captura!
+# Execute 'amixer scontrols' ou 'amixer controls | grep Capture' para listar os controles.
+# Nomes comuns: 'Capture', 'Mic', 'Internal Mic', 'Internal Mic Boost', 'Digital', etc.
+# Às vezes você pode precisar ajustar tanto 'Capture' quanto um 'Boost'.
+# Escolha o controle principal de volume/mudo para este script.
+MIC_CONTROL="Capture"
+
+# Ícones (requer fonte com suporte a Font Awesome, Nerd Fonts ou Emojis)
+# Opção 1: Font Awesome / Nerd Fonts
+ICON_MIC_ON=""  # fa-microphone
+ICON_MIC_OFF=" " # fa-microphone-slash
+# Opção 2: Emojis
+# ICON_MIC_ON="🎤"
+# ICON_MIC_OFF="🔇"
+
+# Passo de ajuste do volume (ex: 5%)
+VOL_STEP="5%"
+# === Fim da Configuração ===
+
+# Verifica se amixer está disponível
+if ! command -v amixer &> /dev/null; then
+    echo "Erro: amixer não encontrado!"
+    exit 1
+fi
+
+# --- 1. Processa Ações de Clique/Scroll (se $BLOCK_BUTTON estiver definido) ---
+if [ -n "$BLOCK_BUTTON" ]; then
+    case "$BLOCK_BUTTON" in
+        1) amixer set "$MIC_CONTROL" toggle >/dev/null 2>&1 ;;       	# Esquerdo: Alterna Mudo
+        3) pavucontrol >/dev/null 2>&1 ;; 				# Abre Pavucontrol
+        4) amixer set "$MIC_CONTROL" "$VOL_STEP"+ >/dev/null 2>&1 ;; 	# Scroll Up: Vol+
+        5) amixer set "$MIC_CONTROL" "$VOL_STEP"- >/dev/null 2>&1 ;; 	# Scroll Down: Vol-
+    esac
+    # Pequena pausa pode ser útil se o sistema demorar a refletir
+    # sleep 0.1
+fi
+
+# Verifica se o comando amixer foi bem-sucedido e tenta novamente se falhar
+MAX_RETRIES=5
+RETRY_DELAY=1 # segundos
+RETRIES=0
+
+MIXER_OUTPUT=$(amixer get "$MIC_CONTROL" 2>&1)
+EXIT_CODE=$?
+
+while [ $EXIT_CODE -ne 0 ] && [ $RETRIES -lt $MAX_RETRIES ]; do
+  RETRIES=$((RETRIES + 1))
+  sleep $RETRY_DELAY
+  MIXER_OUTPUT=$(amixer get "$MIC_CONTROL" 2>&1)
+  EXIT_CODE=$?
+done
+
+# Se ainda falhou após as tentativas
+if [ $EXIT_CODE -ne 0 ]; then
+  echo "$ICON_MIC_OFF ERR"
+  exit 1
+fi
+
+# --- 3. Parseia a Saída do Amixer ---
+# Tenta extrair o estado de mudo ([on] ou [off]) e o volume (%)
+# A saída do amixer pode variar, este é um método comum de parsear:
+# Pega a linha que contém a porcentagem e o estado on/off (geralmente a primeira com '[%]')
+LINE=$(echo "$MIXER_OUTPUT" | grep -o '\[[0-9]*%\] \[[a-z]*\]' | head -n 1)
+
+# Extrai o estado (on/off)
+STATE=$(echo "$LINE" | grep -o '\[on\]\|\[off\]')
+
+# Extrai o volume
+VOLUME=$(echo "$LINE" | grep -o '[0-9]\+%' | head -n 1)
+
+# Define o padrão caso algo falhe no parse
+if [ -z "$STATE" ]; then STATE="[off]"; fi
+if [ -z "$VOLUME" ]; then VOLUME="??%"; fi
+
+
+# --- 4. Formata e Imprime a Saída ---
+OUTPUT=""
+if [[ "$STATE" == "[off]" ]]; then
+    OUTPUT="$ICON_MIC_OFF Mudo" # Ou apenas o ícone: OUTPUT="$ICON_MIC_OFF"
+else
+    OUTPUT="$ICON_MIC_ON $VOLUME"
+fi
+
+echo "$OUTPUT"
+
+exit 0

@@ -1,0 +1,140 @@
+#!/usr/bin/env bash
+
+# === Configuração ===
+# --- Player ---
+MAX_LEN=30
+ICON_PLAY=" "
+ICON_PAUSE=" "
+
+# --- Volume Sistema (amixer) ---
+# >>>>>>> VERIFIQUE E CORRIJA ESTA LINHA ABAIXO <<<<<<<
+VOL_CONTROL="Master"  # <-- É ESTE O NOME CORRETO NO SEU SISTEMA? VERIFIQUE COM 'amixer scontrols'
+# >>>>>>> VERIFIQUE E CORRIJA ESTA LINHA ACIMA <<<<<<<
+VOL_STEP="5%"
+ICON_VOL=" "
+ICON_MUTE=" "
+SEPARATOR=" "
+# === Fim da Configuração ===
+#
+# --- Verificação de Dependências ---
+if ! command -v playerctl &> /dev/null; then
+    echo "Erro: playerctl não encontrado!"
+    exit 1
+fi
+if ! command -v amixer &> /dev/null; then
+    echo "Erro: amixer não encontrado!"
+    exit 1
+fi
+
+# --- 1. Processa Ações de Clique/Scroll ---
+if [ -n "$BLOCK_BUTTON" ]; then
+    case "$BLOCK_BUTTON" in
+        1) playerctl play-pause &> /dev/null ;;  # Esquerdo: Player Play/Pause
+        2) amixer set "$VOL_CONTROL" toggle >/dev/null 2>&1 ;; # Meio: Alterna Mudo do Sistema
+        3) pavucontrol >/dev/null 2>&1 ;; # Direito abre o controle
+        4) amixer set "$VOL_CONTROL" "$VOL_STEP"+ >/dev/null 2>&1 ;; # Scroll Up: Vol+ Sistema
+        5) amixer set "$VOL_CONTROL" "$VOL_STEP"- >/dev/null 2>&1 ;; # Scroll Down: Vol- Sistema
+        9) playerctl next &> /dev/null ;;        # Direito: Player Next
+        8) playerctl previous &> /dev/null ;; # Opção: Player Previous
+    esac
+    # Pequena pausa pode ajudar em sistemas lentos para refletir o estado
+    # sleep 0.1
+fi
+
+# --- 2. Obtém e Formata Informação do Volume do Sistema ---
+# Verifica se o comando amixer foi bem-sucedido e tenta novamente se falhar
+MAX_RETRIES=5
+RETRY_DELAY=1 # segundos
+RETRIES=0
+
+MIXER_OUTPUT=$(amixer get "$VOL_CONTROL" 2>&1)
+EXIT_CODE_AMIXER=$?
+
+PLAYER_STATUS=$(playerctl status 2>/dev/null)
+EXIT_CODE_PLAYERCTL=$?
+
+while [ $EXIT_CODE_AMIXER -ne 0 ] && [ $EXIT_CODE_PLAYERCTL -ne 0 ] && [ $RETRIES -lt $MAX_RETRIES ]; do
+  RETRIES=$((RETRIES + 1))
+  sleep $RETRY_DELAY
+
+  MIXER_OUTPUT=$(amixer get "$VOL_CONTROL" 2>&1)
+  EXIT_CODE_AMIXER=$?
+
+  PLAYER_STATUS=$(playerctl status 2>/dev/null)
+  EXIT_CODE_PLAYERCTL=$?
+done
+
+VOLUME_INFO=""
+
+if [ $EXIT_CODE_AMIXER -eq 0 ]; then
+    # Tenta extrair o estado [on]/[off] e a porcentagem da primeira linha que os contém
+    LINE=$(echo "$MIXER_OUTPUT" | grep -o '\[[0-9]*%\] \[[a-z]*\]' | head -n 1)
+    STATE=$(echo "$LINE" | grep -o '\[on\]\|\[off\]')
+    VOLUME=$(echo "$LINE" | grep -o '[0-9]\+%' | head -n 1)
+
+    if [[ "$STATE" == "[off]" ]]; then
+        VOLUME_INFO="$ICON_MUTE MUT" # Ou apenas $ICON_MUTE
+    elif [ -n "$VOLUME" ]; then # Se encontrou o estado 'on' e o volume
+        VOLUME_INFO="$ICON_VOL $VOLUME"
+    else
+        # Fallback se o parse falhar, mas amixer não deu erro
+         VOLUME_INFO="$ICON_MUTE ERR"
+    fi
+else
+    # Se amixer falhou (controle não encontrado?)
+    VOLUME_INFO="$ICON_MUTE ERR"
+fi
+
+# --- 3. Obtém e Formata Informação do Player ---
+PLAYBACK_INFO=""
+
+# Só processa se playerctl encontrou um player e ele não está 'Stopped'
+if [ $EXIT_CODE_PLAYERCTL -eq 0 ] && [ "$PLAYER_STATUS" != "Stopped" ]; then
+
+    ARTIST=$(playerctl metadata artist 2>/dev/null)
+    [ $? -ne 0 -o "$ARTIST" = "(null)" ] && ARTIST="" # Limpa se erro ou (null)
+
+    TITLE=$(playerctl metadata title 2>/dev/null)
+    [ $? -ne 0 -o "$TITLE" = "(null)" ] && TITLE="" # Limpa se erro ou (null)
+
+    # Constrói a string do player apenas se houver artista ou título
+    PLAYER_STRING=""
+    if [ -n "$ARTIST" ] && [ -n "$TITLE" ]; then
+        PLAYER_STRING="$ARTIST - $TITLE"
+    elif [ -n "$TITLE" ]; then
+        PLAYER_STRING="$TITLE"
+    elif [ -n "$ARTIST" ]; then
+        PLAYER_STRING="$ARTIST"
+    fi
+
+    # Continua apenas se PLAYER_STRING não estiver vazia
+    if [ -n "$PLAYER_STRING" ]; then
+        # Trunca a string do player
+        if [ ${#PLAYER_STRING} -gt $MAX_LEN ]; then
+            PLAYER_STRING="${PLAYER_STRING:0:$((MAX_LEN-3))}..."
+        fi
+
+        # Define o ícone do player
+        PLAYER_ICON=""
+        if [ "$PLAYER_STATUS" = "Playing" ]; then
+            PLAYER_ICON="$ICON_PLAY "
+        elif [ "$PLAYER_STATUS" = "Paused" ]; then
+            PLAYER_ICON="$ICON_PAUSE "
+        fi
+
+        # Monta a informação final do player
+        PLAYBACK_INFO="$PLAYER_ICON$PLAYER_STRING"
+    fi
+fi
+
+# --- 4. Combina as Informações e Imprime ---
+FINAL_OUTPUT="$VOLUME_INFO" # Começa sempre com a info do volume
+
+# Adiciona a info do player se ela existir
+if [ -n "$PLAYBACK_INFO" ]; then
+    FINAL_OUTPUT="$FINAL_OUTPUT$SEPARATOR<small>$PLAYBACK_INFO</small>"
+fi
+
+echo "$FINAL_OUTPUT"
+
+exit 0

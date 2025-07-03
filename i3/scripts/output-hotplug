@@ -1,0 +1,118 @@
+#!/bin/bash
+
+export XAUTHORITY=/home/ton/.Xauthority
+if [[ -z "$DISPLAY" ]]; then
+    export DISPLAY=:0
+fi
+
+MOBILE="󰌢 Mobile"
+DOCK="󰍹 Docked"
+MULTI="󰍺 Multiscreen"
+ERROR="󰶐 Error"
+
+
+NOTEBOOK_DISPLAY="eDP-1"
+EXTERNAL_DISPLAY=$(xrandr | grep " connected" | grep -v "$NOTEBOOK_DISPLAY" | awk '{print $1}' | head -n 1)
+EXTERNAL_MODE="2560x1440"
+
+is_external_connected() {
+  [ -n "$EXTERNAL_DISPLAY" ] && xrandr | grep -q "$EXTERNAL_DISPLAY connected"
+}
+
+is_lid_closed() {
+  grep -q "closed" /proc/acpi/button/lid/LID1/state 2>/dev/null
+}
+
+is_display_active() {
+  xrandr | awk -v display_name="$1" '
+    $0 ~ display_name " connected" { found_display = 1; exit_code = 1; next }
+    found_display && /^[[:space:]]+/ {
+      if (index($0, "*")) {
+        exit_code = 0
+        found_display = 0
+      }
+    }
+    found_display && !/^[[:space:]]+/ { found_display = 0 }
+    END { exit exit_code }
+    '
+}
+
+
+get_current_mode() {
+  local notebook_active=$(is_display_active "$NOTEBOOK_DISPLAY" && echo "true" || echo "false")
+  local external_active=$(is_display_active "$EXTERNAL_DISPLAY" && echo "true" || echo "false")
+
+  if ! is_external_connected; then
+    echo "$MOBILE"
+  elif [ "$notebook_active" = "true" ] && [ "$external_active" = "true" ]; then
+    echo "$MULTI"
+  elif [ "$notebook_active" = "false" ] && [ "$external_active" = "true" ]; then
+    echo "$DOCK"
+  elif [ "$notebook_active" = "true" ] && [ "$external_active" = "false" ]; then
+    echo "$MOBILE"
+  else
+    echo "$ERROR"
+  fi
+}
+
+apply_docked_mode() {
+  xrandr --output "$NOTEBOOK_DISPLAY" --off --output "$EXTERNAL_DISPLAY" --mode "$EXTERNAL_MODE" --primary
+}
+
+apply_mobile_mode() {
+  xrandr --output "$EXTERNAL_DISPLAY" --off --output "$NOTEBOOK_DISPLAY" --auto --primary
+}
+
+apply_multiscreen_mode() {
+  xrandr --output "$NOTEBOOK_DISPLAY" --auto --output "$EXTERNAL_DISPLAY" --mode "$EXTERNAL_MODE" --primary --left-of "$NOTEBOOK_DISPLAY"
+}
+
+if [ -n "$BLOCK_BUTTON" ]; then
+  # default_menu_options defined as an associative array
+  typeset -A default_menu_options
+  default_menu_options=(
+    ["$MOBILE"]="apply_mobile_mode"
+    ["$DOCK"]="apply_docked_mode"
+    ["$MULTI"]="apply_multiscreen_mode"
+  )
+
+  typeset -A menu
+
+  if ! is_external_connected; then
+    menu[${MOBILE}]=${default_menu_options[${MOBILE}]}
+  elif is_lid_closed; then
+    menu[${DOCK}]=${default_menu_options[${DOCK}]}
+  else
+    current_mode=$(get_current_mode)
+
+    case "$current_mode" in
+      "$MULTI")
+        menu[${DOCK}]=${default_menu_options[${DOCK}]}
+        menu[${MOBILE}]=${default_menu_options[${MOBILE}]}
+        ;;
+      "$MOBILE")
+        menu[${DOCK}]=${default_menu_options[${DOCK}]}
+        menu[${MULTI}]=${default_menu_options[${MULTI}]}
+        ;;
+      *)
+        menu[${MULTI}]=${default_menu_options[${MULTI}]}
+        menu[${MOBILE}]=${default_menu_options[${MOBILE}]}
+        ;;
+    esac
+  fi
+
+  unset default_menu_options
+  menu_nrows=${#menu[@]}
+  
+  mode=$(printf '%s\n' "${!menu[@]}" | rofi -theme ~/.config/rofi/powermenu.rasi -dmenu -i -l "${menu_nrows}") 
+  ${menu[${mode}]}
+
+else
+  if is_external_connected; then
+    apply_docked_mode
+  else
+    apply_mobile_mode
+  fi
+fi
+
+get_current_mode

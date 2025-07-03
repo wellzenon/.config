@@ -1,0 +1,69 @@
+# This is the configuration file for Ghostty.
+#
+# This template file has been automatically created at the following
+# path since Ghostty couldn't find any existing config files on your system:
+#
+#   /home/ton/.config/ghostty/config
+#
+# The template does not set any default options, since Ghostty ships
+# with sensible defaults for all options. Users should only need to set
+# options that they want to change from the default.
+#
+# Run `ghostty +show-config --default --docs` to view a list of
+# all available config options and their default values.
+#
+# Additionally, each config option is also explained in detail
+# on Ghostty's website, at https://ghostty.org/docs/config.
+
+# Config syntax crash course
+# ==========================
+# # The config file consists of simple key-value pairs,
+# # separated by equals signs.
+
+# font-family = monospace
+font-family = JetBrainsMono Nerd Font
+# font-family = ZedMono NF
+# font-family = Maple Mono Normal NF
+# font-style = ExtraLight
+# font-style-italic = Italic
+# font-style-bold= ExtraBold
+# font-style-bold-italic = ExtraBold Oblique
+font-size = 10
+adjust-cell-height=40%
+
+# font-family = VictorMono Nerd Font
+# font-style = Medium
+# font-style-italic = Medium Oblique
+# font-style-bold-italic = Bold Oblique
+# font-size = 12
+# adjust-cell-height=15%
+
+window-padding-x = 5
+window-padding-y = 0
+window-padding-balance = true
+
+gtk-titlebar = false
+window-decoration = none
+# background-opacity = 0.9
+
+gtk-custom-css = ./no-window-padding.css
+theme = Atom
+# window-padding-color = extend
+# background = 2c2d30
+background = 30302e
+# background = 1A1C1E
+
+bold-is-bright = true
+gtk-tabs-location = hidden
+
+keybind = ctrl+t=new_tab
+keybind = ctrl+shift+w=close_surface
+keybind = ctrl+shift+tab=toggle_tab_overview
+
+### SHADERS ###
+# custom-shader = ./ghostty-shaders/gradient-background.glsl
+# custom-shader = ./shaders/glow-rgbsplit-twitchy.glsl
+
+# only set this during testing, defaults to "true" which animates only active windows
+# custom-shader-animation = always
+keybind = shift+enter=text:\n

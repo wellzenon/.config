@@ -1,0 +1,92 @@
+#!/usr/bin/env python3
+
+import sys
+import subprocess
+import html
+# import string # Não é mais necessário se não fizermos filtragem extra
+
+# --- Configuração ---
+MAX_LEN = 50  # Largura máxima do título exibido
+FALLBACK_ENCODING = "latin-1"  # Codificação para tentar se UTF-8 falhar
+
+
+# --- Funções Auxiliares ---
+def run_command_get_bytes(cmd):
+    """Executa um comando e retorna a saída (stdout) como BYTES, ou None em caso de erro."""
+    try:
+        # Captura stdout como bytes, ignora stderr, verifica erro no comando
+        result = subprocess.run(
+            cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=True
+        )
+        return result.stdout
+    except (FileNotFoundError, subprocess.CalledProcessError, Exception):
+        # Retorna None silenciosamente em caso de falha
+        return None
+
+
+def decode_robustly(raw_bytes):
+    """Tenta decodificar bytes como UTF-8, com fallback se falhar."""
+    if raw_bytes is None:
+        return None
+    try:
+        # Tenta UTF-8 primeiro, estritamente
+        return raw_bytes.decode("utf-8", errors="strict").strip()
+    except UnicodeDecodeError:
+        # Se falhar, tenta o fallback, substituindo erros
+        try:
+            return raw_bytes.decode(FALLBACK_ENCODING, errors="replace").strip()
+        except Exception:
+            # Como último recurso, tenta UTF-8 ignorando erros
+            try:
+                return raw_bytes.decode("utf-8", errors="ignore").strip()
+            except Exception:
+                return None  # Falha total
+
+
+def process_title(text):
+    """Escapa caracteres Pango/JSON e trunca a string."""
+    if not text:
+        return ""
+
+    # 1. Escapa para Pango (<, >, &)
+    pango_escaped = html.escape(text, quote=False)
+
+    # 2. Escapa para JSON mínimo (\ e ") manualmente
+    # IMPORTANTE: Barras invertidas PRIMEIRO!
+    json_minimal_escaped = pango_escaped.replace("\\", "\\\\").replace('"', '\\"')
+
+    # 3. Trunca o resultado final
+    if len(json_minimal_escaped) > MAX_LEN:
+        return json_minimal_escaped[:MAX_LEN]
+    else:
+        return json_minimal_escaped
+
+
+# --- Lógica Principal ---
+active_win_id_bytes = run_command_get_bytes(["xdotool", "getactivewindow"])
+active_win_id = decode_robustly(
+    active_win_id_bytes
+)  # Decodifica o ID (geralmente ASCII)
+
+final_output = ""  # Padrão é string vazia
+
+# Só prossegue se obteve um ID de janela válido
+if active_win_id:
+    window_title_bytes = run_command_get_bytes(
+        ["xdotool", "getwindowname", active_win_id]
+    )
+    # Só prossegue se obteve os bytes do título
+    if window_title_bytes is not None:
+        window_title_decoded = decode_robustly(window_title_bytes)
+        # Só prossegue se conseguiu decodificar o título
+        if window_title_decoded is not None:
+            final_output = process_title(window_title_decoded)
+
+# --- Imprime Resultado Final ---
+# Garante que a saída para o i3blocks seja UTF-8
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+except AttributeError:
+    # Ignora erro se 'reconfigure' não existir (Python mais antigo)
+    pass
+print(final_output)

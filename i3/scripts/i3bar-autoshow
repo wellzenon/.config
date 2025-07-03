@@ -1,0 +1,31 @@
+#!/bin/bash
+
+BAR_VISIBLE=false
+THRESHOLD_SHOW=30
+THRESHOLD_HIDE=100
+HIDE_DELAY=0.1
+
+while true; do
+    eval $(xdotool getmouselocation --shell 2>/dev/null)
+
+    if [ $? -eq 0 ]; then
+        if [ "$Y" -le "$THRESHOLD_SHOW" ]; then
+            if [ "$BAR_VISIBLE" = false ]; then
+                i3-msg "bar hidden_state show"
+                # i3-msg "bar mode dock"
+                BAR_VISIBLE=true
+            fi
+        elif [ "$Y" -gt "$THRESHOLD_HIDE" ]; then
+            if [ "$BAR_VISIBLE" = true ]; then
+                sleep "$HIDE_DELAY"
+                eval $(xdotool getmouselocation --shell 2>/dev/null)
+                if [ "$Y" -gt "$THRESHOLD_HIDE" ]; then
+                    i3-msg "bar hidden_state hide"
+                    # i3-msg "bar mode hide"
+                    BAR_VISIBLE=false
+                fi
+            fi
+        fi
+    fi
+    sleep 0.1
+done

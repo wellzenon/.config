@@ -1,0 +1,19 @@
+/*******************************************************
+ * ROFI configs i3 Apps menu for EndeavourOS
+ * Maintainer: joekamprad [joekamprad //a_t// endeavouros.com]
+ *******************************************************/
+@import "~/.config/rofi/config.rasi"
+
+configuration {
+    modi:           "windowcd,window";
+    show-icons:     true;
+}
+listview {
+    lines: 5;
+    columns: 2;
+    scrollbar: true;
+}
+
+inputbar {
+    children:   [ textbox-prompt-colon,entry,mode-switcher,case-indicator ];
+}

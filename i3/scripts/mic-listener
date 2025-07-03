@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Signal to send to i3blocks when mic state changes
+SIGNAL=11
+
+# Function to send signal to i3blocks
+send_signal() {
+    pkill -RTMIN+$SIGNAL i3blocks
+}
+
+# Monitor microphone changes using amixer
+MIC_CONTROL="Capture"
+
+# Initialize monitoring
+amixer -D pulse sset $MIC_CONTROL 0% &>/dev/null
+amixer -D pulse sset $MIC_CONTROL 100% &>/dev/null
+
+# Main loop
+while true; do
+    # Monitor for changes in microphone state
+    amixer -D pulse sset $MIC_CONTROL 0% &>/dev/null
+    amixer -D pulse sset $MIC_CONTROL 100% &>/dev/null
+    send_signal
+    sleep 0.1
+done 

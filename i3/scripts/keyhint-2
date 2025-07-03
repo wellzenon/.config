@@ -1,0 +1,19 @@
+
+I3_CONFIG="$HOME/.config/i3/config"
+mod_key=$(sed -nre 's/^set \$mod (.*)/\1/p' "$I3_CONFIG")
+
+grep "^bindsym" "$I3_CONFIG" \
+  | sed -e "s/-\(-\w\+\)\+//g" \
+        -e "s/\$mod/${mod_key}/g" \
+        -e "s/Mod1/Alt/g" \
+        -e "s/exec //" \
+        -e "s/bindsym //" \
+        -e "s/^\s\+//" \
+  | awk '{
+      key = $1;
+      $1 = "";
+      cmd = substr($0, 2);
+      printf "<b>%-16s</b> %s\n", key, cmd;
+  }' \
+  | sort -V \
+  | rofi -markup-rows -dmenu -theme ~/.config/rofi/rofikeyhint.rasi

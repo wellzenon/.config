@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# Argumentos com valores padrão
+con_mark="${1:-toggle_term}"
+position="${2:-right}"
+width_pct="${3:-35}"
+height_pct="${4:-100}"
+
+# Detecta o output focado
+focused_output=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused).output')
+
+# Pega resolução e offset do monitor focado
+read -r res_x res_y offset_x offset_y <<< $(xrandr | grep "^$focused_output connected" | grep -oP '\d+x\d+\+\d+\+\d+' | tr 'x+' ' ')
+
+# Converte porcentagens em pixels
+scratch_w=$((res_x * width_pct / 100))
+scratch_h=$((res_y * height_pct / 100))
+
+# Posição horizontal
+case "$position" in
+    left|topleft|bottomleft)
+        scratch_x=$offset_x
+        ;;
+    right|topright|bottomright)
+        scratch_x=$((offset_x + res_x - scratch_w))
+        ;;
+    center|top|bottom)
+        scratch_x=$((offset_x + (res_x - scratch_w) / 2))
+        ;;
+    *)
+        echo "Posição inválida: $position"
+        exit 1
+        ;;
+esac
+
+# Posição vertical
+case "$position" in
+    top|topleft|topright)
+        scratch_y=$offset_y
+        ;;
+    bottom|bottomleft|bottomright)
+        scratch_y=$((offset_y + res_y - scratch_h))
+        ;;
+    left|right|center)
+        scratch_y=$((offset_y + (res_y - scratch_h) / 2))
+        ;;
+esac
+
+# Move e redimensiona o scratchpad
+i3-msg "[con_mark=$con_mark] scratchpad show, resize set width ${width_pct}ppt height ${height_pct}ppt, move position ${scratch_x} px ${scratch_y} px"

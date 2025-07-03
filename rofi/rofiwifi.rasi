@@ -1,0 +1,16 @@
+/*******************************************************
+ * ROFI configs i3 keyhint-menu for EndeavourOS
+ * Maintainer: joekamprad [joekamprad //a_t// endeavouros.com]
+ *******************************************************/
+@import "~/.config/rofi/config.rasi"
+
+window {
+    width: 20em;
+}
+
+element-text {
+    markup: true;
+}
+inputbar {
+    children:   [ textbox-prompt-colon,entry,case-indicator ];
+}

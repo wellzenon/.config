@@ -1,0 +1,11 @@
+#search-bar{
+  margin: 0.8em ;
+}
+.tile {
+  margin: 0.5em 0;
+  padding: 1em 2em;
+}
+
+#title, #search-bar {
+  font-size: 28px;
+}
