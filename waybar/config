@@ -14,33 +14,34 @@
     "margin-top": 10,
     "margin-bottom": 0,
 
-    "spacing": 15, // Gaps between modules (4px)
+    "spacing": 15,
 
     "modules-left": [
         "custom/fuzzel",
         "niri/workspaces",
-        //"mpd"
         "custom/spotify",
         "niri/window"
     ],
     "modules-center": [
         "clock#date",
         "clock",
-        "custom/weather"
+        "custom/weather",
+        "custom/space"
     ],
     "modules-right": [
         "mpris",
         "wireplumber",
+        "custom/microphone",
         "custom/external",
         "custom/notebook",
         "temperature",
-        "backlight",
-        "custom/storage",
-        "memory",
+        //"backlight",
+        //"custom/storage",
+        //"memory",
         "cpu",
         "battery",
         //"pulseaudio",
-        "custom/screenshot_t",
+        //"custom/screenshot_t",
         "tray",
         "custom/power"
     ],
@@ -85,6 +86,7 @@
     "mpris": {
         "format": "{player_icon} {dynamic}",
         "format-paused": "{status_icon} <i>{dynamic}</i>",
+        "dynamic-order": ["title", "artist", "album"],
         "dynamic-len": 80,
         "player-icons": {
             "default": "",
@@ -118,12 +120,12 @@
 
     "temperature": {
         // "thermal-zone": 1,
-        "interval": 4,
+        "interval": 5,
         //"hwmon-path": "/sys/class/hwmon/hwmon3/temp1_input",
         "critical-threshold": 80,
         // "format-critical": " {temperatureC}°C",
-        "format-critical": "  {temperatureC}°C",
-        "format": "{icon}  {temperatureC}°C",
+        "format-critical": " {temperatureC}°C",
+        "format": "{icon} {temperatureC}°C",
         "format-icons": ["", "", ""],
         "max-length": 7,
         "min-length": 7,
@@ -137,7 +139,7 @@
     },
 
     "battery": {
-        "interval": 2,
+        "interval": 5,
         "states": {
             "good": 95,
             "warning": 30,
@@ -154,6 +156,7 @@
             ""
         ]
     },
+
     "network": {
         "format-wifi": " {essid} ({signalStrength}%)",
         "format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
@@ -167,6 +170,7 @@
         "tooltip-format-wifi": " {essid} {frequency}MHz\nStrength: {signaldBm}dBm ({signalStrength}%)\nIP: {ipaddr}/{cidr}\n {bandwidthUpBits}  {bandwidthDownBits}",
         "interval": 10
     },
+
     "custom/storage": {
         "format": " {}",
         "format-alt": "{percentage}% ",
@@ -186,6 +190,7 @@
         "on-scroll-down": "brightnessctl s 5%-",
         "on-scroll-up": "brightnessctl s +5%"
     },
+
     "idle_inhibitor": {
         "format": "{icon}",
         "format-icons": {
@@ -205,6 +210,7 @@
         //"exec": "~/.config/waybar/modules/weather.sh",
         "exec-if": "ping wttr.in -c1"
     },
+
     "custom/pacman": {
         "format": "<big>􏆲</big>  {}",
         "interval": 3600,                     // every hour
@@ -282,9 +288,9 @@
     },
 
     "cpu": {
-        "interval": 1,
+        "interval": 5,
         //"format": " {}%", // Icon: microchip
-        "format": "{max_frequency}GHz <span color=\"darkgray\">| {usage}%</span>",
+        "format": "{max_frequency}GHz<span color=\"darkgray\">|{usage}%</span>",
         "max-length": 13,
         "min-length": 13
     },
@@ -304,21 +310,8 @@
         "tooltip-format": "{title} - {artist} ({elapsedTime:%M:%S}/{totalTime:%H:%M:%S})"
     },
 
-    "custom/title": {
-        "format": "{}",
-        "interval": 0,
-        "return-type": "json",
-        //"max-length": 35,
-        "tooltip": false
-    },
-
-    "custom/title#name": {
-        "format": "{}",
-        "interval": 0,
-        "return-type": "json",
-
-        "max-length": 35,
-        "exec": "$HOME/.scripts/title"
+    "custom/space": {
+        "format": "  "
     },
 
     /*"custom/keyboard": {
@@ -330,8 +323,8 @@
     "niri/workspaces": {
         "format": "{icon}",
         "format-icons": {
-            "active": "<span size='x-large'>󱓻</span>",
-            "default": "<span size='x-small'></span>"
+            "active": "<span stretch='ultracondensed'>󰭯󰭯󰭯󰭯</span>",
+            "default": "<span alpha='50%'>󰭯</span>"
         }
     },
 
@@ -343,55 +336,6 @@
             "(.*) - Mozilla Firefox": "🌎 $1",
             "(.*) - zsh": "> [$1]"
         }
-    },
-
-    "hyprland/workspaces": {
-        "all-outputs": true,
-        "format": "{name}",
-        "format-icons": {
-            "1": "一",
-            "2": "二",
-            "3": "三",
-            "4": "四",
-            "5": "五",
-            "6": "六",
-            "7": "七",
-            "8": "八",
-            "9": "九",
-            "10": "十",
-        },
-        "on-scroll-up": "hyprctl dispatch workspace e+1 1>/dev/null",
-        "on-scroll-down": "hyprctl dispatch workspace e-1 1>/dev/null",
-        "sort-by-number": true,
-        "active-only": false,
-    },
-
-    "hyprland/window": {
-        "max-length": 100,
-        "separate-outputs": true
-    },
-
-    "pulseaudio": {
-        "scroll-step": 3, // %, can be a float
-        "format": "{icon} {volume}% {format_source}",
-        "format-bluetooth": "{volume}% {icon} {format_source}",
-        "format-bluetooth-muted": " {icon} {format_source}",
-        "format-muted": " {format_source}",
-        //"format-source": "{volume}% ",
-        //"format-source-muted": "",
-        "format-source": "",
-        "format-source-muted": "",
-        "format-icons": {
-            "headphone": "",
-            "hands-free": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
-            "default": ["", "", ""]
-        },
-        "on-click": "pavucontrol",
-        "on-click-right": "amixer sset Master toggle"
     },
 
     "wireplumber": {
@@ -413,8 +357,19 @@
             "phone": " ",
             "portable": " ",
             "car": " ",
-            "default": [" ", " ", " "]
+            "default": ["", "", ""]
         },
+    },
+
+    "custom/microphone": {
+        "format": "{}",
+        "tooltip": true,
+        "tooltip-format": "Microfone: {}",
+        "exec": "~/.config/waybar/modules/mic-wpctl.sh",
+        "on-click": "wpctl set-mute @DEFAULT_SOURCE@ toggle",
+        "on-scroll-up": "wpctl set-volume @DEFAULT_SOURCE@ 5%+",
+        "on-scroll-down": "wpctl set-volume @DEFAULT_SOURCE@ 5%-",
+        "interval": 1
     },
 
     "tray": {

@@ -1,7 +1,7 @@
 
 * {
-    font-family: "JetBrainsMono NF", "Fira Sans Semibold", "Font Awesome 6 Free", FontAwesome, Roboto, Helvetica, Arial, sans-serif;
-    font-size: 12px;
+    font-family: "JetBrainsMono NFP", "Fira Sans Semibold", "Font Awesome 6 Free", FontAwesome, Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
     font-weight: 400;
     margin: 0;
     padding: 0;
@@ -34,11 +34,13 @@ window#waybar.hidden {
 #workspaces button {
     color: #5aaca5;
     transition: all 0.3s ease-in-out;
-    margin: 0 0.5em;
+    padding: 0 0.3em;
+    margin: 0.1em;
 }
 
 #workspaces button.active {
     color: #99BC80;
+    padding: 0 0.5em;
     /* background: #5aaca5; */
 }
 

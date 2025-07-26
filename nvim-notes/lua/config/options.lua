@@ -34,14 +34,14 @@ vim.opt.showmode = false
 --  See `:help 'clipboard'`
 vim.schedule(function()
   vim.g.clipboard = {
-    name = 'slackadays-clipboard',
+    name = 'wl-clipboard',
     copy = {
-      ['+'] = 'cb copy', -- Comando para copiar para a área de transferência do sistema (+)
-      ['*'] = 'cb copy', -- Comando para copiar para a seleção primária (*) - pode ser igual ou diferente
+      ['+'] = 'wl-copy', -- Comando para copiar para a área de transferência do sistema (+)
+      ['*'] = 'wl-copy', -- Comando para copiar para a seleção primária (*) - pode ser igual ou diferente
     },
     paste = {
-      ['+'] = 'cb paste', -- Comando para colar da área de transferência do sistema (+)
-      ['*'] = 'cb paste', -- Comando para colar da seleção primária (*)
+      ['+'] = 'wl-paste --no-newline', -- Comando para colar da área de transferência do sistema (+)
+      ['*'] = 'wl-paste --no-newline', -- Comando para colar da seleção primária (*)
     },
     cache_enabled = 1, -- Habilita o cache (geralmente recomendado)
   }

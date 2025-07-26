@@ -1,9 +1,7 @@
 #!/bin/bash
 
 # Obter uma lista de IDs de todos os sinks de áudio
-status=$(wpctl status | awk '/^Audio/ {audio=1; next}; /Sinks/ {sinks=1; next}; /Sources/ {sinks=0} /^$/ {audio=0}; audio && sinks {gsub(/\./, "", $0); if ($0 ~ "*") {print $3 " default"} else {print $2}}')
-
-sink_ids=($(echo "$status" | awk '{print $1}'))
+sink_ids=($(wpctl status | awk '/^Audio/ {audio=1; next}; /Sinks/ {sinks=1; next}; /Sources/ {sinks=0} /^$/ {audio=0}; audio && sinks {gsub(/\./, "", $0); if ($0 ~ "*") {print $3} else {print $2}}'))
 
 # Se não houver sinks, saia
 if [ ${#sink_ids[@]} -eq 0 ]; then
@@ -11,8 +9,8 @@ if [ ${#sink_ids[@]} -eq 0 ]; then
   exit 1
 fi
 
-# Obter o ID do sink padrão atual (o que tem um '*')
-current_sink_id=$(echo "$status" | awk '/default/ {print $1}')
+# Obter o ID do sink padrão atual
+current_sink_id=$(wpctl inspect @DEFAULT_AUDIO_SINK@ | grep -oP '(?<=id )[0-9]+')
 
 # Encontrar o índice do sink atual no array
 current_index=-1

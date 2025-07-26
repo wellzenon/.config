@@ -28,7 +28,7 @@ font-family = JetBrainsMono Nerd Font
 # font-style-italic = Italic
 # font-style-bold= ExtraBold
 # font-style-bold-italic = ExtraBold Oblique
-font-size = 10
+font-size = 12
 adjust-cell-height=40%
 
 # font-family = VictorMono Nerd Font
@@ -44,7 +44,9 @@ window-padding-balance = true
 
 gtk-titlebar = false
 window-decoration = none
-# background-opacity = 0.9
+# background-opacity = 0
+# background-blur= true
+# background-blur-radius = 10
 
 gtk-custom-css = ./no-window-padding.css
 theme = Atom

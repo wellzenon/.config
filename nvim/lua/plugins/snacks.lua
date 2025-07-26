@@ -35,6 +35,16 @@ return {
             focus = 'list',
             current = false,
           },
+          lsp_symbols = {
+            focus = 'list',
+            layout = { preset = 'sidebar', layout = { position = 'right' } },
+            -- layout = {
+            --   preset = function()
+            --     return vim.o.columns >= 120 and 'sidebar' or 'vertical'
+            --   end,
+            --   layout = { position = 'right' },
+            -- },
+          },
           qflist = {
             layout = { preset = 'default' },
           },
