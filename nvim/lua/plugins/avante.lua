@@ -6,24 +6,24 @@ return {
     provider = 'gemini',
     providers = {
       gemini = {
-        model = 'gemini-2.5-flash-preview-04-17',
+        model = 'gemini-2.5-flash-lite',
         timeout = 30000, -- timeout in milliseconds
         temperature = 0, -- adjust if needed
         max_tokens = 1048576,
       },
-      ['gemini 2.5 PP'] = {
+      ['gemini 2.5 Pro'] = {
         __inherited_from = 'gemini',
-        model = 'gemini-2.5-pro-exp-03-25',
+        model = 'gemini-2.5-pro',
         max_tokens = 1048576,
       },
-      ['gemini 2.0 F'] = {
-        model = 'gemini-2.0-flash',
+      ['gemini 2.5 Flash'] = {
+        model = 'gemini-2.5-flash',
         __inherited_from = 'gemini',
         max_tokens = 1048576,
       },
-      ['gemini 2.0 FT'] = {
+      ['gemini 2.5 Live'] = {
         __inherited_from = 'gemini',
-        model = 'gemini-2.0-flash-thinking-exp-01-21',
+        model = 'gemini-live-2.5-flash-preview',
         max_tokens = 1048576,
       },
       mistral = {
@@ -42,6 +42,19 @@ return {
           max_completion_tokens = 32768,
         },
       },
+      morph = {
+        model = 'morph-v3-large',
+      },
+    },
+    acp_providers = {
+      ['gemini-cli'] = {
+        command = 'gemini',
+        args = { '--experimental-acp' },
+        env = {
+          NODE_NO_WARNINGS = '1',
+          GEMINI_API_KEY = os.getenv 'GEMINI_API_KEY',
+        },
+      },
     },
     behaviour = {
       auto_suggestions = false, -- Experimental stage
@@ -50,6 +63,7 @@ return {
       auto_apply_diff_after_generation = false,
       support_paste_from_clipboard = true,
       enable_cursor_planning_mode = true,
+      enable_fastapply = true, -- Enable Fast Apply feature
       mappings = {
         sidebar = {
           close_from_input = { normal = '<Esc>' },

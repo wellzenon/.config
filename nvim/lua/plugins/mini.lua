@@ -34,7 +34,7 @@ return {
         use_icons = vim.g.have_nerd_font,
         content = {
           active = function()
-            local mode, mode_hl = MiniStatusline.section_mode { trunc_width = 1200 }
+            -- local mode, mode_hl = MiniStatusline.section_mode { trunc_width = 1200 }
             local git = MiniStatusline.section_git { trunc_width = 40 }
             local diff = MiniStatusline.section_diff { trunc_width = 75 }
             local diagnostics = MiniStatusline.section_diagnostics { trunc_width = 75 }
@@ -45,24 +45,24 @@ return {
             local search = MiniStatusline.section_searchcount { trunc_width = 75 }
 
             -- Obter a definição do destaque para o modo
-            local hl_def = vim.api.nvim_get_hl(0, { name = mode_hl })
-            local mode_hl_to_use = mode_hl -- Padrão para o destaque original
+            -- local hl_def = vim.api.nvim_get_hl(0, { name = mode_hl })
+            -- local mode_hl_to_use = mode_hl -- Padrão para o destaque original
 
             -- Verificar se a definição do destaque é válida e tem fg/bg
-            if hl_def and hl_def.fg and hl_def.bg then
-              -- Definir um grupo de destaque temporário com cores invertidas
-              local inverted_hl_name = mode_hl .. '_inverted'
-              vim.api.nvim_set_hl(0, inverted_hl_name, { fg = hl_def.bg, bg = 'NONE', bold = true })
-              mode_hl_to_use = inverted_hl_name -- Usar o destaque invertido
-            end
+            -- if hl_def and hl_def.fg and hl_def.bg then
+            --   -- Definir um grupo de destaque temporário com cores invertidas
+            --   local inverted_hl_name = mode_hl .. '_inverted'
+            --   vim.api.nvim_set_hl(0, inverted_hl_name, { fg = hl_def.bg, bg = 'NONE', bold = true })
+            --   mode_hl_to_use = inverted_hl_name -- Usar o destaque invertido
+            -- end
 
             return MiniStatusline.combine_groups {
-              { hl = mode_hl_to_use, strings = { mode } },
-              { strings = { filename } },
+              -- { hl = mode_hl_to_use, strings = { mode } },
+              { hl = '@markup.quote.markdown', strings = { filename } },
               '%=', -- End left alignment
               { strings = { git, diff, diagnostics, lsp } },
               -- { hl = 'MiniStatuslineFileinfo', strings = { fileinfo } },
-              { hl = mode_hl_to_use, strings = { search, location } },
+              { hl = '@markup.strong', strings = { search, location } },
             }
           end,
         },
@@ -89,10 +89,21 @@ return {
         local full_location = ''
 
         if dir and dir ~= '.' then
-          full_location = full_location .. '%*' .. '%<' .. dir .. '%>' .. '/ '
+          full_location = full_location .. '%<' .. dir .. '%>' .. '/ '
         end
 
-        full_location = full_location .. '%#NavicIconsFile#' .. file_icon .. ' ' .. '%#@text.strong#' .. filename .. modified .. '  ' .. navic_location .. '%*'
+        full_location = '%#@markup.quote.markdown#'
+          .. full_location
+          .. '%#NavicIconsFile#'
+          .. file_icon
+          .. ' '
+          .. '%#@markup.strong#'
+          .. filename
+          .. modified
+          .. '  '
+          .. '%#@markup.quote.markdown#'
+          .. navic_location
+        -- .. '%*'
 
         return full_location
       end

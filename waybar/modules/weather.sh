@@ -1,79 +1,195 @@
 #!/bin/bash
 
-cachedir=~/.cache/rbn
-cachefile=${0##*/}-$1
+#-------------------------------------------------------------------------------
+# DESCRIÇÃO:
+#   Este script busca dados meteorológicos de wttr.in, analisa a resposta JSON
+#   e imprime uma linha de status concisa com ícone do tempo, temperatura,
+#   índice UV e precipitação (se houver).
+#
+# DEPENDÊNCIAS:
+#   - bash (v4.0+)
+#   - curl
+#   - jq
+#   - bc
+#-------------------------------------------------------------------------------
 
-if [ ! -d $cachedir ]; then
-    mkdir -p $cachedir
+# Garante que o script pare se um comando falhar
+set -e
+
+# --- Tabelas de Conversão e Símbolos ---
+
+# Mapeia o código da API (WWO_CODE) para uma descrição legível
+declare -A WWO_CODE=(
+    ["113"]="Sunny"
+    ["116"]="PartlyCloudy"
+    ["119"]="Cloudy"
+    ["122"]="VeryCloudy"
+    ["143"]="Fog"
+    ["176"]="LightShowers"
+    ["179"]="LightSleetShowers"
+    ["182"]="LightSleet"
+    ["185"]="LightSleet"
+    ["200"]="ThunderyShowers"
+    ["227"]="LightSnow"
+    ["230"]="HeavySnow"
+    ["248"]="Fog"
+    ["260"]="Fog"
+    ["263"]="LightShowers"
+    ["266"]="LightRain"
+    ["281"]="LightSleet"
+    ["284"]="LightSleet"
+    ["293"]="LightRain"
+    ["296"]="LightRain"
+    ["299"]="HeavyShowers"
+    ["302"]="HeavyRain"
+    ["305"]="HeavyShowers"
+    ["308"]="HeavyRain"
+    ["311"]="LightSleet"
+    ["314"]="LightSleet"
+    ["317"]="LightSleet"
+    ["320"]="LightSnow"
+    ["323"]="LightSnowShowers"
+    ["326"]="LightSnowShowers"
+    ["329"]="HeavySnow"
+    ["332"]="HeavySnow"
+    ["335"]="HeavySnowShowers"
+    ["338"]="HeavySnow"
+    ["350"]="LightSleet"
+    ["353"]="LightShowers"
+    ["356"]="HeavyShowers"
+    ["359"]="HeavyRain"
+    ["362"]="LightSleetShowers"
+    ["365"]="LightSleetShowers"
+    ["368"]="LightSnowShowers"
+    ["371"]="HeavySnowShowers"
+    ["374"]="LightSleetShowers"
+    ["377"]="LightSleet"
+    ["386"]="ThunderyShowers"
+    ["389"]="ThunderyHeavyRain"
+    ["392"]="ThunderySnowShowers"
+    ["395"]="HeavySnowShowers"
+)
+
+# Símbolos para condições diurnas
+declare -A WEATHER_SYMBOL_WI_DAY=(
+    ["Unknown"]=""
+    ["Cloudy"]=""
+    ["Fog"]=""
+    ["HeavyRain"]=""
+    ["HeavyShowers"]=""
+    ["HeavySnow"]=""
+    ["HeavySnowShowers"]=""
+    ["LightRain"]=""
+    ["LightShowers"]=""
+    ["LightSleet"]=""
+    ["LightSleetShowers"]=""
+    ["LightSnow"]=""
+    ["LightSnowShowers"]=""
+    ["PartlyCloudy"]=""
+    ["Sunny"]=""
+    ["ThunderyHeavyRain"]=""
+    ["ThunderyShowers"]=""
+    ["ThunderySnowShowers"]=""
+    ["VeryCloudy"]=""
+)
+
+# Símbolos para condições noturnas
+declare -A WEATHER_SYMBOL_WI_NIGHT=(
+    ["Unknown"]=""
+    ["Cloudy"]=""
+    ["Fog"]=""
+    ["HeavyRain"]=""
+    ["HeavyShowers"]=""
+    ["HeavySnow"]=""
+    ["HeavySnowShowers"]=""
+    ["LightRain"]=""
+    ["LightShowers"]=""
+    ["LightSleet"]=""
+    ["LightSleetShowers"]=""
+    ["LightSnow"]=""
+    ["LightSnowShowers"]=""
+    ["PartlyCloudy"]=""
+    ["Sunny"]=""
+    ["ThunderyHeavyRain"]=""
+    ["ThunderyShowers"]=""
+    ["ThunderySnowShowers"]=""
+    ["VeryCloudy"]=""
+)
+
+# --- Lógica do Script ---
+
+# 1. Obter os dados do tempo em formato JSON
+# A URL pode ser personalizada, ex: "https://wttr.in/Maringa?format=j1"
+weather_data=$(curl -s "https://wttr.in/?format=j1")
+
+# Se a requisição falhar, o JSON estará vazio.
+if [[ -z "$weather_data" ]]; then
+    echo "Erro: Não foi possível obter os dados do tempo."
+    exit 1
 fi
 
-if [ ! -f $cachedir/$cachefile ]; then
-    touch $cachedir/$cachefile
+# 2. Extrair os dados necessários do JSON usando jq
+current_condition=$(echo "$weather_data" | jq '.current_condition[0]')
+astronomy=$(echo "$weather_data" | jq '.weather[0].astronomy[0]')
+
+weather_code=$(echo "$current_condition" | jq -r '.weatherCode')
+temp_c=$(echo "$current_condition" | jq -r '.temp_C')
+uv_index=$(echo "$current_condition" | jq -r '.uvIndex')
+precip_mm=$(echo "$current_condition" | jq -r '.precipMM')
+
+# Para determinar se é dia ou noite
+sunrise_str=$(echo "$astronomy" | jq -r '.sunrise') # Ex: "07:04 AM"
+sunset_str=$(echo "$astronomy" | jq -r '.sunset')   # Ex: "06:09 PM"
+# Usamos a hora local da observação para a comparação
+obs_time_str=$(echo "$current_condition" | jq -r '.observation_time') # Extrai "HH:MM PM/AM"
+
+# 3. Determinar se é dia ou noite
+# Convertemos os horários para segundos para uma comparação numérica segura
+current_time_sec=$(date +%s -d "$obs_time_str")
+sunrise_sec=$(date +%s -d "$sunrise_str")
+sunset_sec=$(date +%s -d "$sunset_str")
+
+is_day=false
+if (( current_time_sec >= sunrise_sec && current_time_sec < sunset_sec )); then
+    is_day=true
 fi
 
-# Save current IFS
-SAVEIFS=$IFS
-# Change IFS to new line.
-IFS=$'\n'
+# 4. Obter a descrição e o símbolo do tempo
+weather_description=${WWO_CODE[$weather_code]:-"Unknown"} # Usa "Unknown" como padrão
 
-cacheage=$(($(date +%s) - $(stat -c '%Y' "$cachedir/$cachefile")))
-if [ $cacheage -gt 1740 ] || [ ! -s $cachedir/$cachefile ]; then
-    data=($(curl -s https://en.wttr.in/$1\?0qnT 2>&1))
-    echo ${data[0]} | cut -f1 -d, > $cachedir/$cachefile
-    echo ${data[1]} | sed -E 's/^.{15}//' >> $cachedir/$cachefile
-    echo ${data[2]} | sed -E 's/^.{15}//' >> $cachedir/$cachefile
+weather_symbol=""
+if $is_day; then
+    weather_symbol=${WEATHER_SYMBOL_WI_DAY[$weather_description]}
+else
+    weather_symbol=${WEATHER_SYMBOL_WI_NIGHT[$weather_description]}
 fi
 
-weather=($(cat $cachedir/$cachefile))
+# 5. Construir a string de saída
+output_string="${weather_symbol} ${temp_c}°C"
 
-# Restore IFSClear
-IFS=$SAVEIFS
+if [[ "$uv_index" > 0 ]]; then
+    output_string+=" 󱟾 ${uv_index}"
+fi
 
-temperature=$(echo ${weather[2]} | sed -E 's/([[:digit:]])+\.\./\1 to /g')
+# Adicionar precipitação somente se for maior que 0.
+# Esta nova seção compara a parte inteira e a decimal separadamente
+# para evitar a dependência do comando 'bc'.
 
-#echo ${weather[1]##*,}
+# Extrai a parte antes do ponto decimal. Ex: "1.2" -> "1"
+integer_part=${precip_mm%%.*}
+# Extrai a parte depois do ponto decimal. Ex: "1.2" -> "2"
+decimal_part=${precip_mm#*.}
 
-# https://fontawesome.com/icons?s=solid&c=weather
-case $(echo ${weather[1]##*,} | tr '[:upper:]' '[:lower:]') in
-"clear" | "sunny")
-    condition=""
-    ;;
-"partly cloudy")
-    condition="杖"
-    ;;
-"cloudy")
-    condition=""
-    ;;
-"overcast")
-    condition=""
-    ;;
-"mist" | "fog" | "freezing fog")
-    condition=""
-    ;;
-"patchy rain possible" | "patchy light drizzle" | "light drizzle" | "patchy light rain" | "light rain" | "light rain shower" | "rain")
-    condition=""
-    ;;
-"moderate rain at times" | "moderate rain" | "heavy rain at times" | "heavy rain" | "moderate or heavy rain shower" | "torrential rain shower" | "rain shower")
-    condition=""
-    ;;
-"patchy snow possible" | "patchy sleet possible" | "patchy freezing drizzle possible" | "freezing drizzle" | "heavy freezing drizzle" | "light freezing rain" | "moderate or heavy freezing rain" | "light sleet" | "ice pellets" | "light sleet showers" | "moderate or heavy sleet showers")
-    condition="ﭽ"
-    ;;
-"blowing snow" | "moderate or heavy sleet" | "patchy light snow" | "light snow" | "light snow showers")
-    condition="流"
-    ;;
-"blizzard" | "patchy moderate snow" | "moderate snow" | "patchy heavy snow" | "heavy snow" | "moderate or heavy snow with thunder" | "moderate or heavy snow showers")
-    condition="ﰕ"
-    ;;
-"thundery outbreaks possible" | "patchy light rain with thunder" | "moderate or heavy rain with thunder" | "patchy light snow with thunder")
-    condition=""
-    ;;
-*)
-    condition=""
-    echo -e "{\"text\":\""$condition"\", \"alt\":\""${weather[0]}"\", \"tooltip\":\""${weather[0]}: $temperature ${weather[1]}"\"}"
-    ;;
-esac
+# Se não houver ponto decimal (ex: "5"), as duas partes serão idênticas.
+# Nesse caso, consideramos a parte decimal como 0.
+if [[ "$integer_part" == "$decimal_part" ]]; then
+    decimal_part="0"
+fi
 
-#echo $temp $condition
+# O valor é > 0 se a parte inteira for > 0 OU a parte decimal for > 0.
+if (( integer_part > 0 || decimal_part > 0 )); then
+    output_string+=" 󰖗 ${precip_mm}mm"
+fi
 
-echo -e "{\"text\":\""$temperature $condition"\", \"alt\":\""${weather[0]}"\", \"tooltip\":\""${weather[0]}: $temperature ${weather[1]}"\"}"
+# 6. Imprimir a string final
+echo "$output_string"

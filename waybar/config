@@ -7,43 +7,38 @@
 
     "position": "top",
 
-    "height": 10,
+    "height": 5,
 
-    "margin-left": 25,
-    "margin-right": 25,
-    "margin-top": 10,
+    "margin-left": 0,
+    "margin-right": 0,
+    "margin-top": 2,
     "margin-bottom": 0,
 
-    "spacing": 15,
+    "spacing": 0,
 
     "modules-left": [
-        "custom/fuzzel",
         "niri/workspaces",
-        "custom/spotify",
-        "niri/window"
+        "wlr/taskbar"
     ],
-    "modules-center": [
-        "clock#date",
-        "clock",
-        "custom/weather",
-        "custom/space"
-    ],
+     "modules-center": [
+    //     "custom/space",
+    //     "custom/power",
+         "niri/window",
+         "custom/space",
+         "mpris"
+     ],
     "modules-right": [
-        "mpris",
+        "custom/space",
         "wireplumber",
+        "custom/space",
         "custom/microphone",
+        "custom/space",
         "custom/external",
         "custom/notebook",
-        "temperature",
-        //"backlight",
-        //"custom/storage",
-        //"memory",
-        "cpu",
-        "battery",
-        //"pulseaudio",
-        //"custom/screenshot_t",
         "tray",
-        "custom/power"
+        "temperature",
+        "battery",
+        "clock"
     ],
 
 
@@ -55,9 +50,34 @@
         "format": " | ",
         "tooltip": false
     },
+
     "custom/sp2": {
         "format": " |",
         "tooltip": false
+    },
+
+    "wlr/taskbar": {
+        "format": "{icon}",
+        "all-outputs": false,
+        "icon-size": 24,
+        "icon-theme": "Numix-Circle",
+        "tooltip-format": "{title}",
+        "on-click": "activate",
+        "on-click-middle": "close",
+        "on-click-right": "minimize",
+        "ignore-list": [
+           "Alacritty"
+        ],
+        "app_ids-mapping": {
+          "main-fox": "firefox",
+          "main-zen": "zen",
+          "com.terminal.notes": "com.terminal.nvim",
+          "com.terminal.scratch": "com.mitchellh.ghostty"
+        },
+        "rewrite": {
+            "Firefox Web Browser": "Firefox",
+            "Foot Server": "Terminal"
+        }
     },
 
     "custom/external": {
@@ -125,7 +145,7 @@
         "critical-threshold": 80,
         // "format-critical": " {temperatureC}°C",
         "format-critical": " {temperatureC}°C",
-        "format": "{icon} {temperatureC}°C",
+        "format": "",
         "format-icons": ["", "", ""],
         "max-length": 7,
         "min-length": 7,
@@ -145,9 +165,10 @@
             "warning": 30,
             "critical": 15
         },
-        "format": "{icon} {capacity}%",
-        "format-charging": " {capacity}%",
-        "format-plugged": " {capacity}%",
+        "format": "",
+        "format-good": "  {icon} {capacity}%  ",
+        "format-charging": "   {capacity}%  ",
+        "format-plugged": "   {capacity}%  ",
         "format-icons": [
             "",
             "",
@@ -205,9 +226,9 @@
         "format-alt-click": "click-right",
         "interval": 3600,
         //"exec": "curl -s 'https://wttr.in/?format=1'",
-        "exec": "curl -s https://wttr.in/?format='%c%f+🌞+%u+☔+%p'",
+        //"exec": "curl -s https://wttr.in/?format='%x+%p+%uuv+%f'",
         //"return-type": "json",
-        //"exec": "~/.config/waybar/modules/weather.sh",
+        "exec": "~/.config/waybar/modules/weather.sh",
         "exec-if": "ping wttr.in -c1"
     },
 
@@ -247,17 +268,18 @@
     "custom/power": {
         "format": " 󰐥 ",
         "tooltip": false,
-        "on-click": "sherlock --sub-menu pm"
+        "on-click": "walker -Hm power"
     },
 
     "clock": {
-        "format": "<span size='xx-large'><b>{:%H:%M}</b></span>",
+        "on-click": "walker -Hm power",
+        "format": "<span size='x-large'><b> {:%H:%M}</b></span>",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "today-format": "<b>{}</b>",
     },
 
     "clock#date": {
-        "format": "{:L%A, %d de %B de %Y}",
+        "format": "{:L%a, %d de %b}",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "today-format": "<b>{}</b>"
     },
@@ -290,7 +312,7 @@
     "cpu": {
         "interval": 5,
         //"format": " {}%", // Icon: microchip
-        "format": "{max_frequency}GHz<span color=\"darkgray\">|{usage}%</span>",
+        "format": "{max_frequency}GHz|{usage}%",
         "max-length": 13,
         "min-length": 13
     },
@@ -311,7 +333,7 @@
     },
 
     "custom/space": {
-        "format": "  "
+        "format": "   "
     },
 
     /*"custom/keyboard": {
@@ -323,15 +345,17 @@
     "niri/workspaces": {
         "format": "{icon}",
         "format-icons": {
-            "active": "<span stretch='ultracondensed'>󰭯󰭯󰭯󰭯</span>",
-            "default": "<span alpha='50%'>󰭯</span>"
+            "active": "󱓻󱓻󱓻󱓻󱓻󱓻",
+            "default": "󱓻"
         }
     },
 
     "niri/window": {
         "icon": true,
+        "icon-size": 20,
         "separate-outputs": true,
-        "format": "<b>{}</b>",
+        "format": "{}",
+        "on-click": "walker",
         "rewrite": {
             "(.*) - Mozilla Firefox": "🌎 $1",
             "(.*) - zsh": "> [$1]"
@@ -374,6 +398,6 @@
 
     "tray": {
         "icon-size": 15,
-        "spacing": 3
+        "spacing": 0
     }
 }

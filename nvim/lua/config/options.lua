@@ -40,7 +40,7 @@ vim.schedule(function()
       ['+'] = 'wl-paste --no-newline', -- Comando para colar da área de transferência do sistema (+)
       ['*'] = 'wl-paste --no-newline', -- Comando para colar da seleção primária (*)
     },
-    cache_enabled = 1,                 -- Habilita o cache (geralmente recomendado)
+    cache_enabled = 1, -- Habilita o cache (geralmente recomendado)
   }
   vim.opt.clipboard = 'unnamedplus'
 end)
@@ -56,7 +56,7 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 -- Keep signcolumn on by default
-vim.opt.signcolumn = 'yes'
+vim.opt.signcolumn = 'number'
 
 -- Decrease update time
 vim.opt.updatetime = 250

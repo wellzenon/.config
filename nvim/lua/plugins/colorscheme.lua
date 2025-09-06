@@ -126,13 +126,13 @@ return {
     priority = 1000, -- make sure to load this before all the other start plugins
     config = function()
       require('onedark').setup {
-        style = 'warm',
+        style = 'darker',
         transparent = true,
         -- Change code style ---
         -- Options are italic, bold, underline, none
         -- You can configure multiple style with comma separated, For e.g., keywords = 'italic,bold'
         code_style = {
-          comments = 'none',
+          comments = 'italic',
           keywords = 'bold',
           functions = 'none',
           strings = 'none',
@@ -145,6 +145,7 @@ return {
         },
         highlights = {
           ['Search'] = { fg = 'yellow', fmt = 'bold' },
+          ['CursorLine'] = { bg = '#232321' },
         },
       }
 
@@ -152,25 +153,95 @@ return {
         background_colour = '#00000000',
       }
       -- Enable theme
-      require('onedark').load()
+      -- require('onedark').load()
+    end,
+  },
+  {
+    'sainnhe/gruvbox-material',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.g.gruvbox_material_transparent_background = 2
+      vim.g.gruvbox_material_enable_italic = true
+      -- vim.cmd.colorscheme 'gruvbox-material'
+    end,
+  },
+  {
+    'ellisonleao/gruvbox.nvim',
+    priority = 1000,
+    config = true,
+    opts = {
+      terminal_colors = false, -- add neovim terminal colors
+      undercurl = true,
+      underline = true,
+      bold = true,
+      italic = {
+        strings = true,
+        emphasis = true,
+        comments = true,
+        operators = false,
+        folds = true,
+      },
+      strikethrough = true,
+      invert_selection = false,
+      invert_signs = false,
+      invert_tabline = false,
+      inverse = true, -- invert background for search, diffs, statuslines and errors
+      contrast = 'soft', -- can be "hard", "soft" or empty string
+      palette_overrides = {},
+      overrides = {},
+      dim_inactive = false,
+      transparent_mode = true,
+    },
+  },
+  {
+    'folke/tokyonight.nvim',
+    priority = 1000,
+    config = function()
+      ---@diagnostic disable-next-line: missing-fields
+      require('tokyonight').setup {
+        transparent = true,
+        styles = {
+          sidebars = 'transparent',
+          floats = 'transparent',
+          comments = { italic = false },
+        },
+      }
+      -- vim.cmd.colorscheme 'tokyonight-storm'
     end,
   },
 
-  -- {
-  --   'folke/tokyonight.nvim',
-  --   priority = 1000,
-  --   config = function()
-  --     ---@diagnostic disable-next-line: missing-fields
-  --     require('tokyonight').setup {
-  --       transparent = true,
-  --       styles = {
-  --         sidebars = 'transparent',
-  --         floats = 'transparent',
-  --         comments = { italic = false },
-  --       },
-  --     }
-  --     vim.cmd.colorscheme 'tokyonight-storm'
-  --   end,
-  -- },
+  {
+    'mcauley-penney/techbase.nvim',
+    opts = {
+      italic_comments = true,
+
+      -- set to true to make the background, floating windows, statusline,
+      -- signcolumn, foldcolumn, and tabline transparent
+      transparent = false,
+
+      plugin_support = {
+        aerial = false,
+        blink = true,
+        edgy = false,
+        gitsigns = true,
+        hl_match_area = true,
+        lazy = true,
+        lualine = false,
+        mason = true,
+        mini_cursorword = false,
+        nvim_cmp = false,
+        vim_illuminate = false,
+        visual_whitespace = false,
+      },
+
+      -- allows you to override any highlight group for finer-grained control
+      hl_overrides = {},
+    },
+    init = function()
+      vim.cmd.colorscheme 'techbase'
+    end,
+    priority = 1000,
+  },
 }
 -- vim: ts=2 sts=2 sw=2 et

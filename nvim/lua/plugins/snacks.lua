@@ -12,7 +12,11 @@ return {
       indent = { animate = { enabled = false } },
       lazygit = {},
       quickfile = { enabled = true },
-      statuscolumn = { enabled = true },
+      statuscolumn = {
+        enabled = false,
+        left = {},
+        right = { 'fold', 'git', 'sign', 'mark' },
+      },
       picker = {
         -- focus = 'list',
         ui_select = true, -- replace `vim.ui.select` with the snacks picker
@@ -50,7 +54,7 @@ return {
           },
         },
       },
-      -- scroll = { enabled = true },
+      scroll = { enabled = false },
     },
   -- stylua: ignore
   keys = {

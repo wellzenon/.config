@@ -13,7 +13,7 @@ input {
             // You can set rules, model, layout, variant and options.
             // For more information, see xkeyboard-config(7).
 
-            // For example:
+           // For example:
             layout "br"
             options "caps:escape_shifted_capslock"
         }
@@ -63,13 +63,13 @@ input {
 
     // Focus windows and outputs automatically when moving the mouse into them.
     // Setting max-scroll-amount="0%" makes it work only on windows already fully on screen.
-    focus-follows-mouse max-scroll-amount="20%"
+    focus-follows-mouse max-scroll-amount="15%"
 }
 
 // Disable the hot corners.
 gestures {
     hot-corners {
-        off
+        // off
     }
 }
 
@@ -119,7 +119,7 @@ output "eDP-1" {
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Layout
 layout {
     // Set gaps around windows in logical pixels.
-    gaps 15
+    gaps 20
 
     background-color "transparent"
     // When to center a column when changing focus, options are:
@@ -166,10 +166,10 @@ layout {
     // You can change how the focus ring looks.
     focus-ring {
         // Uncomment this line to disable the focus ring.
-        // off
+        off
 
         // How many logical pixels the ring extends out from the windows.
-        width 2
+        width 1
 
         // Colors can be set in a variety of ways:
         // - CSS named colors: "red"
@@ -177,10 +177,10 @@ layout {
         // - CSS-like notation: "rgb(255, 127, 0)", rgba(), hsl() and a few others.
 
         // Color of the ring on the active monitor.
-        // active-color "#7fc8ff"
+        active-color "#ffffff70"
 
         // Color of the ring on inactive monitors.
-        inactive-color "#50505080"
+        inactive-color "#50505000"
 
         // You can also use gradients. They take precedence over solid colors.
         // Gradients are rendered the same as CSS linear-gradient(angle, from, to).
@@ -189,13 +189,15 @@ layout {
         // You can use any CSS linear-gradient tool on the web to set these up.
         // Changing the color space is also supported, check the wiki for more info.
         //
-        active-gradient from="#80c8ff80" to="#ffc87f80" angle=135
+        // active-gradient from="ffc87f50" to="#ffc87f80" angle=120
+        // active-gradient from="#80c8ff00" to="#ffc87f" angle=120
 
         // You can also color the gradient relative to the entire view
         // of the workspace, rather than relative to just the window itself.
         // To do that, set relative-to="workspace-view".
         //
-        inactive-gradient from="#50505080" to="#80808080" angle=135 relative-to="workspace-view"
+        inactive-gradient from="#50505000" to="#ffffff50" angle=120 relative-to="workspace-view"
+        // inactive-gradient from="#50505000" to="#80808080" angle=90 relative-to="workspace-view"
     }
 
     // You can also add a border. It's similar to the focus ring, but always visible.
@@ -204,8 +206,8 @@ layout {
         // If you enable the border, you probably want to disable the focus ring.
         off
 
-        width 4
-        active-color "#ffc87f"
+        width 2
+        active-color "#555"
         inactive-color "#505050"
 
         // Color of the border around windows that request your attention.
@@ -258,9 +260,9 @@ layout {
     // Top and bottom struts will simply add outer gaps in addition to the area occupied by
     // layer-shell panels and regular gaps.
     struts {
-        // left 64
-        // right 64
-        top -5
+        left 24
+        right 24
+        top -16
         // bottom 64
     }
 }
@@ -273,7 +275,8 @@ layout {
 environment {
     EGL_PLATFORM "wayland"
     QT_QPA_PLATFORM "wayland"
-    DISPLAY null
+    MOZ_ENABLE_WAYLAND "1"
+    ELECTRON_OZONE_PLATFORM_HINT "auto"
 }
 
 cursor {
@@ -284,12 +287,22 @@ cursor {
 spawn-at-startup "wl-paste" "--watch" "cliphist" "store"
 
 spawn-at-startup "nm-applet"
-spawn-at-startup "~/.config/waybar/waybar.sh"
-spawn-at-startup "sh" "-c" "swaybg -m fill -i ~/.config/wallpapers/orion_nebula_nasa_heic0601a.jpg"
+// spawn-at-startup "sh" "-c" "swaybg -m fill -i ~/.config/wallpapers/orion_nebula_nasa_heic0601a.jpg"
 spawn-at-startup "sh" "-c" "syncthing serve"
 spawn-at-startup "sh" "-c" "swayidle timeout 601 'niri msg action power-off-monitors' timeout 600 'systemctl suspend'"
 // spawn-at-startup "sh" "-c" "swayidle -w timeout 601 'niri msg action power-off-monitors' timeout 600 'swaylock -f' before-sleep 'swaylock -f'"
 
+spawn-at-startup "sh" "-c" "swaybg -m fill -i ~/.config/wallpapers/clouds-4k_4474x2517.jpg"
+spawn-at-startup "~/.config/waybar/waybar.sh"
+
+workspace "ndrop"
+spawn-at-startup "niri" "msg" "action" "focus-workspace-down"
+
+spawn-at-startup "walker" "--gapplication-service"
+// spawn-at-startup "sh" "-c" "matugen image ~/.config/wallpapers/clouds-4k_4474x2517.jpg"
+// spawn-at-startup "swww-daemon"
+// spawn-at-startup "ignis" "init"
+// spawn-at-startup "sh" "-c" "swww img ~/.config/wallpapers/clouds-4k_4474x2517.jpg"
 
 // Uncomment this line to ask the clients to omit their client-side decorations if possible.
 // If the client will specifically ask for CSD, the request will be honored.
@@ -312,7 +325,7 @@ animations {
     // off
 
     // Slow down all animations by this factor. Values below 1 speed them up instead.
-    slowdown 0.5
+    slowdown 0.25
 }
 
 // Window rules let you adjust behavior for individual windows.
@@ -338,7 +351,16 @@ window-rule {
 
 window-rule {
     match app-id=r#"^zen$"# title="^Zen Browser$"
+    default-column-width { proportion 0.5; }
     open-floating false
+}
+
+window-rule {
+    match app-id=r#"^gemini-fox$"#
+    default-column-width { proportion 0.25; }
+    open-fullscreen false
+    open-maximized false
+    tiled-state true
 }
 
 window-rule {
@@ -347,27 +369,36 @@ window-rule {
 }
 
 window-rule {
+    match app-id=r#"^com.terminal.scratch$"#
+    default-column-width { proportion 0.45; }
+    default-window-height { proportion 0.25; }
+    open-floating true
+    default-floating-position x=0 y=0 relative-to="bottom"
+}
+
+window-rule {
     match app-id=r#"^com.mitchellh.ghostty$"#
-    default-column-width { proportion 0.3; }
+    default-column-width { proportion 0.25; }
 }
 // Example: enable rounded corners for all windows.
 // (This example rule is commented out with a "/-" in front.)
 window-rule {
     draw-border-with-background false
-    geometry-corner-radius 12
+    // geometry-corner-radius 12
     clip-to-geometry true
 }
 
 window-rule {
     match title="notes"
     match app-id=r#"^com.terminal.notes$"#
-    default-column-width { proportion 0.2; }
+    default-column-width { proportion 0.25; }
 }
+
 // Example: enable rounded corners for all windows.
 // (This example rule is commented out with a "/-" in front.)
 window-rule {
     draw-border-with-background false
-    geometry-corner-radius 12
+    geometry-corner-radius 15
     clip-to-geometry true
 }
 
@@ -405,12 +436,16 @@ binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
-    Mod+W hotkey-overlay-title="Open Zen Browser" { spawn "gtk-launch" "zen"; }
-    Mod+E hotkey-overlay-title="Open Neovim" { spawn "ghostty" "-e" "nvim"; }
-    Mod+N hotkey-overlay-title="Open Notes" { spawn "ghostty" "--class=com.terminal.notes" "--background=#3e4045" "-e" "NVIM_APPNAME=nvim-notes" "nvim" "~/obsidian/TODO.md"; }
-    Mod+Return hotkey-overlay-title="Open a Terminal: Ghostty" { spawn "ghostty"; }
-    Mod+Space hotkey-overlay-title="Run an Application" { spawn "sherlock"; }
-    Mod+Ctrl+V hotkey-overlay-title="Show clipboard history" { spawn "sh" "-c" "cliphist list | sherlock | cliphist decode | wl-copy"; }
+    Mod+W hotkey-overlay-title="Open Zen Browser" { spawn "ndrop" "-c" "main-zen" "prime-run" "zen-browser" "--name=main-zen"; }
+    Mod+G hotkey-overlay-title="Open Firefox" { spawn "ndrop" "-c" "main-fox" "prime-run" "firefox" "--name=main-fox"; }
+    Mod+Return hotkey-overlay-title="Open a Terminal: Ghostty" { spawn "/home/ton/.config/niri/scripts/tmux-scratchpad.sh"; }
+    Mod+E hotkey-overlay-title="Open Neovim" { spawn "ndrop" "ghostty" "--class=com.terminal.nvim" "-e" "nvim"; }
+    Mod+N hotkey-overlay-title="Open Notes" { spawn "ndrop" "ghostty" "--class=com.terminal.notes"  "-e" "NVIM_APPNAME=nvim-notes" "nvim" "~/obsidian/TODO.md"; }
+    Mod+O hotkey-overlay-title="Open Neovim" { spawn "ndrop" "obsidian"; }
+    Mod+Space hotkey-overlay-title="Run an Application" { spawn "walker"; }
+    // Mod+Space hotkey-overlay-title="Run an Application" { spawn "sherlock"; }
+    Mod+Ctrl+V hotkey-overlay-title="Show clipboard history" { spawn "walker" "-m" "clipboard"; }
+    // Mod+Ctrl+V hotkey-overlay-title="Show clipboard history" { spawn "sh" "-c" "cliphist list | sherlock | cliphist decode | wl-copy"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 
     // You can also use a shell. Do this if you need pipes, multiple commands, etc.
@@ -587,8 +622,8 @@ binds {
     Mod+Shift+R { switch-preset-window-height; }
     Mod+Ctrl+R { reset-window-height; }
     Mod+F { maximize-column; }
-    Mod+Shift+F { fullscreen-window; }
-    Ctrl+Return { fullscreen-window; }
+    F11 { fullscreen-window; }
+    Mod+Shift+F { toggle-windowed-fullscreen; }
 
     // Expand the focused column to space not taken up by other fully visible columns.
     // Makes the column "fill the rest of the space".
@@ -647,7 +682,7 @@ binds {
 
     // The quit action will show a confirmation dialog to avoid accidental exits.
     Mod+Shift+Q { spawn "systemctl" "suspend"; }
-    Ctrl+Alt+Delete { spawn "sherlock" "--sub-menu" "pm"; }
+    Ctrl+Alt+Delete { spawn "walker" "-Hm" "power"; }
 
     // Powers off the monitors. To turn them back on, do any input like
     // moving the mouse or pressing any other key.

@@ -1,8 +1,15 @@
+/* @define-color fg-color #03290d; */
+@define-color fg-color #bbb;
+/* @define-color fg-color #aaa; */
+/* @define-color fg-color #5aaca5; */
+@define-color acc-color #eee;
+/* @define-color acc-color #99BC80; */
+@define-color bg-color transparent;
 
 * {
-    font-family: "JetBrainsMono NFP", "Fira Sans Semibold", "Font Awesome 6 Free", FontAwesome, Roboto, Helvetica, Arial, sans-serif;
-    font-size: 15px;
-    font-weight: 400;
+    font-family: "SF Pro Text", "Inter", "Noto Sans", "JetBrainsMono NFP","Liberation Sans Mono", "Fira Sans Semibold", "Font Awesome 6 Free", FontAwesome, Roboto, Helvetica, Arial, sans-serif;
+    /* font-size: 14px; */
+    font-weight: 500;
     margin: 0;
     padding: 0;
     transition-property: background-color;
@@ -13,18 +20,21 @@
 * {
     border: none;
     min-height: 0;
-    border-radius: 0.7em;
+    /* border-radius: 0.7em; */
 }
 
 /* The whole bar */
-#waybar {
-    background-color: transparent;
-    color: #5aaca5;
-    /* color: #ffffff; */
+window#waybar {
+    background-color: @bg-color;
+    /* background: linear-gradient(90deg, rgba(255,255,255,0.2), rgba(255,255,255,0), rgba(255,255,255,0.6) ); */
+    color: @fg-color;
     transition-property: background-color;
     transition-duration: 0.5s;
-    border-radius: 0px;
-    padding: 0;
+    border-radius: 0.4em;
+}
+
+window box {
+    padding: 0 1.55em 0 1.35em;
 }
 
 window#waybar.hidden {
@@ -32,14 +42,18 @@ window#waybar.hidden {
 }
 
 #workspaces button {
-    color: #5aaca5;
+    letter-spacing: -0.4em;
+    color: @fg-color;
+    opacity: 0.7;
     transition: all 0.3s ease-in-out;
     padding: 0 0.3em;
-    margin: 0.1em;
+    margin: 0 0.1em;
 }
 
 #workspaces button.active {
-    color: #99BC80;
+    letter-spacing: -0.4em;
+    color: @acc-color;
+    opacity: 1;
     padding: 0 0.5em;
     /* background: #5aaca5; */
 }
@@ -56,12 +70,25 @@ window#waybar.hidden {
     background-color: transparent;
     border-radius: 14px;
     padding: 0;
-    margin: 0 2em;
+    margin: 0;
+}
+
+#taskbar * {
+    padding: 0;
+    margin: 0;
+}
+
+#taskbar button {
+    padding: 0 0.5em;
+}
+
+#taskbar button.active {
+    background-color: @acc-color;
 }
 
 #window {
     opacity: 1;
-    color: #99BC80;
+    color: @acc-color;
 }
 
 #clock,
@@ -96,11 +123,11 @@ window#waybar.hidden {
 }
 
 #clock {
-    color: #99BC80;
+    color: @acc-color;
 }
 
 #clock.date {
-    color: #5aaca5;
+    color: @fg-color;
 }
 
 #custom-screenshot_t {
@@ -110,6 +137,8 @@ window#waybar.hidden {
 }
 
 #tray {
+    margin: 0;
+    padding: 0;
 }
 
 #custom-weather.severe {

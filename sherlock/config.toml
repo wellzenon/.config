@@ -1,7 +1,7 @@
 [default_apps]
 teams = "teams-for-linux --enable-features=UseOzonePlatform --ozone-platform=wayland --url {meeting_url}"
 calendar_client = "thunderbird"
-terminal = "ghostty --background-opacity=0.8 -e"
+terminal = "ghostty -e"
 browser = "/opt/zen-browser-bin/zen-bin %u"
 
 [units]
@@ -18,43 +18,45 @@ app_paths = []
 
 [appearance]
 width = 900
-height = 800
+height = 750
 gsk_renderer = "cairo"
-icon_paths = ["~/.config/sherlock//icons/"]
-icon_size = 50
-search_icon = false
+icon_paths = ["~/.config/sherlock/icons"]
+icon_size = 40
 use_base_css = true
-status_bar = false
 opacity = 1.0
-mod_key_ascii = ["⇧", "⇧", "󰘴", "󰘴", "⎇", "", "✦", "✦"]
-search_bar_icon = "system-search-symbolic"
-search_bar_icon_back = "go-previous-symbolic"
-search_icon_size = 22
+mod_key_ascii = ["⇧", "⇧", "⌘", "⌘", "⎇", "✦", "✦", "⌘"]
 
 [behavior]
-cache = "~/.cache/sherlock/sherlock_desktop_cache.json"
-caching = false
-daemonize = false
+use_xdg_data_dir_icons = false
 animate = true
 
 [binds]
-next = "control-j"
-prev = "control-k"
+up = "control-k"
+down = "control-j"
+left = "control-ih"
+right = "control-l"
+context = "control-i"
 modifier = "control"
+exec_inplace = "control-return"
 
 [files]
-config = "~/.config/sherlock/config.toml"
-css = "~/.config/sherlock/main.css"
-fallback = "~/.config/sherlock/fallback.json"
-alias = "~/.config/sherlock/sherlock_alias.json"
-ignore = "~/.config/sherlock/sherlockignore"
-actions = "~/.config/sherlock/sherlock_actions.json"
+config = "/home/ton/.config/sherlock/config.toml"
+css = "/home/ton/.config/sherlock/main.css"
+fallback = "/home/ton/.config/sherlock/fallback.json"
+alias = "/home/ton/.config/sherlock/sherlock_alias.json"
+ignore = "/home/ton/.config/sherlock/sherlockignore"
+actions = "/home/ton/.config/sherlock/sherlock_actions.json"
 
 [runtime]
 multi = false
 center = false
 photo_mode = false
 display_raw = false
+daemonize = false
+
+[caching]
+enable = true
+cache = "/home/ton/.cache/sherlock/sherlock_desktop_cache.json"
 
 [expand]
 enable = false
@@ -65,3 +67,12 @@ margin = 0
 enable = true
 opacity = 0.8
 edge = "top"
+
+[status_bar]
+enable = false
+
+[search_bar_icon]
+enable = false
+icon = "system-search-symbolic"
+icon_back = "go-previous-symbolic"
+size = 40

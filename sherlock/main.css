@@ -1,6 +1,19 @@
+* {
+  font-family: "Inter";
+}
+
+window {
+  border-radius: 3em;
+}
+
 #search-bar{
   margin: 0.8em ;
 }
+
+#search-bar placeholder {
+  opacity: 0;
+}
+
 .tile {
   margin: 0.5em 0;
   padding: 1em 2em;

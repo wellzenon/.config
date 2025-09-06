@@ -201,10 +201,10 @@ M.update_markdown_headings_vtext = function(opts)
       local virtual_text_str =
         string.format('%s%d%s%d%s%.0f%s ', icons.left, heading.completed, icons.completed, heading.total, icons.total, ratio * 100, icons.ratio)
 
-      local source_hl_name = '@markup.heading.' .. heading.level .. '.markdown'
+      -- local source_hl_name = '@markup.heading.' .. heading.level .. '.markdown'
 
       vim.api.nvim_buf_set_extmark(0, ns_markdown_headings, heading.line, 0, {
-        virt_text = { { virtual_text_str, source_hl_name } },
+        virt_text = { { virtual_text_str } },
         virt_text_pos = 'eol',
         hl_mode = 'combine',
       })

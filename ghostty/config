@@ -21,15 +21,22 @@
 # # separated by equals signs.
 
 # font-family = monospace
-font-family = JetBrainsMono Nerd Font
+# font-family = Noto Sans Mono
+# font-family = Liberation Mono
+# font-family = DejaVu Sans Mono
+# font-family = RobotoMono Nerd Font
+# font-family = Google Sans Code Regular
+font-family = Google Sans Code NF
+# font-family = JetBrainsMono Nerd Font Propo
 # font-family = ZedMono NF
 # font-family = Maple Mono Normal NF
-# font-style = ExtraLight
+font-style = 400
 # font-style-italic = Italic
 # font-style-bold= ExtraBold
-# font-style-bold-italic = ExtraBold Oblique
-font-size = 12
-adjust-cell-height=40%
+# font-style-bold-italic = ExtraBold Italic
+font-size = 13
+adjust-cell-height=50%
+adjust-cell-width=-13.25%
 
 # font-family = VictorMono Nerd Font
 # font-style = Medium
@@ -44,17 +51,20 @@ window-padding-balance = true
 
 gtk-titlebar = false
 window-decoration = none
-# background-opacity = 0
+# background-opacity = 0.95
 # background-blur= true
 # background-blur-radius = 10
 
 gtk-custom-css = ./no-window-padding.css
+# theme = gruvbox-material
 theme = Atom
 # window-padding-color = extend
 # background = 2c2d30
-background = 30302e
+background = 191c23
+# background = 161615
 # background = 1A1C1E
 
+unfocused-split-opacity = 0.5
 bold-is-bright = true
 gtk-tabs-location = hidden
 
