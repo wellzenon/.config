@@ -1,0 +1,30 @@
+name = "power"
+name_pretty = "Power control"
+icon = "system-shutdown"
+global_search = true
+hide_from_providerlist = false
+
+[[entries]]
+action = "shutdown now"
+icon = "system-shutdown"
+text = "Shutdown"
+
+[[entries]]
+action = "reboot"
+icon = "system-reboot"
+text = "Reboot"
+
+[[entries]]
+action = "niri msg action quit -s"
+icon = "system-log-out"
+text = "Log out"
+
+[[entries]]
+action = "systemctl suspend"
+icon = "system-suspend"
+text = "Suspend"
+
+[[entries]]
+action = "bash -c ~/.config/niri/scripts/win-boot.sh"
+icon = "system-reboot"
+text = "Reboot to Windows"

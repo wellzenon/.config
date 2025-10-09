@@ -218,7 +218,7 @@ return {
 
       -- set to true to make the background, floating windows, statusline,
       -- signcolumn, foldcolumn, and tabline transparent
-      transparent = false,
+      transparent = true,
 
       plugin_support = {
         aerial = false,
@@ -240,6 +240,12 @@ return {
     },
     init = function()
       vim.cmd.colorscheme 'techbase'
+      vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
+      vim.api.nvim_set_hl(0, 'PMenu', { bg = 'none' })
+      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
+      vim.api.nvim_set_hl(0, 'FloatTitle', { bg = 'none' })
+      vim.api.nvim_set_hl(0, 'FloatBorder', { bg = 'none', fg = '#575a74' })
+      vim.api.nvim_set_hl(0, 'NonText', { fg = '#575a74' })
     end,
     priority = 1000,
   },

@@ -3,7 +3,7 @@ return {
   event = 'VeryLazy',
   version = false, -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
   opts = {
-    provider = 'gemini',
+    provider = 'gemini-cli',
     providers = {
       gemini = {
         model = 'gemini-2.5-flash-lite',

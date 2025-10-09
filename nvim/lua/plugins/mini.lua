@@ -125,6 +125,20 @@ return {
         end
       end
 
+      -- Desliga a statusline padrão de baixo
+      vim.o.laststatus = 0
+
+      _G.MyTopStatusline = function()
+        if vim.api.nvim_get_current_win() == vim.g.statusline_winid then
+          return require('mini.statusline').active()
+        else
+          return require('mini.statusline').inactive()
+        end
+      end -- Função wrapper para usar no winbar
+
+      -- Coloca a barra no topo (winbar global)
+      vim.o.winbar = '%!v:lua.MyTopStatusline()'
+
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,

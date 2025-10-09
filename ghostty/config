@@ -34,7 +34,7 @@ font-style = 400
 # font-style-italic = Italic
 # font-style-bold= ExtraBold
 # font-style-bold-italic = ExtraBold Italic
-font-size = 13
+font-size = 14
 adjust-cell-height=50%
 adjust-cell-width=-13.25%
 
@@ -51,7 +51,7 @@ window-padding-balance = true
 
 gtk-titlebar = false
 window-decoration = none
-# background-opacity = 0.95
+background-opacity = 0.92
 # background-blur= true
 # background-blur-radius = 10
 
@@ -60,7 +60,7 @@ gtk-custom-css = ./no-window-padding.css
 theme = Atom
 # window-padding-color = extend
 # background = 2c2d30
-background = 191c23
+background = 1b1c1d
 # background = 161615
 # background = 1A1C1E
 

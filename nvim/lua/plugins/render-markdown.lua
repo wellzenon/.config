@@ -9,7 +9,7 @@ return {
     completions = { blink = { enabled = true } },
     file_types = { 'markdown' },
     heading = {
-      icons = { ' 󰅂 ', ' 󰄾 ', ' 󰶻 ', ' 󰶻 󰅂 ', ' 󰶻 󰄾 ', ' 󰶻 󰶻 ' },
+      icons = { '󰉫 ', '󰉬 ', '󰉭 ', '󰉮 ', '󰉯 ', '󰉰 ' },
       position = 'inline',
     },
     bullet = {

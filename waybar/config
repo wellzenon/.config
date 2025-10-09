@@ -59,7 +59,7 @@
     "wlr/taskbar": {
         "format": "{icon}",
         "all-outputs": false,
-        "icon-size": 24,
+        "icon-size": 15,
         "icon-theme": "Numix-Circle",
         "tooltip-format": "{title}",
         "on-click": "activate",
@@ -268,11 +268,11 @@
     "custom/power": {
         "format": " 󰐥 ",
         "tooltip": false,
-        "on-click": "walker -Hm power"
+        "on-click": "walker -nm menus:power"
     },
 
     "clock": {
-        "on-click": "walker -Hm power",
+        "on-click": "walker -nm menus:power",
         "format": "<span size='x-large'><b> {:%H:%M}</b></span>",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "today-format": "<b>{}</b>",

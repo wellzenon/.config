@@ -79,11 +79,12 @@ window#waybar.hidden {
 }
 
 #taskbar button {
-    padding: 0 0.5em;
+    padding: 0.2em 0.3em;
+    margin: 0.3em;
 }
 
 #taskbar button.active {
-    background-color: @acc-color;
+    background-color: rgba(238, 238, 238, 0.15)
 }
 
 #window {
