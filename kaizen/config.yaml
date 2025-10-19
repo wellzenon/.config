@@ -1,0 +1,26 @@
+DefaultForeground:
+  light: "#874Bfd"
+  dark: "#7d56f4"
+
+DefaultUnfocused:
+  light: "#3a3a3a"
+  dark: "#b0b0b0"
+
+DefaultActiveTab:
+  light: "#9F2B68"
+  dark: "#AA336A"
+
+Tab1:
+  focus:
+    active: "#9F2B68"
+    inactive: "#666666"
+  table:
+    selected: 
+      foreground: "#ffffcc"
+      background: "#5c5cd6"
+  spinner:
+     color: "#AA336A"
+     msg:
+      color: "#c43b7b"
+  ASCII Art:
+      color: "#AA336A"

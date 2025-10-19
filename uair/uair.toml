@@ -1,0 +1,25 @@
+[defaults]
+format = "{time}\n"
+paused_state_text = "paused"
+resumed_state_text = "resumed"
+
+[[sessions]]
+id = "quick"
+name = "Q"
+duration = "15m"
+time_format = "%M"
+command = "notify-send 'Quick Done!'"
+
+[[sessions]]
+id = "work"
+name = "W"
+duration = "52m"
+time_format = "%M"
+command = "notify-send 'Work Done!'"
+
+[[sessions]]
+id = "rest"
+name = "R"
+duration = "17m"
+time_format = "%M"
+command = "notify-send 'Rest Done!'"

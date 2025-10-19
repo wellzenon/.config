@@ -1,0 +1,214 @@
+{
+  // "$schema": "https://raw.githubusercontent.com/way-edges/way-edges/master/config/config.schema.json",
+  "$schema": "./schema.json",
+  "widgets": [
+    // =========== workspace ===========
+    // {
+    //   "edge": "left",
+    //   "position": "bottom",
+    //   "layer": "overlay",
+    //   "monitor": ["eDP-1", "eDP-2"],
+    //   "type": "workspace",
+    //   "border-radius": 10,
+    //   "preview-size": 8,
+    //   "border-width": 1,
+    //   "thickness": 20,
+    //   "length": "10%",
+    //   "margins": {
+    //     "bottom": "45%",
+    //   },
+    //   "hover-color": "#ddddddaa",
+    //   "active-increase": 1.8,
+    //   "active-color": "#fff",
+    //   "focus-color": "#eee",
+    //   "default-color": "#111",
+    //   "focused-only": true,
+    //   "preset": { "type": "niri", "filter-empty": false }
+    // },
+    {
+      "edge": "right",
+      "position": "bottom",
+      "layer": "overlay",
+      "monitor": "*",
+      "type": "workspace",
+      "border-radius": 10,
+      "preview-size": 8,
+      "border-width": 1,
+      "thickness": 20,
+      "length": "10%",
+      "margins": {
+        "bottom": "45%",
+      },
+      "hover-color": "#ddddddaa",
+      "active-increase": 0.5,
+      "active-color": "#fff",
+      "focus-color": "#999",
+      "default-color": "#222",
+      "focused-only": true,
+      "preset": { "type": "niri", "filter-empty": false }
+    },
+
+    // =========== time ===========
+
+    {
+      "namespace": "time",
+      "edge": "bottom",
+      "position": "right",
+      // "pinnable": true,
+      "pin-on-startup": true,
+      // "pin-with-key": true,
+      // "pin-key": 274,
+      "monitor": "*",
+      "layer": "overlay",
+      "margins": {
+        "top": 0,
+        "left": 0,
+        "bottom": 0,
+        "right": 0,
+      },
+      "type": "wrap-box",
+      "outlook": {
+        "align": "  center-bottom",
+        "border-radius": 10,
+        "type": "board",
+        "color": "#111",
+        "margins": {
+          "top": 10,
+          "left": 20,
+          "right": 20,
+          "bottom": 10
+        }
+      },
+      "items": [
+        {
+          "index": [0, 0],
+          "type": "text",
+          "fg-color": "#ddd",
+          "font-size": 14,
+          "font-family": "Berkeley Mono Variable",
+          "preset": {
+            "type": "custom",
+            "update-interval": 1000,
+            "cmd": "uair -q & uairctl fetch {name}{time}"
+          }
+        },
+        {
+          "index": [0, 1],
+          "type": "ring",
+          // "font-family": "SF Pro Text",
+          "animation-curve": "ease-expo",
+          "prefix-hide": false,
+          "suffix-hide": false,
+          "bg-color": "#444",
+          "fg-color": "#ddd",
+          "ring-width": 10,
+          "radius": 7,
+          "text-transition-ms": 100, // ms
+          "preset": {
+            "type": "custom",
+            "cmd": "echo '0.'$(( 100 - $(uairctl fetch '{percent}' || echo 100) ))",
+            "update-interval": 1000,
+          }
+        },
+        {
+          "index": [0, -1],
+          "type": "text",
+          "fg-color": "#ddd",
+          "font-size": 18,
+          "font-family": "Berkeley Mono Variable",
+          "preset": {
+            "type": "time",
+            "update-interval": 1000,
+            "format": "%H:%M"
+          }
+        }
+      ]
+    },
+    {
+      "namespace": "time",
+      "edge": "right",
+      "position": "bottom",
+      // "pinnable": true,
+      // "pin-on-startup": true,
+      // "pin-with-key": true,
+      // "pin-key": 274,
+      "monitor": "*",
+      "layer": "overlay",
+      "preview-size": 8,
+      "extra-trigger-size": "2%",
+      "margins": {
+        "top": 0,
+        "left": 0,
+        "bottom": 0,
+        "right": 0,
+      },
+      "type": "btn",
+      "border-width": 1,
+      "border-color": "#ddd",
+      "color": "#dddddd99",
+      "thickness": 15,
+      "length": 35,
+      "event-map": {
+        "272": "uairctl toggle", // left click
+        "273": "uair -q &", // right click
+        "275": "uairctl prev", // side click 1
+        "276": "uairctl next", // side click 2
+      },
+    },
+
+    // =========== audio ===========
+
+    {
+      "edge": "right",
+      "monitor": "*",
+      "layer": "overlay",
+      "margins": {
+        "bottom": "5%",
+      },
+      "position": "bottom",
+      "preview-size": 5,
+      "extra-trigger-size": "2%",
+      "type": "slider",
+      "thickness": 30,
+      "border-width": 1,
+      "length": "10%",
+      "radius": 10,
+      "obtuse-angle": 110,
+      "bg-color": "#222",
+      "fg-color": "#ddd",
+      "border-color": "#ddd",
+      "bg-text-color": "#ddd",
+      "fg-text-color": "#222",
+      "redraw-only-on-internal-update": true,
+      "preset": {
+        "type": "speaker"
+      }
+    },
+    {
+      "edge": "right",
+      "monitor": "*",
+      "position": "bottom",
+      "layer": "overlay",
+      "margins": {
+        "bottom": "15%"
+      },
+      "preview-size": 5,
+      "extra-trigger-size": "2%",
+      "type": "slider",
+      "thickness": 30,
+      "border-width": 3,
+      "length": "10%",
+      "radius": 10,
+      "obtuse-angle": 110,
+      "bg-color": "#222",
+      "fg-color": "#777",
+      "border-color": "#777",
+      "bg-text-color": "#777",
+      "fg-text-color": "#222",
+      "redraw-only-on-internal-update": true,
+      "preset": {
+        "type": "microphone"
+      }
+    },
+  ]
+}

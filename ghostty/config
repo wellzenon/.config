@@ -26,7 +26,8 @@
 # font-family = DejaVu Sans Mono
 # font-family = RobotoMono Nerd Font
 # font-family = Google Sans Code Regular
-font-family = Google Sans Code NF
+font-family = Berkeley Mono Variable
+# font-family = Google Sans Code NF
 # font-family = JetBrainsMono Nerd Font Propo
 # font-family = ZedMono NF
 # font-family = Maple Mono Normal NF
@@ -34,9 +35,9 @@ font-style = 400
 # font-style-italic = Italic
 # font-style-bold= ExtraBold
 # font-style-bold-italic = ExtraBold Italic
-font-size = 14
+font-size = 12
 adjust-cell-height=50%
-adjust-cell-width=-13.25%
+# adjust-cell-width=-13.25%
 
 # font-family = VictorMono Nerd Font
 # font-style = Medium
@@ -51,9 +52,11 @@ window-padding-balance = true
 
 gtk-titlebar = false
 window-decoration = none
-background-opacity = 0.92
+# background-opacity = 0.92
 # background-blur= true
 # background-blur-radius = 10
+
+gtk-single-instance = true
 
 gtk-custom-css = ./no-window-padding.css
 # theme = gruvbox-material
@@ -61,16 +64,19 @@ theme = Atom
 # window-padding-color = extend
 # background = 2c2d30
 background = 1b1c1d
+foreground = ddd
 # background = 161615
 # background = 1A1C1E
 
 unfocused-split-opacity = 0.5
-bold-is-bright = true
+bold-color = bright
 gtk-tabs-location = hidden
+gtk-single-instance = true
 
 keybind = ctrl+t=new_tab
 keybind = ctrl+shift+w=close_surface
 keybind = ctrl+shift+tab=toggle_tab_overview
+keybind = global:ctrl+backquote=toggle_quick_terminal
 
 ### SHADERS ###
 # custom-shader = ./ghostty-shaders/gradient-background.glsl

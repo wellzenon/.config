@@ -1,0 +1,20 @@
+(defcfg
+  input  (device-file "/dev/input/by-id/usb-SONiX_USB_DEVICE-event-kbd")
+  output (uinput-sink "KMonad output")
+  fallthrough true
+  allow-cmd true
+
+  ;; (app-matcher (is-nvim (window-class "com.terminal.nvim")))
+)
+
+(defsrc
+  q lmet spc
+)
+
+(defalias
+  meta-tap (tap-next M-spc lmet)
+)
+
+(deflayer base
+  q @meta-tap spc
+)
