@@ -6,7 +6,7 @@ resumed_state_text = "resumed"
 [[sessions]]
 id = "quick"
 name = "Q"
-duration = "15m"
+duration = "8m"
 time_format = "%M"
 command = "notify-send 'Quick Done!'"
 

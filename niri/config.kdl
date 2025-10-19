@@ -49,12 +49,9 @@ gestures {
 
 output "eDP-1" {
     scale 1
-    // mode "1920x1080@60"
 }
 
 output "HDMI-A-1" {
-    // off
-    // variable-refresh-rate // on-demand=true
     scale 1
     focus-at-startup
 }
@@ -206,10 +203,6 @@ window-rule {
     default-column-width { proportion 0.25; }
 }
 
-// window-rule {
-//     match is-floating=true
-//     baba-is-float true
-// }
 layer-rule {
     match namespace="^waybar$"
 }
@@ -372,9 +365,8 @@ binds {
     Alt+Print { screenshot-window; }
 
     Mod+Tab repeat=false { toggle-overview; }
+    Alt+Tab repeat=false { focus-window-previous; }
     // Alt+Tab repeat=false { spawn "vicinae" "vicinae://extensions/vicinae/wm/switch-windows"; }
-    Alt+Tab repeat=false { spawn "gdbus" "call" "--session" "--dest" "io.github.isaksamsten.Niriswitcher" "--object-path" "/io/github/isaksamsten/Niriswitcher" "--method" "io.github.isaksamsten.Niriswitcher.application" ; }
-    Alt+Shift+Tab repeat=false { spawn "gdbus" "call" "--session" "--dest" "io.github.isaksamsten.Niriswitcher" "--object-path" "/io/github/isaksamsten/Niriswitcher" "--method" "io.github.isaksamsten.Niriswitcher.application" ; }
 
     Mod+Shift+Q { spawn "systemctl" "suspend"; }
     Ctrl+Alt+Delete { spawn "walker" "-nm" "menus:power"; }
@@ -387,7 +379,6 @@ binds {
 }
 
 overview {
-    // backdrop-color "#000"
     zoom 0.4
     workspace-shadow { 
         off
@@ -412,8 +403,8 @@ cursor {
 }
 
 debug {
-    emulate-zero-presentation-time
-    keep-max-bpc-unchanged
+    // emulate-zero-presentation-time
+    // keep-max-bpc-unchanged
 }
 
 
