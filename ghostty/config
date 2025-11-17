@@ -26,22 +26,27 @@
 # font-family = DejaVu Sans Mono
 # font-family = RobotoMono Nerd Font
 # font-family = Google Sans Code Regular
-font-family = Berkeley Mono Variable
-# font-family = Google Sans Code NF
-# font-family = JetBrainsMono Nerd Font Propo
+# font-family = MonaspiceKr NFP
+# font-family = Berkeley Mono Variable
+# font-family = Google Sans Code
+font-family = JetBrainsMono
 # font-family = ZedMono NF
 # font-family = Maple Mono Normal NF
-font-style = 400
+font-style = 300
 # font-style-italic = Italic
-# font-style-bold= ExtraBold
+font-style-bold= ExtraBold
 # font-style-bold-italic = ExtraBold Italic
+font-synthetic-style = false
+
 font-size = 12
-adjust-cell-height=50%
+adjust-cell-height=10%
 # adjust-cell-width=-13.25%
+
 
 # font-family = VictorMono Nerd Font
 # font-style = Medium
 # font-style-italic = Medium Oblique
+# font-style-bold = Berkeley Mono Variable Bold
 # font-style-bold-italic = Bold Oblique
 # font-size = 12
 # adjust-cell-height=15%
@@ -61,16 +66,16 @@ gtk-single-instance = true
 gtk-custom-css = ./no-window-padding.css
 # theme = gruvbox-material
 theme = Atom
+# theme = Alabaster
 # window-padding-color = extend
 # background = 2c2d30
 background = 1b1c1d
-foreground = ddd
+foreground = cccccc
 # background = 161615
 # background = 1A1C1E
 
 unfocused-split-opacity = 0.5
 bold-color = bright
-gtk-tabs-location = hidden
 gtk-single-instance = true
 
 keybind = ctrl+t=new_tab

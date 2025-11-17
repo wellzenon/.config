@@ -1,39 +1,15 @@
 {
-  // "$schema": "https://raw.githubusercontent.com/way-edges/way-edges/master/config/config.schema.json",
   "$schema": "./schema.json",
   "widgets": [
-    // =========== workspace ===========
-    // {
-    //   "edge": "left",
-    //   "position": "bottom",
-    //   "layer": "overlay",
-    //   "monitor": ["eDP-1", "eDP-2"],
-    //   "type": "workspace",
-    //   "border-radius": 10,
-    //   "preview-size": 8,
-    //   "border-width": 1,
-    //   "thickness": 20,
-    //   "length": "10%",
-    //   "margins": {
-    //     "bottom": "45%",
-    //   },
-    //   "hover-color": "#ddddddaa",
-    //   "active-increase": 1.8,
-    //   "active-color": "#fff",
-    //   "focus-color": "#eee",
-    //   "default-color": "#111",
-    //   "focused-only": true,
-    //   "preset": { "type": "niri", "filter-empty": false }
-    // },
     {
       "edge": "right",
       "position": "bottom",
-      "layer": "overlay",
+      "layer": "top",
       "monitor": "*",
       "type": "workspace",
       "border-radius": 10,
-      "preview-size": 8,
-      "border-width": 1,
+      "preview-size": 6,
+      "border-width": 0,
       "thickness": 20,
       "length": "10%",
       "margins": {
@@ -42,10 +18,10 @@
       "hover-color": "#ddddddaa",
       "active-increase": 0.5,
       "active-color": "#fff",
-      "focus-color": "#999",
-      "default-color": "#222",
+      "focus-color": "#777",
+      "default-color": "#555",
       "focused-only": true,
-      "preset": { "type": "niri", "filter-empty": false }
+      "preset": { "type": "niri", "filter-empty": true }
     },
 
     // =========== time ===========
@@ -59,7 +35,7 @@
       // "pin-with-key": true,
       // "pin-key": 274,
       "monitor": "*",
-      "layer": "overlay",
+      "layer": "top",
       "margins": {
         "top": 0,
         "left": 0,
@@ -68,7 +44,7 @@
       },
       "type": "wrap-box",
       "outlook": {
-        "align": "  center-bottom",
+        "align": "center-bottom",
         "border-radius": 10,
         "type": "board",
         "color": "#111",
@@ -84,18 +60,29 @@
           "index": [0, 0],
           "type": "text",
           "fg-color": "#ddd",
-          "font-size": 14,
-          "font-family": "Berkeley Mono Variable",
+          "font-size": 15,
+          "font-family": "SF Pro Text",
           "preset": {
             "type": "custom",
             "update-interval": 1000,
-            "cmd": "uair -q & uairctl fetch {name}{time}"
+            "cmd": "niri msg focused-window | grep -oP '(?<=Title: \").*(?=\")' | awk '{ if (length($0) > 33) print substr($0,1,22) \"…\" substr($0,length($0)-7); else print $0 }'"
           }
         },
         {
           "index": [0, 1],
+          "type": "text",
+          "fg-color": "#ddd",
+          "font-size": 15,
+          "font-family": "Noto Sans",
+          "preset": {
+            "type": "custom",
+            "update-interval": 1000,
+            "cmd": "uair -q & uairctl fetch {state}{time}"
+          }
+        },
+        {
+          "index": [0, 2],
           "type": "ring",
-          // "font-family": "SF Pro Text",
           "animation-curve": "ease-expo",
           "prefix-hide": false,
           "suffix-hide": false,
@@ -106,7 +93,7 @@
           "text-transition-ms": 100, // ms
           "preset": {
             "type": "custom",
-            "cmd": "echo '0.'$(( 100 - $(uairctl fetch '{percent}' || echo 100) ))",
+            "cmd": "printf '0.%02d\n' $(( 100 - $(uairctl fetch '{percent}' || echo 100) ))",
             "update-interval": 1000,
           }
         },
@@ -115,7 +102,7 @@
           "type": "text",
           "fg-color": "#ddd",
           "font-size": 18,
-          "font-family": "Berkeley Mono Variable",
+          "font-family": "Noto Sans",
           "preset": {
             "type": "time",
             "update-interval": 1000,
@@ -133,8 +120,8 @@
       // "pin-with-key": true,
       // "pin-key": 274,
       "monitor": "*",
-      "layer": "overlay",
-      "preview-size": 8,
+      "layer": "top",
+      "preview-size": 6,
       "extra-trigger-size": "2%",
       "margins": {
         "top": 0,
@@ -143,40 +130,40 @@
         "right": 0,
       },
       "type": "btn",
-      "border-width": 1,
+      "border-width": 0,
       "border-color": "#ddd",
       "color": "#dddddd99",
       "thickness": 15,
       "length": 35,
       "event-map": {
-        "272": "uairctl toggle", // left click
         "273": "uair -q &", // right click
-        "275": "uairctl prev", // side click 1
-        "276": "uairctl next", // side click 2
+        "272": "uairctl toggle && uairctl fetch '{name} {state},{time} min {percent}%' | xargs -d , notify-send -t 100000",
+        "275": "uairctl prev && uairctl fetch '{name} {state},{time} min {percent}%' | xargs -d , notify-send -t 100000",
+        "276": "uairctl next && uairctl fetch '{name} {state},{time} min {percent}%' | xargs -d , notify-send -t 100000"
       },
     },
 
     // =========== audio ===========
 
     {
-      "edge": "right",
       "monitor": "*",
-      "layer": "overlay",
-      "margins": {
-        "bottom": "5%",
-      },
+      "layer": "top",
+      "edge": "right",
       "position": "bottom",
-      "preview-size": 5,
+      "preview-size": 4,
       "extra-trigger-size": "2%",
       "type": "slider",
+      "margins": {
+        "bottom": 40,
+      },
       "thickness": 30,
-      "border-width": 1,
-      "length": "10%",
+      "border-width": 0,
+      "length": 150,
       "radius": 10,
       "obtuse-angle": 110,
-      "bg-color": "#222",
+      "bg-color": "#666",
+      "border-color": "#666",
       "fg-color": "#ddd",
-      "border-color": "#ddd",
       "bg-text-color": "#ddd",
       "fg-text-color": "#222",
       "redraw-only-on-internal-update": true,
@@ -188,21 +175,21 @@
       "edge": "right",
       "monitor": "*",
       "position": "bottom",
-      "layer": "overlay",
+      "layer": "top",
       "margins": {
-        "bottom": "15%"
+        "bottom": 180
       },
-      "preview-size": 5,
+      "preview-size": 4,
       "extra-trigger-size": "2%",
       "type": "slider",
       "thickness": 30,
-      "border-width": 3,
-      "length": "10%",
+      "border-width": 0,
+      "length": 150,
       "radius": 10,
       "obtuse-angle": 110,
       "bg-color": "#222",
+      "border-color": "#222",
       "fg-color": "#777",
-      "border-color": "#777",
       "bg-text-color": "#777",
       "fg-text-color": "#222",
       "redraw-only-on-internal-update": true,

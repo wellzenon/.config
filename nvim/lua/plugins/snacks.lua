@@ -26,12 +26,21 @@ return {
           },
         },
         sources = {
+          help = {
+            finder = 'help',
+            format = 'text',
+            previewers = {
+              file = { ft = 'help' },
+            },
+            win = { preview = { minimal = true } },
+            confirm = 'help',
+          },
           explorer = {
             focus = 'list',
             auto_close = true,
             hidden = true,
             layout = {
-              preset = 'default',
+              preset = 'select',
               preview = { win = 'preview' },
             },
           },

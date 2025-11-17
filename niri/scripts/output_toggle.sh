@@ -45,8 +45,6 @@ toggle_monitor() {
         # Se o alvo está desligado, liga
         niri msg output "$target_monitor" on
     fi
-
-    way-edges -c $HOME/.config/way-edges/niri.jsonc &>/dev/null
 }
 
 # Obtém o estado atual e imprime para o Waybar

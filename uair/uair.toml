@@ -1,25 +1,18 @@
 [defaults]
 format = "{time}\n"
-paused_state_text = "paused"
-resumed_state_text = "resumed"
-
-[[sessions]]
-id = "quick"
-name = "Q"
-duration = "8m"
-time_format = "%M"
-command = "notify-send 'Quick Done!'"
+paused_state_text = "  "
+resumed_state_text = "  "
 
 [[sessions]]
 id = "work"
-name = "W"
+name = "Work"
 duration = "52m"
 time_format = "%M"
-command = "notify-send 'Work Done!'"
+command = "uairctl next && uairctl resume && notify-send 'Work Done!' && ffplay -t 11 -nodisp -autoexit ~/.config/uair/The_Wake_Up_-_Earth_Day.mp3"
 
 [[sessions]]
 id = "rest"
-name = "R"
+name = "Rest"
 duration = "17m"
 time_format = "%M"
-command = "notify-send 'Rest Done!'"
+command = "uairctl prev && uairctl resume && notify-send 'Rest Done!' && ffplay -t 11 -nodisp -autoexit ~/.config/uair/The_Wake_Up_-_Earth_Day.mp3"

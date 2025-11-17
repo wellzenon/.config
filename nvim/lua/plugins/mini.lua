@@ -1,6 +1,6 @@
 return {
   { -- Collection of various small independent plugins/modules
-    'echasnovski/mini.nvim',
+    'nvim-mini/mini.nvim',
     config = function()
       -- Better Around/Inside textobjects
       --
@@ -18,7 +18,7 @@ return {
       require('mini.surround').setup()
 
       -- Save sessions
-      require('mini.sessions').setup { autoread = true, autowrite = true }
+      require('mini.sessions').setup { autoread = true, autowrite = true, force = { read = true, write = true, delete = true } }
       require('mini.icons').setup {}
       -- require('mini.indentscope').setup { symbol = '│', }
 
