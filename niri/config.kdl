@@ -49,11 +49,12 @@ gestures {
 
 output "eDP-1" {
     scale 1
+    // variable-refresh-rate // on-demand=true
 }
 
 output "HDMI-A-1" {
     scale 1
-    focus-at-startup
+    // variable-refresh-rate // on-demand=true
 }
 
 layout {
@@ -237,7 +238,8 @@ binds {
     Mod+N hotkey-overlay-title="Open Notes" { spawn-sh "nirius focus-or-spawn -t notes ghostty -- --env=NVIM_APPNAME=nvim-notes -e nvim ~/obsidian/TODO.md"; }
     Mod+A hotkey-overlay-title="Open Superfile" { spawn-sh "ghostty -e spf"; }
     Mod+O hotkey-overlay-title="Open Obsidian" { spawn-sh "nirius focus-or-spawn -a obsidian prime-run obsidian"; }
-    Mod+S hotkey-overlay-title="Open Sioyek" { spawn-sh "nirius focus-or-spawn -a sioyek sioyek"; }
+    Mod+S hotkey-overlay-title="Open Sioyek" { spawn-sh "QT_QPA_PLATFORM=xcb sioyek"; }
+    // Mod+S hotkey-overlay-title="Open Sioyek" { spawn-sh "nirius focus-or-spawn -a sioyek sioyek"; }
     Mod+Space hotkey-overlay-title="Run an Application" {spawn-sh "vicinae toggle"; }
     Mod+Ctrl+V hotkey-overlay-title="Show clipboard history" { spawn-sh "vicinae vicinae://extensions/vicinae/clipboard/history"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
@@ -378,9 +380,6 @@ binds {
     Alt+Print { screenshot-window; }
 
     Mod+Tab repeat=false { toggle-overview; }
-    Alt+Tab repeat=false { focus-window-previous; }
-    // Alt+Tab repeat=false { spawn "niri-switch"; }
-    // Alt+Tab repeat=false { spawn "vicinae" "vicinae://extensions/vicinae/wm/switch-windows"; }
 
     Mod+Shift+Q { spawn "systemctl" "suspend"; }
     // Ctrl+Alt+Delete { spawn "walker" "-nm" "menus:power"; }
@@ -399,6 +398,37 @@ overview {
     }
 }
 
+recent-windows {
+    // off
+    debounce-ms 750
+
+    open-delay-ms 150
+
+    highlight {
+        active-color "#999999ff"
+        urgent-color "#ff9999ff"
+        padding 30
+        corner-radius 0
+    }
+
+    previews {
+        max-height 480
+        max-scale 0.5
+    }
+
+    binds {
+        Alt+Tab         { next-window; }
+        Alt+Shift+Tab   { previous-window; }
+        Alt+grave       { next-window     filter="app-id"; }
+        Alt+Shift+grave { previous-window filter="app-id"; }
+
+        Mod+Tab         { next-window; }
+        Mod+Shift+Tab   { previous-window; }
+        Mod+grave       { next-window     filter="app-id"; }
+        Mod+Shift+grave { previous-window filter="app-id"; }
+    }
+}
+
 hotkey-overlay {
     skip-at-startup
 }
@@ -409,6 +439,9 @@ environment {
     MOZ_ENABLE_WAYLAND "1"
     ELECTRON_OZONE_PLATFORM_HINT "auto"
     GTK_IM_MODULE "simple"
+
+    __GLX_VENDOR_LIBRARY_NAME "nvidia"
+    __GL_DXVK_USE_LAST_PIPELINE_CACHE "1"
 }
 
 cursor {
@@ -429,7 +462,7 @@ debug {
 }
 
 
-spawn-sh-at-startup "kmonad ~/.config/niri/kmonad.kbd"
+// spawn-sh-at-startup "kmonad ~/.config/niri/kmonad.kbd"
 spawn-sh-at-startup "wl-paste --watch cliphist store"
 spawn-sh-at-startup "swaybg -m fill -i ~/.config/wallpapers/tempest.jpg"
 spawn-sh-at-startup "QT_SCALE_FACTOR=1.5 vicinae server"
@@ -450,7 +483,7 @@ spawn-sh-at-startup "kdeconnect-indicator"
 spawn-sh-at-startup "prime-run firefox"
 // spawn-sh-at-startup "firefoxpwa site launch 01K83NKF52GD8Q5NTCZPM7SBPM"
 spawn-sh-at-startup "firefoxpwa site launch 01K83NKF52GD8Q5NTCZPM7SBPM && sleep 2 && niri msg action toggle-windowed-fullscreen --id $(niri msg windows | awk '/Window ID/ {id=$3} /App ID:.*FFPWA-01K83NKF52GD8Q5NTCZPM7SBPM/ {sub(\":\", \"\", id); print id; exit}')"
-spawn-sh-at-startup "sioyek"
+spawn-sh-at-startup "QT_QPA_PLATFORM=xcb sioyek"
 spawn-sh-at-startup "prime-run obsidian"
 spawn-sh-at-startup "prime-run stremio-service"
 

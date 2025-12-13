@@ -16,7 +16,7 @@ return {
       icons = { '󰁕 ', '󰦺', '󱞪', '', '󱞩' },
     },
     checkbox = {
-      checked = { highlight = 'Comment', scope_highlight = 'Comment' },
+      checked = { rendered = ' ', highlight = 'Comment', scope_highlight = 'Comment' },
       custom = {
         starred = {
           raw = '[~]',

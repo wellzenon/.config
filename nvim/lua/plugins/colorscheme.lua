@@ -240,7 +240,7 @@ return {
     },
     init = function()
       vim.cmd.colorscheme 'techbase'
-      vim.api.nvim_set_hl(0, '@variable', { fg = '#dddddd' })
+      vim.api.nvim_set_hl(0, '@variable', { fg = '#bcbcbc' })
       vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
       vim.api.nvim_set_hl(0, 'PMenu', { bg = 'none' })
       vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
@@ -251,4 +251,5 @@ return {
     priority = 1000,
   },
 }
+
 -- vim: ts=2 sts=2 sw=2 et

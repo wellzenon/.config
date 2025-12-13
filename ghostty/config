@@ -25,21 +25,25 @@
 # font-family = Liberation Mono
 # font-family = DejaVu Sans Mono
 # font-family = RobotoMono Nerd Font
+# font-family = FantasqueSansM Nerd Font Mono
+# font-family = Fantasque Sans Mono
+# font-family = P052
 # font-family = Google Sans Code Regular
 # font-family = MonaspiceKr NFP
 # font-family = Berkeley Mono Variable
 # font-family = Google Sans Code
 font-family = JetBrainsMono
+# font-family = Lilex
 # font-family = ZedMono NF
 # font-family = Maple Mono Normal NF
-font-style = 300
+# font-style = Medium
 # font-style-italic = Italic
-font-style-bold= ExtraBold
+# font-style-bold = ExtraBold
 # font-style-bold-italic = ExtraBold Italic
-font-synthetic-style = false
+# font-synthetic-style = false
 
-font-size = 12
-adjust-cell-height=10%
+font-size = 13
+adjust-cell-height=15%
 # adjust-cell-width=-13.25%
 
 

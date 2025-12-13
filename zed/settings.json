@@ -7,22 +7,75 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
-  "icon_theme": "Zed (Default)",
-  "ui_font_weight": 300.0,
+  "debugger": {
+    "button": true
+  },
+  "status_bar": {
+    "active_language_button": true
+  },
+  "tabs": {
+    "close_position": "right",
+    "file_icons": true,
+    "git_status": false
+  },
+  "unnecessary_code_fade": 0.7,
+  "toolbar": {
+    "code_actions": true,
+    "quick_actions": false,
+    "breadcrumbs": false,
+    "selections_menu": true,
+    "agent_review": true
+  },
+  "gutter": {
+    "min_line_number_digits": 2,
+    "line_numbers": true
+  },
+  "sticky_scroll": {
+    "enabled": true
+  },
+  "show_wrap_guides": true,
+  "tab_size": 2,
+  "project_panel": {
+    "button": true,
+    "hide_hidden": false,
+    "indent_size": 15.0,
+    "git_status": true,
+    "folder_icons": false,
+    "file_icons": false,
+    "entry_spacing": "standard"
+  },
+  "use_system_window_tabs": false,
+  "bottom_dock_layout": "contained",
+  "tab_bar": {
+    "show_nav_history_buttons": false,
+    "show": false
+  },
+  "title_bar": {
+    "show_onboarding_banner": true,
+    "show_project_items": true,
+    "show_menus": false,
+    "show_sign_in": false,
+    "show_user_picture": true,
+    "show_branch_name": true,
+    "show_branch_icon": true
+  },
+  "cursor_shape": "block",
+  "icon_theme": "Serendipity Icons",
+  "ui_font_weight": 350.0,
   "agent": {
     "default_profile": "write",
     "default_model": {
       "provider": "google",
-      "model": "gemini-2.5-pro"
+      "model": "gemini-3-pro-preview"
     }
   },
   "vim_mode": true,
-  "ui_font_size": 16.0,
-  "buffer_font_size": 16,
-  "buffer_font_family": "Berkeley Mono Variable",
-  "buffer_font_weight": 100.0,
-  "buffer_line_height": { "custom": 2 },
-  "ui_font_family": "SF Pro Text",
+  "ui_font_size": 18.0,
+  "buffer_font_size": 17.0,
+  "buffer_font_family": "JetBrains Mono",
+  "buffer_font_weight": 200.0,
+  "buffer_line_height": "standard",
+  "ui_font_family": "Inter",
   "theme": {
     "mode": "system",
     "light": "One Light",
@@ -47,6 +100,6 @@
     //
     // 1. "disabled"
     // 2. "indent_aware"
-    "background_coloring": "indent_aware"
+    "background_coloring": "disabled"
   }
 }

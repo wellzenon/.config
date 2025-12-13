@@ -21,7 +21,7 @@
       "focus-color": "#777",
       "default-color": "#555",
       "focused-only": true,
-      "preset": { "type": "niri", "filter-empty": true }
+      "preset": { "type": "niri", "filter-empty": false }
     },
 
     // =========== time ===========
@@ -61,7 +61,7 @@
           "type": "text",
           "fg-color": "#ddd",
           "font-size": 15,
-          "font-family": "SF Pro Text",
+          "font-family": "IBM Plex Sans",
           "preset": {
             "type": "custom",
             "update-interval": 1000,
@@ -73,7 +73,7 @@
           "type": "text",
           "fg-color": "#ddd",
           "font-size": 15,
-          "font-family": "Noto Sans",
+          "font-family": "IBM Plex Sans",
           "preset": {
             "type": "custom",
             "update-interval": 1000,
@@ -102,7 +102,7 @@
           "type": "text",
           "fg-color": "#ddd",
           "font-size": 18,
-          "font-family": "Noto Sans",
+          "font-family": "IBM Plex Sans",
           "preset": {
             "type": "time",
             "update-interval": 1000,
@@ -147,7 +147,7 @@
 
     {
       "monitor": "*",
-      "layer": "top",
+      "layer": "overlay",
       "edge": "right",
       "position": "bottom",
       "preview-size": 4,
@@ -161,10 +161,10 @@
       "length": 150,
       "radius": 10,
       "obtuse-angle": 110,
-      "bg-color": "#666",
-      "border-color": "#666",
-      "fg-color": "#ddd",
-      "bg-text-color": "#ddd",
+      "bg-color": "#222",
+      "border-color": "#222",
+      "fg-color": "#777",
+      "bg-text-color": "#777",
       "fg-text-color": "#222",
       "redraw-only-on-internal-update": true,
       "preset": {
@@ -184,7 +184,7 @@
       "type": "slider",
       "thickness": 30,
       "border-width": 0,
-      "length": 150,
+      "length": 100,
       "radius": 10,
       "obtuse-angle": 110,
       "bg-color": "#222",

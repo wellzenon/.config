@@ -9,7 +9,7 @@ return {
       bigfile = { enabled = true },
       explorer = {},
       image = { enabled = true },
-      indent = { animate = { enabled = false } },
+      indent = { enabled = false, animate = { enabled = false } },
       lazygit = {},
       quickfile = { enabled = true },
       statuscolumn = {
@@ -37,11 +37,13 @@ return {
           },
           explorer = {
             focus = 'list',
-            auto_close = true,
+            auto_close = false,
             hidden = true,
             layout = {
-              preset = 'select',
-              preview = { win = 'preview' },
+              auto_hide = { 'input' },
+              preset = 'sidebar',
+              preview = 'main',
+              -- preview = { win = 'preview' },
             },
           },
           buffers = {
@@ -73,8 +75,8 @@ return {
     { "<leader>/", function() Snacks.picker.grep() end, desc = "Grep" },
     { "<leader>:", function() Snacks.picker.command_history() end, desc = "Command History" },
     { "<leader>n", function() Snacks.picker.notifications() end, desc = "Notification History" },
-    { "<leader>e", function() Snacks.explorer.reveal() end, desc = "File Explorer on current buffer" },
-    { "<leader>E", function() Snacks.explorer.open() end, desc = "File Explorer" },
+    { "<leader>E", function() Snacks.explorer.reveal() end, desc = "File Explorer on current buffer" },
+    { "<leader>e", function() Snacks.explorer.open() end, desc = "File Explorer" },
     -- find
     { "<leader>fb", function() Snacks.picker.buffers() end, desc = "Buffers" },
     { "<leader>fc", function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end, desc = "Find Config File" },
