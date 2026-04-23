@@ -1,0 +1,9 @@
+window-rule {
+    match app-id=r#"^sioyek$"#
+    opacity 0.4
+    border {
+        width 0
+        active-color "#352107"
+        inactive-color "#120702"
+    }
+}

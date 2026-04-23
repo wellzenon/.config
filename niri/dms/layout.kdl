@@ -1,5 +1,5 @@
 layout {
-    gaps 10
+    gaps 4
 
     border {
         width 2
@@ -9,7 +9,6 @@ layout {
         width 2
     }
 }
-
 window-rule {
     geometry-corner-radius 10
     clip-to-geometry true

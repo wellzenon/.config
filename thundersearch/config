@@ -1,0 +1,16 @@
+# ThunderSearch Configuration
+# Format: nickname = Real Application Name
+# Example:
+ff = Firefox
+spot = Spotatui
+term = ghostty
+
+# Default directory for /fd command:
+# default_dir = ~/Projects
+
+# File openers for /f/o command:
+# open .pdf .epub = zathura
+# open .png .jpg .jpeg .gif .webp = imv
+# open .mp4 .mkv .avi .webm = mpv
+# open .txt .md .cfg .conf = gedit
+

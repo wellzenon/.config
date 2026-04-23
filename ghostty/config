@@ -32,60 +32,98 @@
 # font-family = MonaspiceKr NFP
 # font-family = Berkeley Mono Variable
 # font-family = Google Sans Code
-font-family = JetBrainsMono
+# font-family = JetBrains Mono
+# font-family = Ioskeley Mono
+# font-family = SpaceMono Nerd Font
+# font-family = ProFont IIx Nerd Font
 # font-family = Lilex
+font-family = Geist Mono
 # font-family = ZedMono NF
 # font-family = Maple Mono Normal NF
-# font-style = Medium
+# font-style = Light
 # font-style-italic = Italic
-# font-style-bold = ExtraBold
-# font-style-bold-italic = ExtraBold Italic
+font-style-bold = ExtraBold
+font-style-bold-italic = ExtraBold Italic
 # font-synthetic-style = false
 
-font-size = 13
-adjust-cell-height=15%
-# adjust-cell-width=-13.25%
+font-feature = +calt,+ss02
+
+font-size = 14
+adjust-cell-height = 10%
+# adjust-cell-width = -13.25%
 
 
 # font-family = VictorMono Nerd Font
 # font-style = Medium
-# font-style-italic = Medium Oblique
-# font-style-bold = Berkeley Mono Variable Bold
-# font-style-bold-italic = Bold Oblique
+# font-style-italic = Lilex Italic
+# font-style-bold = Lilex Bold
+# font-style-bold-italic = Lilex Bold Italic
 # font-size = 12
 # adjust-cell-height=15%
 
-window-padding-x = 5
+gtk-custom-css = ./no-window-padding.css
+window-padding-color = extend
+# background = 2c2d30
+# background = 1b1c1d
+# foreground = cccccc
+# background = 161615
+# background = 1A1C1E
+
+# Cursor colors
+# cursor-color = #b0b0b0
+# cursor-text = #101010
+
+# Selection colors
+# selection-background = #272727
+# selection-foreground = #b0b0b0
+
+# ANSI color palette (0-15)
+# palette = 0=#101010
+# palette = 1=#ff7676
+# palette = 2=#a3d6a3
+# palette = 3=#ffffff
+# palette = 4=#b3b3b3
+# palette = 5=#f4b8e4
+# palette = 6=#fafafa
+# palette = 7=#a5adce
+# palette = 8=#666666
+# palette = 9=#ff5733
+# palette = 10=#86cd82
+# palette = 11=#d9ba73
+# palette = 12=#ffffff
+# palette = 13=#f2a4db
+# palette = 14=#5abfb5
+# palette = 15=#b5bfe2
+
+
+# Background and foreground
+# background = #101010
+# foreground = #dddddd
+
+window-padding-x = 1
 window-padding-y = 0
 window-padding-balance = true
 
 gtk-titlebar = false
 window-decoration = none
-# background-opacity = 0.92
-# background-blur= true
+background-opacity = 1.0
+# background-blur = true
 # background-blur-radius = 10
+# unfocused-split-opacity = 0.5
 
-gtk-single-instance = true
-
-gtk-custom-css = ./no-window-padding.css
-# theme = gruvbox-material
-theme = Atom
-# theme = Alabaster
-# window-padding-color = extend
-# background = 2c2d30
-background = 1b1c1d
-foreground = cccccc
-# background = 161615
-# background = 1A1C1E
-
-unfocused-split-opacity = 0.5
 bold-color = bright
 gtk-single-instance = true
 
-keybind = ctrl+t=new_tab
-keybind = ctrl+shift+w=close_surface
-keybind = ctrl+shift+tab=toggle_tab_overview
-keybind = global:ctrl+backquote=toggle_quick_terminal
+keybind = ctrl+tab=text:\x1b[9;5u
+keybind = ctrl+shift+tab=text:\x1b[9;6u
+
+confirm-close-surface = false
+# quick-terminal-position = bottom
+
+# keybind = ctrl+t=new_tab
+# keybind = ctrl+shift+w=close_surface
+# keybind = ctrl+shift+tab=toggle_tab_overview
+# keybind = global:super+backquote=toggle_quick_terminal
 
 ### SHADERS ###
 # custom-shader = ./ghostty-shaders/gradient-background.glsl
@@ -94,3 +132,5 @@ keybind = global:ctrl+backquote=toggle_quick_terminal
 # only set this during testing, defaults to "true" which animates only active windows
 # custom-shader-animation = always
 keybind = shift+enter=text:\n
+theme = light:"Zenwritten Light",dark:"Zenwritten Dark"
+# theme = Zenwritten Dark

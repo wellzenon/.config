@@ -1,7 +1,45 @@
+* {
+  border: none;
+  border-radius: 0;
+  font-family: "Geist Mono", monospace;
+  font-size: 16px;
+  min-height: 0;
+}
+
 window#waybar {
-    font-family: inherit;
-    font-size: 1.15em;
-    background: @theme_base_color;
-    color: @theme_text_color;
-    padding: 1em 2em;
+  background: rgba(0, 0, 0, 0);
+  color: #ffffff;
+}
+
+#workspaces button {
+  padding: 0 6px;
+  color: #888;
+}
+
+#workspaces button.active {
+  color: #ffffff;
+}
+
+#window {
+  padding: 0 10px;
+}
+
+#clock {
+  font-weight: bold;
+}
+
+#cpu,
+#memory,
+#network,
+#pulseaudio,
+#battery {
+  padding: 0 8px;
+}
+
+#battery.warning {
+  color: #f1c40f;
+}
+
+#battery.critical {
+  color: #e74c3c;
 }

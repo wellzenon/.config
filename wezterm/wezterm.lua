@@ -3,7 +3,7 @@ local config = {
 
 	enable_tab_bar = false,
 	font = wezterm.font({
-		family = "Google Sans Code",
+		family = "JetBrains Mono",
 		harfbuzz_features = { "calt", "clig", "liga" },
 	}),
 }

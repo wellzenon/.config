@@ -1,0 +1,8 @@
+set statusbar-bg \#aaaaaa
+set statusbar-fg \#000000
+
+set font "Geist 12"
+
+set ajust-open "width"
+
+map o file_chooser

@@ -1,0 +1,287 @@
+workspace {
+  edge "right"
+  position "bottom"
+  layer "top"
+  monitor "*"
+  thickness 20
+  length "10%"
+  active-increase 0.5
+  focused-only true
+  hover-color "#ddddddaa"
+  active-color "#fff"
+  focus-color "#444"
+  default-color "#ddd"
+  border-radius 5
+  preview-size 6
+  border-width 1
+  margins {
+    bottom "45%"
+  }
+  preset "niri"
+}
+    // =========== audio ===========
+slider {
+  monitor "*"
+  layer "overlay"
+  edge "right"
+  position "bottom"
+  preview-size 4
+  extra-trigger-size "0%"
+  margins {
+    bottom 40
+  }
+  thickness 30
+  border-width 1
+  length 150
+  radius 5
+  obtuse-angle 90
+  bg-color "#ddd"
+  border-color "#ffffff20"
+  fg-color "#444"
+  bg-text-color "#444"
+  fg-text-color "#ddd"
+  redraw-only-on-internal-update true
+  preset "speaker"
+}
+slider {
+  edge "right"
+  monitor "*"
+  position "bottom"
+  layer "top"
+  margins {
+    bottom 190
+  }
+  preview-size 4
+  extra-trigger-size "0%"
+  thickness 30
+  border-width 1
+  length 100
+  radius 5
+  obtuse-angle 90
+  bg-color "#ddd"
+  border-color "#ffffff20"
+  fg-color "#444"
+  bg-text-color "#444"
+  fg-text-color "#ddd"
+  redraw-only-on-internal-update true
+  preset "microphone"
+}
+
+//     // =========== time ===========
+wrap-box {
+  namespace "status"
+  edge "bottom"
+  position "right"
+  pinnable
+  pin-on-startup
+      // "pin-with-key" true
+      // "pin-key" 274
+  monitor "*"
+  layer "top"
+  offset 0
+  margins {
+    top 0
+    left 0
+    bottom 0
+    right 0
+  }
+  outlook "board" {
+    border-radius 5
+    color "#ddd"
+    margins {
+      top 6
+      left 10
+      right 81
+      bottom 5
+    }
+  }
+  item "text" {
+    // index 0 0
+    fg-color "#444"
+    font-size 16
+    font-family "Geist"
+    preset "custom" {
+      update-interval 1000
+      cmd "niri msg focused-window | grep -oP '(?<=Title: \").*(?=\")' | awk '{ if (length($0) > 33) print substr($0,1,22) \"…\" substr($0,length($0)-7); else print $0 }'"
+    }
+    event-map {
+      mouse-left "notify-send Teste"
+    }
+  }
+  item "text" {
+    index 0 1 
+    fg-color "#444"
+    font-size 16
+    font-family "SpaceMono Nerd Font"
+    preset "custom" {
+      update-interval 5000
+      cmd "sensors -j | jq '.\"coretemp-isa-0000\".\"Package id 0\".temp1_input' | xargs printf \"%.0f°\n\""
+    }
+  }
+  item "text" {
+    index 0 2
+    fg-color "#444"
+    font-size 16
+    font-family "SpaceMono Nerd Font"
+    preset "custom" {
+      update-interval 5000
+      cmd "upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep 'percentage' | awk '{print $2}'"
+    }
+  }
+        // {
+        //   "index" [0 2]
+        //   "type" "text"
+        //   "fg-color" "#aaa"
+        //   "font-size" 16
+        //   "font-family" "Geist"
+        //   "preset" {
+        //     "type" "custom"
+        //     "update-interval" 1000
+        //     "cmd" "uair -q & uairctl fetch {state}{time}"
+        //   }
+        // }
+        // {
+        //   "index" [0 3]
+        //   "type" "ring"
+        //   "animation-curve" "EaseExpo"
+        //   "prefix-hide" false
+        //   "suffix-hide" false
+        //   "bg-color" "#444"
+        //   "fg-color" "#aaa"
+        //   "ring-width" 10
+        //   "radius" 7
+        //   "text-transition-ms" 100 // ms
+        //   "preset" {
+        //     "type" "custom"
+        //     "cmd" "printf '0.%02d\n' $(( 100 - $(uairctl fetch '{percent}' || echo 100) ))"
+        //     "update-interval" 1000
+        //   }
+        // }
+  item "tray" {
+    index 0 3 // position in the grid layout. -1 means next available position.
+    font-family "Geist"
+    grid-align "bottom-center" // 9 positions center-left center-right top-left top-right bottom-left bottom-right left-top left-bottom right-top right-bottom
+    icon-theme "breeze" // null will fetch the default icon theme
+    icon-size 16
+    tray-gap 2
+    header-draw-config {
+      text-color "#444"
+      font-pixel-height 16
+    }
+    header-menu-align "right"
+    header-menu-stack "menu-top"
+    menu-draw-config {
+      text-color "#444"
+      marker-color "#444"
+      font-pixel-height 16
+      icon-size 16
+      marker-size 16
+      separator-height 5
+      margin {
+        left 12
+        top 12
+      }
+    }
+  }
+  item "text" {
+    index 0 4
+    fg-color "#444"
+    font-size 16
+    font-family "Geist"
+    preset "custom" {
+      update-interval 1000
+      cmd "~/.config/niri/scripts/toggle-theme-global.sh --light-str '  󰖨' --dark-str '  ' --status"
+    }
+    event-map {
+      mouse-left "~/.config/niri/scripts/toggle-theme-global.sh"
+    }
+  }
+  item "text" {
+    index 0 5
+    fg-color "#444"
+    font-size 16
+    font-family "Geist"
+    preset "custom" {
+      update-interval 1000
+      cmd "~/.config/niri/scripts/sinks-rotation.sh --status"
+    }
+    event-map {
+      mouse-left "~/.config/niri/scripts/sinks-rotation.sh"
+    }
+  }
+  item "text" {
+    index 0 6
+    fg-color "#444"
+    font-size 16
+    font-family "Geist"
+    preset "custom" {
+      update-interval 1000
+      cmd "~/.config/niri/scripts/output_toggle.sh --on-str '󰌢' --off-str '󰛧' --status internal"
+    }
+    event-map {
+      mouse-left "~/.config/niri/scripts/output_toggle.sh external"
+    }
+  }
+  item "text" {
+    index 0 7
+    fg-color "#444"
+    font-size 16
+    font-family "Geist"
+    preset "custom" {
+      update-interval 1000
+      cmd "~/.config/niri/scripts/output_toggle.sh --on-str '󰍹' --off-str '󰶐' --status external"
+    }
+    event-map {
+      mouse-left "~/.config/niri/scripts/output_toggle.sh external"
+    }
+  }
+  item "text" {
+    index 0 8
+    type "text"
+    fg-color "#444"
+    font-size 16
+    font-family "SpaceMono Nerd Font"
+    preset "time" {
+      update-interval 1000
+      format " %d-%m"
+    }
+  }
+}
+wrap-box {
+  namespace "status"
+  edge "bottom"
+  position "right"
+  pinnable
+  pin-on-startup
+      // "pin-with-key" true
+      // "pin-key" 274
+  monitor "*"
+  layer "top"
+  offset 0
+  margins {
+    top 0
+    left 0
+    bottom 0
+    right 0
+  }
+  outlook "board" {
+    border-radius 5
+    color "#ddd"
+    margins {
+      top 0
+      left 0
+      right 5
+      bottom 5
+    }
+  }
+  item "text" {
+    index 0 5
+    fg-color "#444"
+    font-size 22
+    font-family "SpaceMono Nerd Font"
+    preset "time" {
+      update-interval 1000
+      format "%H:%M"
+    }
+  }
+}

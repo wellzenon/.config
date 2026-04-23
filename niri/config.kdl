@@ -37,7 +37,7 @@ input {
     }
 
     workspace-auto-back-and-forth
-    warp-mouse-to-focus
+    // warp-mouse-to-focus
     focus-follows-mouse max-scroll-amount="15%"
 }
 
@@ -49,12 +49,12 @@ gestures {
 
 output "eDP-1" {
     scale 1
-    // variable-refresh-rate // on-demand=true
+    position x=0 y=0
 }
 
-output "HDMI-A-1" {
+output "DP-1" {
     scale 1
-    // variable-refresh-rate // on-demand=true
+    position x=1920 y=0
 }
 
 layout {
@@ -65,12 +65,14 @@ layout {
     always-center-single-column
 
     preset-column-widths {
-        proportion 0.25
+        proportion 0.2
+        proportion 0.4
         proportion 0.5
-        proportion 0.75
+        proportion 0.6
+        proportion 0.8
     }
 
-    default-column-width { proportion 0.25; }
+    default-column-width { proportion 0.5; }
 
     focus-ring {
         off
@@ -81,8 +83,8 @@ layout {
     border {
         // off
         width 0
-        active-color "#111"
-        inactive-color "#111"
+        active-color "#222"
+        inactive-color "#222"
         // inactive-gradient from="#000" to="#555" angle=180
     }
 
@@ -107,36 +109,376 @@ layout {
     }
 
     struts {
-        left 10
-        right 10
+        // left 15
+        // right 15
         // top -1
         // bottom -1
     }
 }
 
-animations {
-    window-open {
-        spring damping-ratio=1.0 stiffness=700 epsilon=0.0001
-    }
-    window-close {
-        spring damping-ratio=1.0 stiffness=700 epsilon=0.1
-    }
-    window-resize {
-        spring damping-ratio=1.0 stiffness=800 epsilon=0.001
-    }
-    window-movement {
-        spring damping-ratio=1.0 stiffness=600 epsilon=0.0001
-    }
-    overview-open-close {
-        spring damping-ratio=1.0 stiffness=900 epsilon=0.0001
-    }
-    workspace-switch {
-        spring damping-ratio=1.0 stiffness=800 epsilon=0.00001
-    }
-    horizontal-view-movement {
-        spring damping-ratio=1.0 stiffness=700 epsilon=0.0001
-    }
-}
+// animations {
+//     // slowdown 1.5
+//     window-open {
+//         spring damping-ratio=1.0 stiffness=700 epsilon=0.0001
+//     }
+//     window-close {
+//         spring damping-ratio=1.0 stiffness=700 epsilon=0.1
+//     }
+//     window-resize {
+//         spring damping-ratio=0.45 stiffness=750 epsilon=0.0003
+//     }
+//     window-movement {
+//         spring damping-ratio=1.0 stiffness=600 epsilon=0.0001
+//     }
+//     overview-open-close {
+//         spring damping-ratio=1.0 stiffness=900 epsilon=0.0001
+//     }
+//     workspace-switch {
+//         spring damping-ratio=1.0 stiffness=800 epsilon=0.00001
+//     }
+//     horizontal-view-movement {
+//         spring damping-ratio=1.0 stiffness=700 epsilon=0.0001
+//     }
+// }
+
+// animations {
+//
+//     // Slow down all animations by this factor. Values below 1 speed them up instead.
+//     slowdown 1.5
+//
+//     workspace-switch {
+//         spring damping-ratio=1.0 stiffness=1000 epsilon=0.0001
+//
+// //this animation does not support custom shaders
+//     }
+//
+//     window-open {
+//         duration-ms 280
+//         curve "linear"
+//
+//         custom-shader r"
+//
+// // Exponential Easing
+// float easeInExpo(float t) {
+//     return t == 0.0 ? 0.0 : pow(2.0, 10.0 * (t - 1.0));
+// }
+// float easeOutExpo(float t) {
+//     return t == 1.0 ? 1.0 : 1.0 - pow(2.0, -10.0 * t);
+// }
+// float easeInOutExpo(float t) {
+//     if (t == 0.0) return 0.0;
+//     if (t == 1.0) return 1.0;
+//     return t < 0.5 ? 0.5 * pow(2.0, 20.0 * t - 10.0) : 1.0 - 0.5 * pow(2.0, -20.0 * t + 10.0);
+// }
+// // Sine Easing
+// float easeInSine(float t) {
+//     return 1.0 - cos((t * 3.141592653589793) / 2.0);
+// }
+// float easeOutSine(float t) {
+//     return sin((t * 3.141592653589793) / 2.0);
+// }
+// float easeInOutSine(float t) {
+//     return -0.5 * (cos(3.141592653589793 * t) - 1.0);
+// }
+// // Quartic Easing
+// float easeInQuart(float t) {
+//     return t * t * t * t;
+// }
+// float easeOutQuart(float t) {
+//     float f = t - 1.0;
+//     return 1.0 - f * f * f * f;
+// }
+// float easeInOutQuart(float t) {
+//     return t < 0.5 ? 8.0 * t * t * t * t : 1.0 - 8.0 * (t - 1.0) * (t - 1.0) * (t - 1.0) * (t - 1.0);
+// }
+//
+// // Cubic Easing
+// float easeInCubic(float t) {
+//     return t * t * t;
+// }
+//
+// float easeOutCubic(float t) {
+//     float f = t - 1.0;
+//     return f * f * f + 1.0;
+// }
+//
+// float easeInOutCubic(float t) {
+//     return t < 0.5
+//         ? 4.0 * t * t * t
+//         : 1.0 + 4.0 * (t - 1.0) * (t - 1.0) * (t - 1.0);
+// }
+//
+// vec2 scaleUV(vec2 uv, vec2 pivot, vec2 scale) {
+//     return (uv - pivot) / scale + pivot;
+// }
+//
+// vec4 open_color(vec3 coords_geo, vec3 size_geo) {
+//     if (coords_geo.x < 0.0 || coords_geo.x > 1.0 ||
+//         coords_geo.y < 0.0 || coords_geo.y > 1.0) {
+//         return vec4(0.0);
+//     }
+//
+//     vec2 uv = coords_geo.xy;
+//     float p = niri_clamped_progress;
+//
+//     float s = mix(0.82, 1.0, easeOutCubic(p));
+//     vec2 baseUV = scaleUV(uv, vec2(0.5, 0.5), vec2(s, s));
+//
+//     float rOff = mix(-0.01, 0.0, easeOutExpo(p));
+//     float gOff = mix( 0.000, 0.0, easeInOutSine(p));
+//     float bOff = mix( 0.01, 0.0, easeInExpo(p));
+//
+//     vec4 xyScale = vec4(0.0);
+//     xyScale.r = mix(0.0, 1.0, easeInQuart(p));
+//     xyScale.g = mix(0.0, 1.0, easeInExpo(p));
+//     xyScale.b = mix(0.0, 1.0, easeInSine(p));
+//
+//     vec2 uvR = scaleUV(baseUV + vec2(rOff, 0.0), vec2(0.5, 0.5), vec2(xyScale.r));
+//     vec2 uvG = scaleUV(baseUV + vec2(gOff, 0.0), vec2(0.5, 0.5), vec2(xyScale.g));
+//     vec2 uvB = scaleUV(baseUV + vec2(bOff, 0.0), vec2(0.5, 0.5), vec2(xyScale.b));
+//
+//     vec4 outColor = vec4(0.0);
+//     outColor.r = texture2D(niri_tex, uvR).r;
+//     outColor.g = texture2D(niri_tex, uvG).g;
+//     outColor.b = texture2D(niri_tex, uvB).b;
+//
+//     float avgRGB = (outColor.r + outColor.g + outColor.b) / 3.0;
+//     outColor.a = smoothstep(0.0, 0.5, avgRGB);
+//
+//     return outColor;
+// }
+//         "
+//     }
+//
+//     window-close {
+//         duration-ms 180
+//         curve "linear"
+//
+//         custom-shader r"
+// // Exponential Easing
+// float easeInExpo(float t) {
+//     return t == 0.0 ? 0.0 : pow(2.0, 10.0 * (t - 1.0));
+// }
+// float easeOutExpo(float t) {
+//     return t == 1.0 ? 1.0 : 1.0 - pow(2.0, -10.0 * t);
+// }
+// float easeInOutExpo(float t) {
+//     if (t == 0.0) return 0.0;
+//     if (t == 1.0) return 1.0;
+//     return t < 0.5 ? 0.5 * pow(2.0, 20.0 * t - 10.0) : 1.0 - 0.5 * pow(2.0, -20.0 * t + 10.0);
+// }
+// // Sine Easing
+// float easeInSine(float t) {
+//     return 1.0 - cos((t * 3.141592653589793) / 2.0);
+// }
+// float easeOutSine(float t) {
+//     return sin((t * 3.141592653589793) / 2.0);
+// }
+// float easeInOutSine(float t) {
+//     return -0.5 * (cos(3.141592653589793 * t) - 1.0);
+// }
+// // Quartic Easing
+// float easeInQuart(float t) {
+//     return t * t * t * t;
+// }
+// float easeOutQuart(float t) {
+//     float f = t - 1.0;
+//     return 1.0 - f * f * f * f;
+// }
+// float easeInOutQuart(float t) {
+//     return t < 0.5 ? 8.0 * t * t * t * t : 1.0 - 8.0 * (t - 1.0) * (t - 1.0) * (t - 1.0) * (t - 1.0);
+// }
+//
+// // Cubic Easing
+// float easeInCubic(float t) {
+//     return t * t * t;
+// }
+//
+// float easeOutCubic(float t) {
+//     float f = t - 1.0;
+//     return f * f * f + 1.0;
+// }
+//
+// float easeInOutCubic(float t) {
+//     return t < 0.5
+//         ? 4.0 * t * t * t
+//         : 1.0 + 4.0 * (t - 1.0) * (t - 1.0) * (t - 1.0);
+// }
+//
+// vec2 scaleUV(vec2 uv, vec2 pivot, vec2 scale) {
+//     return (uv - pivot) / scale + pivot;
+// }
+//
+// vec4 close_color(vec3 coords_geo, vec3 size_geo) {
+//
+//     if (coords_geo.x < 0.0 || coords_geo.x > 1.0 ||
+//         coords_geo.y < 0.0 || coords_geo.y > 1.0) {
+//         return vec4(0.0);
+//     }
+//
+//
+//     vec2 uv = coords_geo.xy;
+//     float p = 1.0 - niri_clamped_progress;
+//
+//     float s = mix(0.82, 1.0, easeOutCubic(p));
+//     vec2 baseUV = scaleUV(uv, vec2(0.5, 0.5), vec2(s, s));
+//
+//     float rOff = mix(-0.01, 0.0, easeOutExpo(p));
+//     float gOff = mix( 0.000, 0.0, easeInOutSine(p));
+//     float bOff = mix( 0.01, 0.0, easeInExpo(p));
+//
+//     vec4 xyScale = vec4(0.0);
+//     xyScale.r = mix(0.0, 1.0, easeInQuart(p));
+//     xyScale.g = mix(0.0, 1.0, easeInExpo(p));
+//     xyScale.b = mix(0.0, 1.0, easeInSine(p));
+//
+//     vec2 uvR = scaleUV(baseUV + vec2(rOff, 0.0), vec2(0.5, 0.5), vec2(xyScale.r));
+//     vec2 uvG = scaleUV(baseUV + vec2(gOff, 0.0), vec2(0.5, 0.5), vec2(xyScale.g));
+//     vec2 uvB = scaleUV(baseUV + vec2(bOff, 0.0), vec2(0.5, 0.5), vec2(xyScale.b));
+//
+//     vec4 outColor = vec4(0.0);
+//     outColor.r = texture2D(niri_tex, uvR).r;
+//     outColor.g = texture2D(niri_tex, uvG).g;
+//     outColor.b = texture2D(niri_tex, uvB).b;
+//
+//     float avgRGB = (outColor.r + outColor.g + outColor.b) / 3.0;
+//     outColor.a = smoothstep(0.0, 0.5, avgRGB);
+//
+//     return outColor;
+// }
+//         "
+//     }
+//
+//     horizontal-view-movement {
+//         spring damping-ratio=1.0 stiffness=800 epsilon=0.0001
+//
+// //this animation does not support custom shaders
+//     }
+//
+//     window-movement {
+//         spring damping-ratio=1.0 stiffness=800 epsilon=0.0001
+//
+// //this animation does not support custom shaders
+//     }
+//
+//     window-resize {
+//         spring damping-ratio=1.0 stiffness=800 epsilon=0.0001
+//
+//
+//         custom-shader r"
+//
+// // Exponential Easing
+// float easeInExpo(float t) {
+//     return t == 0.0 ? 0.0 : pow(2.0, 10.0 * (t - 1.0));
+// }
+// float easeOutExpo(float t) {
+//     return t == 1.0 ? 1.0 : 1.0 - pow(2.0, -10.0 * t);
+// }
+// float easeInOutExpo(float t) {
+//     if (t == 0.0) return 0.0;
+//     if (t == 1.0) return 1.0;
+//     return t < 0.5 ? 0.5 * pow(2.0, 20.0 * t - 10.0) : 1.0 - 0.5 * pow(2.0, -20.0 * t + 10.0);
+// }
+// // Sine Easing
+// float easeInSine(float t) {
+//     return 1.0 - cos((t * 3.141592653589793) / 2.0);
+// }
+// float easeOutSine(float t) {
+//     return sin((t * 3.141592653589793) / 2.0);
+// }
+// float easeInOutSine(float t) {
+//     return -0.5 * (cos(3.141592653589793 * t) - 1.0);
+// }
+// // Quartic Easing
+// float easeInQuart(float t) {
+//     return t * t * t * t;
+// }
+// float easeOutQuart(float t) {
+//     float f = t - 1.0;
+//     return 1.0 - f * f * f * f;
+// }
+// float easeInOutQuart(float t) {
+//     return t < 0.5 ? 8.0 * t * t * t * t : 1.0 - 8.0 * (t - 1.0) * (t - 1.0) * (t - 1.0) * (t - 1.0);
+// }
+//
+// vec4 resize_color(vec3 coords_curr_geo, vec3 size_curr_geo) {
+//
+//     float p = niri_clamped_progress;
+//     vec3 coords_tex_next = niri_geo_to_tex_next * coords_curr_geo;
+//
+//     float distance = 0.0075;
+//
+//     vec4 outColor = vec4(0.0);
+//
+//     vec2 rXY = mix(
+//         vec2(-distance),
+//         vec2(0.0),
+//         easeInQuart(p)
+//     );
+//
+//     vec2 gXY = mix(
+//         vec2(0.0,0.0),
+//         vec2(0.0),
+//         easeInQuart(p)
+//     );
+//
+//     vec2 bXY = mix(
+//         vec2(distance),
+//         vec2(0.0),
+//         easeInSine(p)
+//     );
+//
+//     outColor.r = texture2D(niri_tex_next, coords_tex_next.st + rXY).r;
+//     outColor.g = texture2D(niri_tex_next, coords_tex_next.st + gXY).g;
+//     outColor.b = texture2D(niri_tex_next, coords_tex_next.st + bXY).b;
+//     outColor.a = texture2D(niri_tex_next, coords_tex_next.st ).a;
+//
+//     return outColor;
+// }
+//         "
+//
+//
+//     }
+//
+//     config-notification-open-close {
+//         spring damping-ratio=0.6 stiffness=1000 epsilon=0.001
+//
+// //this animation does not support custom shaders
+//     }
+//
+//     exit-confirmation-open-close {
+//         spring damping-ratio=0.6 stiffness=500 epsilon=0.01
+//
+// //this animation does not support custom shaders
+//     }
+//
+//     screenshot-ui-open {
+//         duration-ms 200
+//         curve "linear"
+//
+// //this animation does not support custom shaders
+//     }
+//
+//     overview-open-close {
+//         spring damping-ratio=1.0 stiffness=800 epsilon=0.0001
+//
+// //this animation does not support custom shaders
+//     }
+//
+//     recent-windows-close {
+//         spring damping-ratio=1.0 stiffness=800 epsilon=0.001
+//
+// //this animation does not support custom shaders
+//     }
+// }
+
+// blur {
+//     off
+//     passes 7
+//     offset 1
+//     noise 0.12
+//     saturation 1.0
+// }
 
 // Open the Firefox picture-in-picture player as floating by default.
 window-rule {
@@ -144,17 +486,29 @@ window-rule {
     open-floating true
 }
 
-// Example: enable rounded corners for all windows.
 window-rule {
+    // opacity 0.8
+    draw-border-with-background true
     // geometry-corner-radius 10
     // clip-to-geometry true
-    // draw-border-with-background false
+    // background-effect {
+    //     blur true
+    //     xray true
+    // }
 }
 
 window-rule {
     match is-focused=false
-    opacity 0.8
+    opacity 0.90
     draw-border-with-background true
+}
+
+window-rule {
+    match is-floating=true
+    geometry-corner-radius 20
+    clip-to-geometry true
+    draw-border-with-background true
+    // opacity 0.9
 }
 
 window-rule {
@@ -165,6 +519,7 @@ window-rule {
 window-rule {
     match app-id=r#"^zen$"# title="^Picture-in-Picture$"
     match app-id=r#"^zen$"# title=r#"^Extension: (fx_cast) - — Zen Browser$"#
+    // match app-id=r#"^yad$"#
     open-floating true
 }
 
@@ -196,9 +551,16 @@ window-rule {
     default-floating-position x=0 y=0 relative-to="bottom"
 }
 
+// window-rule {
+//     match app-id=r#"^com.mitchellh.ghostty$"#
+//     match app-id=r#"^org.mozilla.firefox.webapp-c2523256-75ee-4962-955f-d756f7619565$"#
+//     default-column-width { proportion 0.25; }
+// }
+
 window-rule {
-    match app-id=r#"^com.mitchellh.ghostty$"#
-    default-column-width { proportion 0.25; }
+    match title="spt - spotatui"
+    match app-id=r#"^com.terminal.spotatui$"#
+    draw-border-with-background false
 }
 
 window-rule {
@@ -218,9 +580,20 @@ window-rule {
     open-fullscreen true
 }
 
+window-rule {
+    match app-id=r#"^rudo$"# title="^Confirm .*$"
+    open-floating true
+}
+
 layer-rule {
     match namespace="^waybar$"
 }
+
+// layer-rule {
+//     match namespace=r#"^vicinae$"#
+//     geometry-corner-radius 10
+//     clip-to-geometry true
+// }
 
 layer-rule {
     match namespace="^wallpaper$"
@@ -231,18 +604,29 @@ layer-rule {
 binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
-    Mod+W hotkey-overlay-title="Open Firefox" { spawn-sh "nirius focus-or-spawn -a firefox prime-run firefox"; }
-    Mod+G hotkey-overlay-title="Open AI" { spawn-sh "nirius focus-or-spawn -a FFPWA-01K83NKF52GD8Q5NTCZPM7SBPM firefoxpwa site launch 01K83NKF52GD8Q5NTCZPM7SBPM" ; }
-    Mod+Return hotkey-overlay-title="Open a Terminal: Ghostty" { spawn-sh "ghostty +new-window"; }
-    Mod+E hotkey-overlay-title="Open Neovim" { spawn-sh "nirius focus-or-spawn -a nvim ghostty -- --class=com.terminal.nvim -e nvim"; }
-    Mod+N hotkey-overlay-title="Open Notes" { spawn-sh "nirius focus-or-spawn -t notes ghostty -- --env=NVIM_APPNAME=nvim-notes -e nvim ~/obsidian/TODO.md"; }
-    Mod+A hotkey-overlay-title="Open Superfile" { spawn-sh "ghostty -e spf"; }
-    Mod+O hotkey-overlay-title="Open Obsidian" { spawn-sh "nirius focus-or-spawn -a obsidian prime-run obsidian"; }
-    Mod+S hotkey-overlay-title="Open Sioyek" { spawn-sh "QT_QPA_PLATFORM=xcb sioyek"; }
-    // Mod+S hotkey-overlay-title="Open Sioyek" { spawn-sh "nirius focus-or-spawn -a sioyek sioyek"; }
-    Mod+Space hotkey-overlay-title="Run an Application" {spawn-sh "vicinae toggle"; }
+    Mod+W hotkey-overlay-title="Open Firefox" { spawn-sh "nirius focus-or-spawn -a firefox prime-run firefox && niri msg action center-column"; }
+    // Mod+Y hotkey-overlay-title="Open Tec Concursos" { spawn-sh "nirius focus-or-spawn -a org.mozilla.firefox.webapp-e86ad5d7-320c-4820-a470-d9dbf7dbdff6 /usr/lib/firefox-nightly/firefox -- -taskbar-ta be86ad5d7-320c-4820-a470-d9dbf7dbdff6 -new-window https://www.tecconcursos.com.br -profile /home/ton/.mozilla/firefox/x5slv4jk.default-nightly-1 -container 0 && niri msg action center-column" ; }
+    // Mod+G hotkey-overlay-title="Open AI" { spawn-sh "nirius focus-or-spawn -a org.mozilla.firefox.webapp-c2523256-75ee-4962-955f-d756f7619565 /usr/lib/firefox-nightly/firefox -- -taskbar-tab 7773ab32-87a0-4c05-8d37-9d6773f408db -new-window https://gemini.google.com -profile /home/ton/.mozilla/firefox/x5slv4jk.default-nightly-1 -container 0 && niri msg action center-column" ; }
+
+    Mod+O hotkey-overlay-title="Open Obsidian" { spawn-sh "nirius focus-or-spawn -a obsidian prime-run obsidian -- --enable-features=UseOzonePlatform --ozone-platform=wayland && niri msg action center-column"; }
+    Mod+S hotkey-overlay-title="Open Sioyek" { spawn-sh "QT_QPA_PLATFORM=xcb nirius focus-or-spawn -a sioyek sioyek && niri msg action center-column"; }
+    Mod+Shift+S hotkey-overlay-title="Toggle Sioyek Sepia" { spawn-sh "~/.config/niri/scripts/toggle_sioyek.sh"; }
+
+    Mod+E hotkey-overlay-title="Open Neovim" { spawn-sh "nirius focus-or-spawn -t nvim ghostty -- +new-window -e nvim && niri msg action center-column"; }
+    // Mod+N hotkey-overlay-title="Open Notes" { spawn-sh "nirius focus-or-spawn -t notes ghostty -- --env=NVIM_APPNAME=nvim-notes -e nvim ~/obsidian/TODO.md && niri msg action center-column"; }
+    Mod+N hotkey-overlay-title="Open Nautilus" { spawn-sh "nautilus ~/Downloads/"; }
+    Mod+A hotkey-overlay-title="Open Superfile" { spawn-sh "ghostty +new-window -e spf ~/Downloads/ && niri msg action center-column"; }
+    Mod+Return hotkey-overlay-title="Open a Terminal: Ghostty" { spawn-sh "ghostty +new-window && niri msg action center-column"; }
+
+
+    Mod+M hotkey-overlay-title="Open Spotatui" { spawn-sh "nirius focus-or-spawn -a \"spt - spotatui\" ghostty -- --background-opacity=0.8 --font-size=18 --class=com.terminal.spotatui -e spotatui"; }
+
+    // Mod+Space hotkey-overlay-title="Run an Application" {spawn-sh "vicinae toggle"; }
+    Mod+Space hotkey-overlay-title="Run an Application" {spawn "thundersearch"; }
     Mod+Ctrl+V hotkey-overlay-title="Show clipboard history" { spawn-sh "vicinae vicinae://extensions/vicinae/clipboard/history"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
+
+    Mod+F4 hotkey-overlay-title="Toggle System dark/light theme" { spawn-sh "~/.config/niri/scripts/toggle-theme-global.sh"; }
 
     XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+"; }
     XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-"; }
@@ -364,18 +748,17 @@ binds {
     Mod+C { center-column; }
     Mod+Ctrl+C { center-visible-columns; }
 
-    Mod+Minus { set-column-width "-12.5%"; }
-    Mod+Equal { set-column-width "+12.5%"; }
+    Mod+Minus { set-column-width "-5%"; }
+    Mod+Equal { set-column-width "+5%"; }
 
-    Mod+Shift+Minus { set-window-height "-10%"; }
-    Mod+Shift+Equal { set-window-height "+10%"; }
+    Mod+Shift+Minus { set-window-height "-5%"; }
+    Mod+Shift+Equal { set-window-height "+5%"; }
 
     Mod+T { toggle-column-tabbed-display; }
     Mod+V       { toggle-window-floating; }
     Mod+Shift+V { switch-focus-between-floating-and-tiling; }
 
     Print { screenshot; }
-    Mod+Shift+S { screenshot show-pointer=false; }
     Ctrl+Print { screenshot-screen show-pointer=false; }
     Alt+Print { screenshot-window; }
 
@@ -384,15 +767,15 @@ binds {
     Mod+Shift+Q { spawn "systemctl" "suspend"; }
     // Ctrl+Alt+Delete { spawn "walker" "-nm" "menus:power"; }
 
-    Mod+D { spawn "~/.config/niri/scripts/sinks-rotation.sh";}
+    Mod+D hotkey-overlay-title="Change Speaker" { spawn "~/.config/niri/scripts/sinks-rotation.sh";}
 
-    Mod+P { spawn-sh "~/.config/niri/scripts/output_toggle.sh notebook";}
-    Mod+Shift+P { spawn-sh "~/.config/niri/scripts/output_toggle.sh external";}
-    Mod+Ctrl+P { power-off-monitors; }
+    Mod+P hotkey-overlay-title="Toggle Notebook Screen On/Off" { spawn-sh "~/.config/niri/scripts/output_toggle.sh notebook";}
+    Mod+Shift+P hotkey-overlay-title="Toggle External Screen On/Off" { spawn-sh "~/.config/niri/scripts/output_toggle.sh external";}
+    Mod+Ctrl+P hotkey-overlay-title="Toggle All Screens On/Off" { power-off-monitors; }
 }
 
 overview {
-    zoom 0.4
+    zoom 0.3
     workspace-shadow { 
         off
     }
@@ -405,15 +788,15 @@ recent-windows {
     open-delay-ms 150
 
     highlight {
-        active-color "#999999ff"
+        active-color "#ffffff40"
         urgent-color "#ff9999ff"
         padding 30
-        corner-radius 0
+        corner-radius 20
     }
 
     previews {
-        max-height 480
-        max-scale 0.5
+        max-height 600
+        max-scale 1
     }
 
     binds {
@@ -440,13 +823,37 @@ environment {
     ELECTRON_OZONE_PLATFORM_HINT "auto"
     GTK_IM_MODULE "simple"
 
+    GBM_BACKEND "nvidia-drm"
     __GLX_VENDOR_LIBRARY_NAME "nvidia"
     __GL_DXVK_USE_LAST_PIPELINE_CACHE "1"
+
+    // __EGL_VENDOR_LIBRARY_FILENAMES "/usr/share/glvnd/egl_vendor.d/10_nvidia.json"
+    VK_ICD_FILENAMES "/usr/share/vulkan/icd.d/nvidia_icd.json"
+    NVIDIA_DRIVER_CAPABILITIES "all"
+    EGL_VENDOR_LIBRARY_NAME "nvidia"
+    GSK_RENDERER "ngl"
+
+    // DRI_PRIME "1"
+    // LIBGL_ALWAYS_INDIRECT "1" 
+    // LIBGL_LIBRARIES_PATH "/usr/lib64/"
+
+    LIBVA_DRIVER_NAME "nvidia"
+    AQ_DRM_DEVICES "/dev/dri/card1:/dev/dri/card0" // It forces card1 (NVIDIA GPU) to be prioritized over card0 (Intel/AMD iGPU)
+    AQ_FORCE_LINEAR_BLIT "0" // OPTIONAL
+    // It is a 50/50 chance it'll work fine for you. Try with and without.
+    // Some people reported that it fixes a lot of things, but in my case
+    // it ran only worse. 
+    NVD_BACKEND "direct" // Allows for VAAPI Hardware Acceleration
+
+    SSH_AUTH_SOCK "/run/user/1000/gcr/ssh"
 }
 
 cursor {
     xcursor-theme "Bibata-Modern-Classic"
-        xcursor-size 20
+    // xcursor-theme "GoogleDot-Black"
+    // xcursor-theme "oreo_black_cursors"
+    // xcursor-theme "Future-cursors"
+    xcursor-size 24
 }
 
 prefer-no-csd
@@ -454,36 +861,50 @@ prefer-no-csd
 screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
 debug {
-    // keep-max-bpc-unchanged
-    emulate-zero-presentation-time
-    restrict-primary-scanout-to-matching-format
     keep-laptop-panel-on-when-lid-is-closed
-    disable-transactions
+    // emulate-zero-presentation-time
+    render-drm-device "/dev/dri/renderD129"
+    // ignore-drm-device "/dev/dri/renderD128"
+    // render-drm-device "/dev/dri/card0"
+    // keep-max-bpc-unchanged
+    // restrict-primary-scanout-to-matching-format
+    // disable-transactions
 }
 
 
-// spawn-sh-at-startup "kmonad ~/.config/niri/kmonad.kbd"
+spawn-sh-at-startup "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_SESSION_DESKTOP"
+spawn-sh-at-startup "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_SESSION_DESKTOP"
+
 spawn-sh-at-startup "wl-paste --watch cliphist store"
-spawn-sh-at-startup "swaybg -m fill -i ~/.config/wallpapers/tempest.jpg"
-spawn-sh-at-startup "QT_SCALE_FACTOR=1.5 vicinae server"
-spawn-sh-at-startup "vicinae toggle"
-spawn-sh-at-startup "way-edges -c ~/.config/way-edges/niri.jsonc"
-spawn-sh-at-startup "~/.config/niri/scripts/output_toggle.sh notebook"
+// spawn-sh-at-startup "swaybg -c 000000"
+// spawn-sh-at-startup "swaybg -m fill -i ~/.config/wallpapers/orion_nebula_nasa_heic0601a.jpg"
+// spawn-sh-at-startup "swaybg -m fill -i ~/.config/wallpapers/4K-OLED-Backgrounds-for-Desktop.jpg"
+// spawn-sh-at-startup "swaybg -m fill -i ~/.config/wallpapers/Monster Abstract Wallpaper 4k Pc Desktop 5300a.jpg"
+// spawn-sh-at-startup "swaybg -m fill -i ~/.config/wallpapers/art002e015228orig.webp"
+spawn-sh-at-startup "way-edges -c ~/.config/way-edges/config.kdl"
 spawn-sh-at-startup "nm-applet"
 spawn-sh-at-startup "syncthing serve"
-spawn-sh-at-startup "swayidle timeout 601 'niri msg action power-off-monitors' timeout 600 'systemctl suspend'"
+spawn-sh-at-startup "QT_SCALE_FACTOR=1.5 vicinae server"
+spawn-sh-at-startup "rudo"
 spawn-sh-at-startup "ghostty --gtk-single-instance=true --quit-after-last-window-closed=false --initial-window=false"
-spawn-sh-at-startup "uair -q"
 spawn-sh-at-startup "niriusd"
-spawn-sh-at-startup "kdeconnectd"
-spawn-sh-at-startup "kdeconnect-indicator"
+spawn-sh-at-startup "~/.config/niri/scripts/output_toggle.sh notebook"
+
+// spawn-sh-at-startup "systemctl --user start stasis"
+// spawn-sh-at-startup "kmonad ~/.config/niri/kmonad.kbd"
+// spawn-sh-at-startup "qs -c noctalia-shell"
+spawn-sh-at-startup "swayidle timeout 601 'niri msg action power-off-monitors' timeout 600 'systemctl suspend'"
 
 // Niri Session
-// spawn-sh-at-startup "firefoxpwa site launch 01K83NKF52GD8Q5NTCZPM7SBPM && niri msg action toggle-windowed-fullscreen --id $(niri msg windows | awk '/^[[:space:]]*Window ID/ {id=$3} /^[[:space:]]*App ID:.*FFPWA-01K83NKF52GD8Q5NTCZPM7SBPM/ {sub(\":\", \"\", id); print id; exit}')"
-spawn-sh-at-startup "prime-run firefox"
-// spawn-sh-at-startup "firefoxpwa site launch 01K83NKF52GD8Q5NTCZPM7SBPM"
-spawn-sh-at-startup "firefoxpwa site launch 01K83NKF52GD8Q5NTCZPM7SBPM && sleep 2 && niri msg action toggle-windowed-fullscreen --id $(niri msg windows | awk '/Window ID/ {id=$3} /App ID:.*FFPWA-01K83NKF52GD8Q5NTCZPM7SBPM/ {sub(\":\", \"\", id); print id; exit}')"
-spawn-sh-at-startup "QT_QPA_PLATFORM=xcb sioyek"
-spawn-sh-at-startup "prime-run obsidian"
-spawn-sh-at-startup "prime-run stremio-service"
 
+// spawn-sh-at-startup "QT_QPA_PLATFORM=xcb sioyek"
+spawn-sh-at-startup "prime-run firefox"
+spawn-sh-at-startup "$HOME/.config/niri/scripts/toggle-theme-global.sh && $HOME/.config/niri/scripts/toggle-theme-global.sh"
+// spawn-sh-at-startup "prime-run obsidian"
+
+
+spawn-at-startup "systemctl" "--user" "import-environment" "SSH_AUTH_SOCK"
+spawn-at-startup "valent" "--gapplication-service"
+
+// include "./noctalia.kdl"
+// include "sioyek.kdl"

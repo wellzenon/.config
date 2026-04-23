@@ -1,7 +1,19 @@
 #!/bin/bash
 
-# Obter uma lista de IDs de todos os sinks de áudio
-sink_ids=($(wpctl status | awk '/^Audio/ {audio=1; next}; /Sinks/ {sinks=1; next}; /Sources/ {sinks=0} /^$/ {audio=0}; audio && sinks {gsub(/\./, "", $0); if ($0 ~ "*") {print $3} else {print $2}}'))
+declare -A sink_icons
+
+sink_icons[0]="󰋋"
+sink_icons[1]="󰓃"
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --status) DO_STATUS=1; shift ;;
+        *) echo "Arg inválido: $1"; exit 1 ;;
+    esac
+done
+
+# 1. Obter IDs limpando caracteres especiais (incluindo o *)
+sink_ids=($(wpctl status -n | awk '/alsa_output.*\[.*\].*/ { gsub(/[^0-9]+/," ", $0); print $1}'))
 
 # Se não houver sinks, saia
 if [ ${#sink_ids[@]} -eq 0 ]; then
@@ -9,10 +21,10 @@ if [ ${#sink_ids[@]} -eq 0 ]; then
   exit 1
 fi
 
-# Obter o ID do sink padrão atual
-current_sink_id=$(wpctl inspect @DEFAULT_AUDIO_SINK@ | grep -oP '(?<=id )[0-9]+')
+# 2. Obter o ID do sink padrão atual (mais simples via wpctl inspect)
+current_sink_id=$(wpctl inspect @DEFAULT_AUDIO_SINK@ | awk '/^id/ {gsub(/[^0-9]+/, "", $0); print }')
 
-# Encontrar o índice do sink atual no array
+# 3. Encontrar o índice do sink atual no array
 current_index=-1
 for i in "${!sink_ids[@]}"; do
   if [[ "${sink_ids[$i]}" == "$current_sink_id" ]]; then
@@ -21,17 +33,19 @@ for i in "${!sink_ids[@]}"; do
   fi
 done
 
-# Calcular o índice do próximo sink (rotacionando para o início se chegar ao fim)
-next_index=$(( (current_index + 1) % ${#sink_ids[@]} ))
+if [[ "$DO_STATUS" -eq 1 ]]; then
+  echo ${sink_icons[$current_index]}
+  exit 0
+fi
 
-# Obter o ID do próximo sink
+# 4. Calcular o próximo índice
+next_index=$(( (current_index + 1) % ${#sink_ids[@]} ))
 next_sink_id=${sink_ids[$next_index]}
 
-# Definir o próximo sink como padrão
-wpctl set-default $next_sink_id
+# 5. Definir o próximo sink como padrão
+wpctl set-default "$next_sink_id"
 
-sink_name=$(wpctl status | awk -F '.' -v id="$next_sink_id" 'match($0, " " id "\\. ") { print $2 "." $3}')
-
+# 6. Obter o nome do sink para a notificação
+sink_name=$(wpctl status | grep -A 20 "Sinks:" | grep "$next_sink_id\." | sed "s/.*$next_sink_id\. //")
 
 notify-send "Saída de áudio alterada" "$sink_name"
-

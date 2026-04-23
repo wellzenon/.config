@@ -160,10 +160,10 @@ map('n', '<leader>q', function()
   end
 end, { desc = 'Close Window if not last then buffer if not last either' })
 map('n', '<leader>qq', function()
-  require('avante').close_sidebar()
+  require('nvim-pack.plugin.avante').close_sidebar()
   vim.cmd 'qa'
 end, { desc = 'Close Sidebar & Quit All' })
 map('n', '<F9>', function()
-  require('avante').close_sidebar()
+  require('nvim-pack.plugin.avante').close_sidebar()
   vim.cmd 'qa'
 end, { desc = 'Close Sidebar & Quit All' })

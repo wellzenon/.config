@@ -1,0 +1,10 @@
+{
+  "pins": [
+    "obsidian.desktop",
+    "anki.desktop",
+    "firefox.desktop",
+    "sioyek.desktop",
+    "com.mitchellh.ghostty.desktop",
+    "org.gnome.Nautilus.desktop"
+  ]
+}

@@ -1,111 +1,140 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# IDs dos seus monitores (substitua pelos seus IDs reais)
-MONITOR_EXTERNO_ID="HDMI-A-1" # Exemplo: Substitua pelo ID do seu monitor externo
-MONITOR_NOTEBOOK_ID="eDP-1" # Exemplo: Substitua pelo ID do monitor do seu notebook
 ON_STR="on"
 OFF_STR="off"
 
-# Função para obter o estado de um monitor (on/off)
-get_monitor_state() {
-    niri msg outputs | awk -v target_output="$1" '
-        $0 ~ target_output { state = "on"; start = 1 }
-        /Disabled/ { state = "off" }
-        /^$/ { if ( start ) { 
-            start = 0
-            print state
-        }} 
-    '
-}
+ACTION=""
+STATUS_TARGET=""
+DO_STATUS=0
 
-# Função para alternar o estado de um monitor
-toggle_monitor() {
-    local target_monitor=$1
-    local other_monitor=""
-
-    if [ "$target_monitor" == "$MONITOR_EXTERNO_ID" ]; then
-        other_monitor=$MONITOR_NOTEBOOK_ID
-    else
-        other_monitor=$MONITOR_EXTERNO_ID
-    fi
-
-    TARGET_STATE=$(get_monitor_state "$target_monitor")
-    OTHER_STATE=$(get_monitor_state "$other_monitor")
-
-    if [ "$TARGET_STATE" == "on" ]; then
-        # Se o alvo está ligado, tenta desligar
-        if [ "$OTHER_STATE" == "on" ]; then
-            # Se o outro também está ligado, pode desligar o alvo
-            niri msg output "$target_monitor" off
-        else
-            niri msg output "$target_monitor" off
-            niri msg output "$other_monitor" on
-        fi
-    else
-        # Se o alvo está desligado, liga
-        niri msg output "$target_monitor" on
-    fi
-}
-
-# Obtém o estado atual e imprime para o Waybar
-print_monitor_status() {
-    get_state_str() {
-        STATE=$(get_monitor_state "$1")
-        [[ "$STATE" == "on" ]] && echo "$ON_STR" || echo "$OFF_STR"
-    }
-    NB_STATE=$(get_monitor_state "$MONITOR_NOTEBOOK_ID")
-
-    if [ "$1" == "notebook" ]; then
-        get_state_str "$MONITOR_NOTEBOOK_ID"
-        exit 0
-    elif [ "$1" == "external" ]; then
-        get_state_str "$MONITOR_EXTERNO_ID"
-        exit 0
-    else
-        echo "{\"external\":\"$(get_state_str $MONITOR_EXTERNO_ID)\", \"notebook\":\"$(get_state_str $MONITOR_NOTEBOOK_ID)\"}"
-    fi
-    
-    exit 2
-}
-
-while [[ "$#" -gt 0 ]]; do # Enquanto houver argumentos
+# =========================
+# Args
+# =========================
+while [[ $# -gt 0 ]]; do
     case "$1" in
-        external)
-            toggle_monitor "$MONITOR_EXTERNO_ID"
-            pkill -SIGRTMIN+21 waybar
-            exit 0
-            ;;
-        notebook)
-            toggle_monitor "$MONITOR_NOTEBOOK_ID"
-            pkill -SIGRTMIN+21 waybar
-            exit 0
-            ;;
-        --on-str)
-            if [[ -z "$2" ]]; then
-                echo "Error: --on-str needs an arg"
-                exit 1
-            fi
-            ON_STR="$2"
-            shift
-            shift
-            ;;
-        --off-str)
-            if [[ -z "$2" ]]; then
-                echo "Error: --on-str needs an arg"
-                exit 1
-            fi
-            OFF_STR="$2"
-            shift
-            shift
-            ;;
+        --on-str) ON_STR="$2"; shift 2 ;;
+        --off-str) OFF_STR="$2"; shift 2 ;;
         --status)
-            print_monitor_status "$2"
-            exit 0
+            DO_STATUS=1
+            if [[ -n "$2" && ! "$2" == --* ]]; then
+                STATUS_TARGET="$2"
+                shift 2
+            else
+                shift
+            fi
             ;;
-        *)
-            echo "Opção inválida ou argumento inesperado: $1"
-            echo "Uso: $0 [--on-str string] [--off-str string] [--status ['external'|'notebook']] 'external'|'notebook'"
-            exit 1
+        external|internal|notebook)
+            ACTION="$1"
+            shift
             ;;
+        *) echo "Arg inválido: $1"; exit 1 ;;
     esac
 done
+
+# =========================
+# Parse outputs (simples)
+# =========================
+mapfile -t OUTPUT_LINES < <(niri msg outputs)
+
+NAMES=()
+STATES=()
+
+CURRENT=""
+STATE="on"
+
+REGEX_OUTPUT="^Output.*\(([^)]+)\)"
+REGEX_INTERNAL="^(eDP|LVDS|MIPI)"
+
+for line in "${OUTPUT_LINES[@]}"; do
+    if [[ "$line" =~ $REGEX_OUTPUT ]]; then
+        if [[ -n "$CURRENT" ]]; then
+            NAMES+=("$CURRENT")
+            STATES+=("$STATE")
+        fi
+        CURRENT="${BASH_REMATCH[1]}"
+        STATE="on"
+    elif [[ "$line" =~ Disabled ]]; then
+        STATE="off"
+    fi
+done
+
+# último
+[[ -n "$CURRENT" ]] && NAMES+=("$CURRENT") && STATES+=("$STATE")
+
+# =========================
+# Identificar 2 primeiros
+# =========================
+INTERNAL_NAME=""
+INTERNAL_STATE="off"
+EXTERNAL_NAME=""
+EXTERNAL_STATE="off"
+
+for i in "${!NAMES[@]}"; do
+    name="${NAMES[$i]}"
+    state="${STATES[$i]}"
+
+    if [[ "$name" =~ $REGEX_INTERNAL ]]; then
+        [[ -z "$INTERNAL_NAME" ]] && INTERNAL_NAME="$name" && INTERNAL_STATE="$state"
+    else
+        [[ -z "$EXTERNAL_NAME" ]] && EXTERNAL_NAME="$name" && EXTERNAL_STATE="$state"
+    fi
+done
+
+# =========================
+# Regra: precisa ter 2
+# =========================
+if [[ -z "$INTERNAL_NAME" || -z "$EXTERNAL_NAME" ]]; then
+    notify-send "Can't toggle output" "Just one output identified, can't turn off all outputs."
+    exit 0
+fi
+
+# =========================
+# Status
+# =========================
+fmt() {
+    [[ "$1" == "on" ]] && echo "$ON_STR" || echo "$OFF_STR"
+}
+
+if [[ "$DO_STATUS" -eq 1 ]]; then
+    case "$STATUS_TARGET" in
+        external) fmt "$EXTERNAL_STATE" ;;
+        internal|notebook) fmt "$INTERNAL_STATE" ;;
+        *)
+            echo "internal: $(fmt "$INTERNAL_STATE")"
+            echo "external: $(fmt "$EXTERNAL_STATE")"
+            ;;
+    esac
+    exit 0
+fi
+
+# =========================
+# Toggle com segurança
+# =========================
+toggle() {
+    local name="$1"
+    local state="$2"
+    local other_name="$3"
+    local other_state="$4"
+
+    if [[ "$state" == "on" ]]; then
+        # se vai desligar e o outro já está desligado -> liga o outro
+        if [[ "$other_state" == "off" ]]; then
+            niri msg output "$other_name" on
+        fi
+        niri msg output "$name" off
+    else
+        niri msg output "$name" on
+    fi
+
+    pkill way-edges; way-edges -c .config/way-edges/niri.jsonc & disown
+
+}
+
+case "$ACTION" in
+    external)
+        toggle "$EXTERNAL_NAME" "$EXTERNAL_STATE" "$INTERNAL_NAME" "$INTERNAL_STATE"
+        ;;
+    internal|notebook)
+        toggle "$INTERNAL_NAME" "$INTERNAL_STATE" "$EXTERNAL_NAME" "$EXTERNAL_STATE"
+        ;;
+esac

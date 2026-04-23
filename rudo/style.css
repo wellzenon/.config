@@ -1,0 +1,45 @@
+/* Rudo user overrides
+ *
+ * This file is loaded on every Rudo start after the built-in theme.
+ * Override any selector you want here.
+ *
+ * Examples:
+ *
+ * .dock-surface {
+ *     border-radius: 5px;
+ *     background: rgba(24, 24, 24, 0.95);
+ * }
+ *
+ * .dock-item.is-active {
+ *     border-color: rgba(120, 210, 255, 0.55);
+ * }
+ */
+
+.dock-surface {
+	background-image: none;
+	background-color: rgba(0, 0, 0, 1);
+padding-bottom: 0;
+    border-radius: 10px;
+}
+
+.dock-item {
+     border-radius: 5px;
+}
+
+.dock-indicator {
+	min-height: 3px;
+}
+
+.dock-indicator{
+	background-color: rgba(255, 255, 255, 0.2);
+}
+
+
+.dock-indicator.is-active{
+	background-image: none;
+	background-color: rgba(255, 255, 255, 0.5);
+}
+
+.dock-hover-strip {
+	min-height: 5px;
+}
