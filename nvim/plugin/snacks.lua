@@ -18,7 +18,7 @@ vim.pack.add({
 require("snacks").setup({
   bigfile = { enabled = true },
   explorer = {},
-  image = { enabled = true },
+  image = { enabled = true, inline = true },
   indent = { enabled = false, animate = { enabled = false } },
   lazygit = {},
   quickfile = { enabled = true },

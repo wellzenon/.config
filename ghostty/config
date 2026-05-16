@@ -40,7 +40,7 @@
 font-family = Geist Mono
 # font-family = ZedMono NF
 # font-family = Maple Mono Normal NF
-# font-style = Light
+font-style = Light
 # font-style-italic = Italic
 font-style-bold = ExtraBold
 font-style-bold-italic = ExtraBold Italic
@@ -106,8 +106,6 @@ window-padding-balance = true
 
 gtk-titlebar = false
 window-decoration = none
-background-opacity = 1.0
-# background-blur = true
 # background-blur-radius = 10
 # unfocused-split-opacity = 0.5
 
@@ -133,4 +131,6 @@ confirm-close-surface = false
 # custom-shader-animation = always
 keybind = shift+enter=text:\n
 theme = light:"Zenwritten Light",dark:"Zenwritten Dark"
+background-opacity = 0.6
+background-blur = true
 # theme = Zenwritten Dark

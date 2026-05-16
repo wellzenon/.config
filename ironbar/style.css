@@ -1,0 +1,21 @@
+* {
+	font-family: Geist Mono;
+	font-size: 16px;
+	-gtk-icon-size: 10px;
+	 }
+
+/* Garante que não haja padding excessivo que force o widget a crescer */
+.background,
+window#ironbar {
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+}
+
+.text-button,
+.widget,
+.item {
+  background-image: none;
+  border: none;
+    margin: 0;
+}

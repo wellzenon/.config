@@ -68,6 +68,8 @@ vim.opt.timeoutlen = 300
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 
+vim.o.winborder = "rounded"
+
 -- views can only be fully collapsed with the global statusline
 vim.opt.laststatus = 0
 vim.opt.cmdheight = 0

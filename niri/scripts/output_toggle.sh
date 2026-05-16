@@ -83,7 +83,7 @@ done
 # =========================
 # Regra: precisa ter 2
 # =========================
-if [[ -z "$INTERNAL_NAME" || -z "$EXTERNAL_NAME" ]]; then
+if [[ -z "$DO_STATUS" && ( -z "$INTERNAL_NAME" || -z "$EXTERNAL_NAME" ) ]]; then
     notify-send "Can't toggle output" "Just one output identified, can't turn off all outputs."
     exit 0
 fi
@@ -100,7 +100,9 @@ if [[ "$DO_STATUS" -eq 1 ]]; then
         external) fmt "$EXTERNAL_STATE" ;;
         internal|notebook) fmt "$INTERNAL_STATE" ;;
         *)
+            echo "internal: $INTERNAL_NAME"
             echo "internal: $(fmt "$INTERNAL_STATE")"
+            echo "external: $EXTERNAL_NAME"
             echo "external: $(fmt "$EXTERNAL_STATE")"
             ;;
     esac
@@ -117,17 +119,17 @@ toggle() {
     local other_state="$4"
 
     if [[ "$state" == "on" ]]; then
-        # se vai desligar e o outro já está desligado -> liga o outro
-        if [[ "$other_state" == "off" ]]; then
-            niri msg output "$other_name" on
+        if [[ "$other_name" ]]; then
+            # se vai desligar e o outro já está desligado -> liga o outro
+            if [[ "$other_state" == "off" ]]; then
+                niri msg output "$other_name" on
+            else
+                niri msg output "$name" off
+            fi
         fi
-        niri msg output "$name" off
     else
         niri msg output "$name" on
     fi
-
-    pkill way-edges; way-edges -c .config/way-edges/niri.jsonc & disown
-
 }
 
 case "$ACTION" in

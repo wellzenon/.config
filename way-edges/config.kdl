@@ -9,7 +9,7 @@ workspace {
   focused-only true
   hover-color "#ddddddaa"
   active-color "#fff"
-  focus-color "#444"
+  focus-color "#333"
   default-color "#ddd"
   border-radius 5
   preview-size 6
@@ -19,7 +19,9 @@ workspace {
   }
   preset "niri"
 }
-    // =========== audio ===========
+
+// =========== audio ===========
+
 slider {
   monitor "*"
   layer "overlay"
@@ -37,12 +39,17 @@ slider {
   obtuse-angle 90
   bg-color "#ddd"
   border-color "#ffffff20"
-  fg-color "#444"
-  bg-text-color "#444"
+  fg-color "#333"
+  bg-text-color "#333"
   fg-text-color "#ddd"
   redraw-only-on-internal-update true
-  preset "speaker"
+  preset "speaker" {
+    event-map {
+      mouse-middle "~/.config/niri/scripts/sinks-rotation.sh"
+  }
+  }
 }
+
 slider {
   edge "right"
   monitor "*"
@@ -60,14 +67,15 @@ slider {
   obtuse-angle 90
   bg-color "#ddd"
   border-color "#ffffff20"
-  fg-color "#444"
-  bg-text-color "#444"
+  fg-color "#333"
+  bg-text-color "#333"
   fg-text-color "#ddd"
   redraw-only-on-internal-update true
   preset "microphone"
 }
 
-//     // =========== time ===========
+// =========== time ===========
+
 wrap-box {
   namespace "status"
   edge "bottom"
@@ -89,28 +97,25 @@ wrap-box {
     border-radius 5
     color "#ddd"
     margins {
-      top 6
+      top 3
       left 10
       right 81
-      bottom 5
+      bottom -4
     }
   }
   item "text" {
     // index 0 0
-    fg-color "#444"
+    fg-color "#333"
     font-size 16
     font-family "Geist"
     preset "custom" {
       update-interval 1000
       cmd "niri msg focused-window | grep -oP '(?<=Title: \").*(?=\")' | awk '{ if (length($0) > 33) print substr($0,1,22) \"…\" substr($0,length($0)-7); else print $0 }'"
     }
-    event-map {
-      mouse-left "notify-send Teste"
-    }
   }
   item "text" {
     index 0 1 
-    fg-color "#444"
+    fg-color "#333"
     font-size 16
     font-family "SpaceMono Nerd Font"
     preset "custom" {
@@ -119,138 +124,22 @@ wrap-box {
     }
   }
   item "text" {
-    index 0 2
-    fg-color "#444"
-    font-size 16
-    font-family "SpaceMono Nerd Font"
-    preset "custom" {
-      update-interval 5000
-      cmd "upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep 'percentage' | awk '{print $2}'"
-    }
-  }
-        // {
-        //   "index" [0 2]
-        //   "type" "text"
-        //   "fg-color" "#aaa"
-        //   "font-size" 16
-        //   "font-family" "Geist"
-        //   "preset" {
-        //     "type" "custom"
-        //     "update-interval" 1000
-        //     "cmd" "uair -q & uairctl fetch {state}{time}"
-        //   }
-        // }
-        // {
-        //   "index" [0 3]
-        //   "type" "ring"
-        //   "animation-curve" "EaseExpo"
-        //   "prefix-hide" false
-        //   "suffix-hide" false
-        //   "bg-color" "#444"
-        //   "fg-color" "#aaa"
-        //   "ring-width" 10
-        //   "radius" 7
-        //   "text-transition-ms" 100 // ms
-        //   "preset" {
-        //     "type" "custom"
-        //     "cmd" "printf '0.%02d\n' $(( 100 - $(uairctl fetch '{percent}' || echo 100) ))"
-        //     "update-interval" 1000
-        //   }
-        // }
-  item "tray" {
-    index 0 3 // position in the grid layout. -1 means next available position.
-    font-family "Geist"
-    grid-align "bottom-center" // 9 positions center-left center-right top-left top-right bottom-left bottom-right left-top left-bottom right-top right-bottom
-    icon-theme "breeze" // null will fetch the default icon theme
-    icon-size 16
-    tray-gap 2
-    header-draw-config {
-      text-color "#444"
-      font-pixel-height 16
-    }
-    header-menu-align "right"
-    header-menu-stack "menu-top"
-    menu-draw-config {
-      text-color "#444"
-      marker-color "#444"
-      font-pixel-height 16
-      icon-size 16
-      marker-size 16
-      separator-height 5
-      margin {
-        left 12
-        top 12
-      }
-    }
-  }
-  item "text" {
-    index 0 4
-    fg-color "#444"
-    font-size 16
-    font-family "Geist"
-    preset "custom" {
-      update-interval 1000
-      cmd "~/.config/niri/scripts/toggle-theme-global.sh --light-str '  󰖨' --dark-str '  ' --status"
-    }
-    event-map {
-      mouse-left "~/.config/niri/scripts/toggle-theme-global.sh"
-    }
-  }
-  item "text" {
-    index 0 5
-    fg-color "#444"
-    font-size 16
-    font-family "Geist"
-    preset "custom" {
-      update-interval 1000
-      cmd "~/.config/niri/scripts/sinks-rotation.sh --status"
-    }
-    event-map {
-      mouse-left "~/.config/niri/scripts/sinks-rotation.sh"
-    }
-  }
-  item "text" {
-    index 0 6
-    fg-color "#444"
-    font-size 16
-    font-family "Geist"
-    preset "custom" {
-      update-interval 1000
-      cmd "~/.config/niri/scripts/output_toggle.sh --on-str '󰌢' --off-str '󰛧' --status internal"
-    }
-    event-map {
-      mouse-left "~/.config/niri/scripts/output_toggle.sh external"
-    }
-  }
-  item "text" {
-    index 0 7
-    fg-color "#444"
-    font-size 16
-    font-family "Geist"
-    preset "custom" {
-      update-interval 1000
-      cmd "~/.config/niri/scripts/output_toggle.sh --on-str '󰍹' --off-str '󰶐' --status external"
-    }
-    event-map {
-      mouse-left "~/.config/niri/scripts/output_toggle.sh external"
-    }
-  }
-  item "text" {
     index 0 8
     type "text"
-    fg-color "#444"
+    fg-color "#333"
     font-size 16
     font-family "SpaceMono Nerd Font"
     preset "time" {
       update-interval 1000
-      format " %d-%m"
+      format "%d%m"
     }
   }
 }
+
 wrap-box {
-  namespace "status"
-  edge "bottom"
-  position "right"
+  namespace "clock"
+  edge "right"
+  position "bottom"
   pinnable
   pin-on-startup
       // "pin-with-key" true
@@ -271,17 +160,208 @@ wrap-box {
       top 0
       left 0
       right 5
-      bottom 5
+      bottom -1
     }
   }
   item "text" {
-    index 0 5
-    fg-color "#444"
+    index 0 0
+    fg-color "#333"
     font-size 22
     font-family "SpaceMono Nerd Font"
     preset "time" {
       update-interval 1000
-      format "%H:%M"
+      format "%H%M"
+    }
+  }
+}
+wrap-box {
+  namespace "power"
+  edge "bottom"
+  position "right"
+  // pinnable
+  // pin-on-startup
+      // "pin-with-key" true
+      // "pin-key" 274
+  monitor "*"
+  layer "overlay"
+  offset 0
+  gap 20
+  margins {
+    top 0
+    left 0
+    bottom 0
+    right 5
+  }
+  outlook "board" {
+    border-radius 5
+    color "#ddd"
+    margins {
+      top 10 
+      left 15
+      right 5
+      bottom 20
+    }
+  }
+
+  item "tray" {
+    index 0 1 // position in the grid layout. -1 means next available position.
+    font-family "Geist"
+    grid-align "bottom-center" // 9 positions center-left center-right top-left top-right bottom-left bottom-right left-top left-bottom right-top right-bottom
+    icon-theme "breeze" // null will fetch the default icon theme
+    icon-size 16
+    tray-gap 2
+    header-draw-config {
+      text-color "#333"
+      font-pixel-height 16
+    }
+    header-menu-align "right"
+    header-menu-stack "menu-top"
+    menu-draw-config {
+      text-color "#333"
+      marker-color "#444"
+      font-pixel-height 16
+      icon-size 16
+      marker-size 16
+      separator-height 5
+      margin {
+        left 12
+        top 12
+      }
+    }
+  }
+item "text" {
+    index 0 2
+    fg-color "#333"
+    font-size 16
+    font-family "SpaceMono Nerd Font"
+    preset "custom" {
+      update-interval 5000
+      cmd "echo ' ' $(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep 'percentage' | awk '{print $2}')"
+    }
+  }
+  item "text" {
+    // index -1 -1 
+    fg-color "#333"
+    font-size 5
+    font-family "Geist"
+    preset "custom" {
+      update-interval 1000
+      cmd "echo -n  ' '"
+    }
+  }
+  item "text" {
+    index 2 0
+    fg-color "#333"
+    font-size 20
+    font-family "Geist"
+    preset "custom" {
+      update-interval 1000
+      cmd "~/.config/niri/scripts/output_toggle.sh --on-str '󰌢 Internal' --off-str '󰛧 Internal' --status internal"
+    }
+    event-map {
+      mouse-left "~/.config/niri/scripts/output_toggle.sh internal"
+    }
+  }
+  item "text" {
+    index 3 0
+    fg-color "#333"
+    font-size 20
+    font-family "Geist"
+    preset "custom" {
+      update-interval 1000
+      cmd "~/.config/niri/scripts/output_toggle.sh --on-str '󰍹 External' --off-str '󰶐 External' --status external"
+    }
+    event-map {
+      mouse-left "~/.config/niri/scripts/output_toggle.sh external"
+    }
+  }
+
+  item "text" {
+    index 2 1
+    fg-color "#333"
+    font-size 20
+    font-family "Geist"
+    preset "custom" {
+      update-interval 1000
+      cmd "~/.config/niri/scripts/toggle-theme-global.sh --light-str '󰖨 Theme' --dark-str '󰤄 Theme' --status"
+    }
+    event-map {
+      mouse-left "~/.config/niri/scripts/toggle-theme-global.sh"
+    }
+  }
+  item "text" {
+    index 3 1
+    fg-color "#333"
+    font-size 20
+    font-family "Geist"
+    preset "custom" {
+      update-interval 1000
+      cmd "echo $(~/.config/niri/scripts/sinks-rotation.sh --status)'  'Audio"
+    }
+    event-map {
+      mouse-left "~/.config/niri/scripts/sinks-rotation.sh"
+    }
+  }
+  item "text" {
+    // index 4 0
+    fg-color "#333"
+    font-size 5
+    font-family "Geist"
+    preset "custom" {
+      update-interval 1000
+      cmd "echo -n  ' '"
+    }
+  }
+  item "text" {
+    index 5 0
+    fg-color "#333"
+    font-size 20
+    font-family "Geist"
+    preset "custom" {
+      update-interval 1000
+      cmd "echo -n  '󰒲 Suspend'"
+    }
+    event-map {
+      mouse-left "systemctl suspend"
+    }
+  }
+  item "text" {
+    index 5 1
+    fg-color "#333"
+    font-size 20
+    font-family "Geist"
+    preset "custom" {
+      update-interval 1000
+      cmd "echo -n  '󰍃  Logout'"
+    }
+    event-map {
+      mouse-left "niri msg action quit -s"
+    }
+  }
+  item "text" {
+    index 6 0
+    fg-color "#333"
+    font-size 20
+    font-family "Geist"
+    preset "custom" {
+      update-interval 1000
+      cmd "echo -n '  Restart'"
+    }
+    event-map {
+      mouse-left "reboot"
+    }
+  }
+  item "text" {
+    index 6 1
+    fg-color "#333"
+    font-size 20
+    font-family "Geist"
+    preset "custom" {
+      update-interval 1000
+      cmd "echo -n ' Shutdown'"
+    }
+    event-map {
+      mouse-left "shutdown 0"
     }
   }
 }

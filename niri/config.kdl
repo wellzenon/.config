@@ -64,6 +64,7 @@ layout {
     center-focused-column "never" // always | on-overflow
     always-center-single-column
 
+    default-column-width { proportion 0.5; }
     preset-column-widths {
         proportion 0.2
         proportion 0.4
@@ -71,8 +72,6 @@ layout {
         proportion 0.6
         proportion 0.8
     }
-
-    default-column-width { proportion 0.5; }
 
     focus-ring {
         off
@@ -108,12 +107,12 @@ layout {
         color "#ffffff22"
     }
 
-    struts {
-        // left 15
-        // right 15
-        // top -1
-        // bottom -1
-    }
+    // struts {
+    //     left 15
+    //     right 15
+    //     top -1
+    //     bottom -1
+    // }
 }
 
 // animations {
@@ -472,18 +471,12 @@ layout {
 //     }
 // }
 
-// blur {
-//     off
-//     passes 7
-//     offset 1
-//     noise 0.12
-//     saturation 1.0
-// }
-
-// Open the Firefox picture-in-picture player as floating by default.
-window-rule {
-    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
-    open-floating true
+blur {
+    off
+    passes 7
+    offset 1
+    // noise 0.12
+    saturation 1.0
 }
 
 window-rule {
@@ -491,10 +484,10 @@ window-rule {
     draw-border-with-background true
     // geometry-corner-radius 10
     // clip-to-geometry true
-    // background-effect {
-    //     blur true
-    //     xray true
-    // }
+    background-effect {
+        blur true
+        xray true
+    }
 }
 
 window-rule {
@@ -505,32 +498,29 @@ window-rule {
 
 window-rule {
     match is-floating=true
-    geometry-corner-radius 20
+    geometry-corner-radius 15
     clip-to-geometry true
     draw-border-with-background true
     // opacity 0.9
 }
 
 window-rule {
+    match title="spt - spotatui"
+    match app-id=r#"^com.terminal.spotatui$"#
+    draw-border-with-background false
+}
+
+window-rule {
+    match app-id=r#"^com.stremio.stremio$"#
+    match app-id=r#"^FFPWA-01KA54HRPPRV44B9FBEDFHMQA5$"#
+    open-maximized true
+}
+
+window-rule {
+    match app-id=r#"^com.mitchellh.ghostty$"#
     match app-id=r#"^org\.wezfurlong\.wezterm$"#
-    default-column-width {}
-}
-
-window-rule {
-    match app-id=r#"^zen$"# title="^Picture-in-Picture$"
-    match app-id=r#"^zen$"# title=r#"^Extension: (fx_cast) - — Zen Browser$"#
-    // match app-id=r#"^yad$"#
-    open-floating true
-}
-
-window-rule {
-    match app-id=r#"^zen$"#
-    match app-id=r#"^main-fox$"#
-    default-column-width { proportion 0.5; }
-    open-floating false
-}
-
-window-rule {
+    match title="notes"
+    match app-id=r#"^com.terminal.notes$"#
     match app-id=r#"^ai-fox$"#
     default-column-width { proportion 0.25; }
     open-fullscreen false
@@ -540,6 +530,11 @@ window-rule {
 
 window-rule {
     match app-id=r#"^org.pulseaudio.pavucontrol$"#
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    match app-id=r#"^rudo$"# title="^Confirm .*$"
+    match app-id=r#"^zen$"# title="^Picture-in-Picture$"
+    match app-id=r#"^zen$"# title=r#"^Extension: (fx_cast) - — Zen Browser$"#
+    // match app-id=r#"^yad$"#
     open-floating true
 }
 
@@ -551,82 +546,84 @@ window-rule {
     default-floating-position x=0 y=0 relative-to="bottom"
 }
 
-// window-rule {
-//     match app-id=r#"^com.mitchellh.ghostty$"#
-//     match app-id=r#"^org.mozilla.firefox.webapp-c2523256-75ee-4962-955f-d756f7619565$"#
-//     default-column-width { proportion 0.25; }
-// }
-
 window-rule {
-    match title="spt - spotatui"
-    match app-id=r#"^com.terminal.spotatui$"#
-    draw-border-with-background false
-}
-
-window-rule {
-    match title="notes"
-    match app-id=r#"^com.terminal.notes$"#
-    default-column-width { proportion 0.25; }
-}
-
-window-rule {
-    match app-id=r#"^sioyek$"#
-    default-column-width { proportion 0.5; }
-}
-
-window-rule {
-    match app-id=r#"^com.stremio.stremio$"#
-    match app-id=r#"^FFPWA-01KA54HRPPRV44B9FBEDFHMQA5$"#
-    open-fullscreen true
-}
-
-window-rule {
-    match app-id=r#"^rudo$"# title="^Confirm .*$"
+    match app-id=r#"^qalculate-gtk$"#
+    default-column-width { fixed 750; }
     open-floating true
 }
 
 layer-rule {
-    match namespace="^waybar$"
+    match namespace=r#"^vicinae$"#
+    match namespace=r#"^nwg-drawer$"#
+    match namespace=r#"^gtk4-layer-shell$"#
+    // geometry-corner-radius 50
+    background-effect {
+        xray false
+        blur true
+    }
 }
-
-// layer-rule {
-//     match namespace=r#"^vicinae$"#
-//     geometry-corner-radius 10
-//     clip-to-geometry true
-// }
 
 layer-rule {
     match namespace="^wallpaper$"
+    match namespace="^awww-daemon$"
     match namespace="^quickshell$"
     place-within-backdrop true
 }
 
 binds {
+
+    // APPS
+
     Mod+Shift+Slash { show-hotkey-overlay; }
 
-    Mod+W hotkey-overlay-title="Open Firefox" { spawn-sh "nirius focus-or-spawn -a firefox prime-run firefox && niri msg action center-column"; }
-    // Mod+Y hotkey-overlay-title="Open Tec Concursos" { spawn-sh "nirius focus-or-spawn -a org.mozilla.firefox.webapp-e86ad5d7-320c-4820-a470-d9dbf7dbdff6 /usr/lib/firefox-nightly/firefox -- -taskbar-ta be86ad5d7-320c-4820-a470-d9dbf7dbdff6 -new-window https://www.tecconcursos.com.br -profile /home/ton/.mozilla/firefox/x5slv4jk.default-nightly-1 -container 0 && niri msg action center-column" ; }
-    // Mod+G hotkey-overlay-title="Open AI" { spawn-sh "nirius focus-or-spawn -a org.mozilla.firefox.webapp-c2523256-75ee-4962-955f-d756f7619565 /usr/lib/firefox-nightly/firefox -- -taskbar-tab 7773ab32-87a0-4c05-8d37-9d6773f408db -new-window https://gemini.google.com -profile /home/ton/.mozilla/firefox/x5slv4jk.default-nightly-1 -container 0 && niri msg action center-column" ; }
+    Mod+W hotkey-overlay-title="Open Firefox" { spawn-sh "nirius focus-or-spawn -a firefox firefox && niri msg action center-column"; }
 
-    Mod+O hotkey-overlay-title="Open Obsidian" { spawn-sh "nirius focus-or-spawn -a obsidian prime-run obsidian -- --enable-features=UseOzonePlatform --ozone-platform=wayland && niri msg action center-column"; }
+    Mod+O hotkey-overlay-title="Open Obsidian" { spawn-sh "nirius focus-or-spawn -a obsidian obsidian -- --enable-features=UseOzonePlatform --ozone-platform=wayland && niri msg action center-column"; }
+
     Mod+S hotkey-overlay-title="Open Sioyek" { spawn-sh "QT_QPA_PLATFORM=xcb nirius focus-or-spawn -a sioyek sioyek && niri msg action center-column"; }
+
     Mod+Shift+S hotkey-overlay-title="Toggle Sioyek Sepia" { spawn-sh "~/.config/niri/scripts/toggle_sioyek.sh"; }
 
-    Mod+E hotkey-overlay-title="Open Neovim" { spawn-sh "nirius focus-or-spawn -t nvim ghostty -- +new-window -e nvim && niri msg action center-column"; }
-    // Mod+N hotkey-overlay-title="Open Notes" { spawn-sh "nirius focus-or-spawn -t notes ghostty -- --env=NVIM_APPNAME=nvim-notes -e nvim ~/obsidian/TODO.md && niri msg action center-column"; }
-    Mod+N hotkey-overlay-title="Open Nautilus" { spawn-sh "nautilus ~/Downloads/"; }
-    Mod+A hotkey-overlay-title="Open Superfile" { spawn-sh "ghostty +new-window -e spf ~/Downloads/ && niri msg action center-column"; }
-    Mod+Return hotkey-overlay-title="Open a Terminal: Ghostty" { spawn-sh "ghostty +new-window && niri msg action center-column"; }
+    Mod+E hotkey-overlay-title="Open Neovim" { spawn-sh "nirius focus-or-spawn -a com.mitchellh.ghostty -t nvim ghostty -- +new-window -e nvim && niri msg action center-column"; }
 
+    Mod+N hotkey-overlay-title="Open Nautilus" { spawn-sh "nautilus ~/Downloads/"; }
+    // Mod+N hotkey-overlay-title="Open Notes" { spawn-sh "nirius focus-or-spawn -t notes ghostty -- --env=NVIM_APPNAME=nvim-notes -e nvim ~/obsidian/TODO.md && niri msg action center-column"; }
+
+    Mod+A hotkey-overlay-title="Open Superfile" { spawn-sh "ghostty +new-window -e spf ~/Downloads/ && niri msg action center-column"; }
+
+    Mod+Return hotkey-overlay-title="Open a Terminal: Ghostty" { spawn-sh "ghostty +new-window && niri msg action center-column"; }
 
     Mod+M hotkey-overlay-title="Open Spotatui" { spawn-sh "nirius focus-or-spawn -a \"spt - spotatui\" ghostty -- --background-opacity=0.8 --font-size=18 --class=com.terminal.spotatui -e spotatui"; }
 
-    // Mod+Space hotkey-overlay-title="Run an Application" {spawn-sh "vicinae toggle"; }
-    Mod+Space hotkey-overlay-title="Run an Application" {spawn "thundersearch"; }
+    Mod+Space hotkey-overlay-title="Run an Application" {spawn-sh "vicinae toggle"; }
+    // Mod+Space hotkey-overlay-title="Run an Application" {spawn "thundersearch"; }
+
     Mod+Ctrl+V hotkey-overlay-title="Show clipboard history" { spawn-sh "vicinae vicinae://extensions/vicinae/clipboard/history"; }
-    Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
+
+    // Mod+Y hotkey-overlay-title="Open Tec Concursos" { spawn-sh "nirius focus-or-spawn -a org.mozilla.firefox.webapp-e86ad5d7-320c-4820-a470-d9dbf7dbdff6 /usr/lib/firefox-nightly/firefox -- -taskbar-ta be86ad5d7-320c-4820-a470-d9dbf7dbdff6 -new-window https://www.tecconcursos.com.br -profile /home/ton/.mozilla/firefox/x5slv4jk.default-nightly-1 -container 0 && niri msg action center-column" ; }
+
+    // Mod+G hotkey-overlay-title="Open AI" { spawn-sh "nirius focus-or-spawn -a org.mozilla.firefox.webapp-c2523256-75ee-4962-955f-d756f7619565 /usr/lib/firefox-nightly/firefox -- -taskbar-tab 7773ab32-87a0-4c05-8d37-9d6773f408db -new-window https://gemini.google.com -profile /home/ton/.mozilla/firefox/x5slv4jk.default-nightly-1 -container 0 && niri msg action center-column" ; }
+
+    // UTILS
 
     Mod+F4 hotkey-overlay-title="Toggle System dark/light theme" { spawn-sh "~/.config/niri/scripts/toggle-theme-global.sh"; }
+
+    Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
+
+    Print { screenshot; }
+    Ctrl+Print { screenshot-screen show-pointer=false; }
+    Alt+Print { screenshot-window; }
+
+    Mod+Tab repeat=false { toggle-overview; }
+
+    Mod+Shift+Q { spawn "systemctl" "suspend"; }
+    // Ctrl+Alt+Delete { spawn "walker" "-nm" "menus:power"; }
+
+    Mod+D hotkey-overlay-title="Change Speaker" { spawn "~/.config/niri/scripts/sinks-rotation.sh";}
+
+    Mod+P hotkey-overlay-title="Toggle Notebook Screen On/Off" { spawn-sh "~/.config/niri/scripts/output_toggle.sh notebook";}
+    Mod+Shift+P hotkey-overlay-title="Toggle External Screen On/Off" { spawn-sh "~/.config/niri/scripts/output_toggle.sh external";}
+    Mod+Ctrl+P hotkey-overlay-title="Toggle All Screens On/Off" { power-off-monitors; }
 
     XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+"; }
     XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-"; }
@@ -641,17 +638,27 @@ binds {
     XF86MonBrightnessUp   allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "+10%"; }
     XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "10%-"; }
 
+    // WINDOW MANAGEMENT
 
     Mod+Q repeat=false { close-window; }
 
-    Mod+Left  { focus-column-left; }
-    Mod+Down  { focus-window-or-workspace-down; }
-    Mod+Up    { focus-window-or-workspace-up; }
-    Mod+Right { focus-column-right; }
-    Mod+H     { focus-column-left; }
-    Mod+J     { focus-window-or-workspace-down; }
-    Mod+K     { focus-window-or-workspace-up; }
-    Mod+L     { focus-column-right; }
+    Mod+Left  { spawn-sh "vim-niri-nav left"; }
+    Mod+Down  { spawn-sh "vim-niri-nav down w"; }
+    Mod+Up    { spawn-sh "vim-niri-nav up w"; }
+    Mod+Right { spawn-sh "vim-niri-nav right"; }
+    Mod+H     { spawn-sh "vim-niri-nav left"; }
+    Mod+J  { spawn-sh "vim-niri-nav down w"; }
+    Mod+K    { spawn-sh "vim-niri-nav up w"; }
+    Mod+L { spawn-sh "vim-niri-nav right"; }
+
+    // Mod+Left  { focus-column-left; }
+    // Mod+Down  { focus-window-or-workspace-down; }
+    // Mod+Up    { focus-window-or-workspace-up; }
+    // Mod+Right { focus-column-right; }
+    // Mod+H     { focus-column-left; }
+    // Mod+J     { focus-window-or-workspace-down; }
+    // Mod+K     { focus-window-or-workspace-up; }
+    // Mod+L     { focus-column-right; }
 
     Mod+Ctrl+Left  { move-column-left-or-to-monitor-left; }
     Mod+Ctrl+Down  { move-window-down-or-to-workspace-down; }
@@ -757,21 +764,6 @@ binds {
     Mod+T { toggle-column-tabbed-display; }
     Mod+V       { toggle-window-floating; }
     Mod+Shift+V { switch-focus-between-floating-and-tiling; }
-
-    Print { screenshot; }
-    Ctrl+Print { screenshot-screen show-pointer=false; }
-    Alt+Print { screenshot-window; }
-
-    Mod+Tab repeat=false { toggle-overview; }
-
-    Mod+Shift+Q { spawn "systemctl" "suspend"; }
-    // Ctrl+Alt+Delete { spawn "walker" "-nm" "menus:power"; }
-
-    Mod+D hotkey-overlay-title="Change Speaker" { spawn "~/.config/niri/scripts/sinks-rotation.sh";}
-
-    Mod+P hotkey-overlay-title="Toggle Notebook Screen On/Off" { spawn-sh "~/.config/niri/scripts/output_toggle.sh notebook";}
-    Mod+Shift+P hotkey-overlay-title="Toggle External Screen On/Off" { spawn-sh "~/.config/niri/scripts/output_toggle.sh external";}
-    Mod+Ctrl+P hotkey-overlay-title="Toggle All Screens On/Off" { power-off-monitors; }
 }
 
 overview {
@@ -856,14 +848,14 @@ cursor {
     xcursor-size 24
 }
 
-prefer-no-csd
-
 screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+prefer-no-csd
 
 debug {
     keep-laptop-panel-on-when-lid-is-closed
     // emulate-zero-presentation-time
-    render-drm-device "/dev/dri/renderD129"
+    // render-drm-device "/dev/dri/renderD129"
     // ignore-drm-device "/dev/dri/renderD128"
     // render-drm-device "/dev/dri/card0"
     // keep-max-bpc-unchanged
@@ -871,40 +863,27 @@ debug {
     // disable-transactions
 }
 
-
-spawn-sh-at-startup "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_SESSION_DESKTOP"
-spawn-sh-at-startup "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_SESSION_DESKTOP"
-
 spawn-sh-at-startup "wl-paste --watch cliphist store"
-// spawn-sh-at-startup "swaybg -c 000000"
-// spawn-sh-at-startup "swaybg -m fill -i ~/.config/wallpapers/orion_nebula_nasa_heic0601a.jpg"
-// spawn-sh-at-startup "swaybg -m fill -i ~/.config/wallpapers/4K-OLED-Backgrounds-for-Desktop.jpg"
-// spawn-sh-at-startup "swaybg -m fill -i ~/.config/wallpapers/Monster Abstract Wallpaper 4k Pc Desktop 5300a.jpg"
-// spawn-sh-at-startup "swaybg -m fill -i ~/.config/wallpapers/art002e015228orig.webp"
-spawn-sh-at-startup "way-edges -c ~/.config/way-edges/config.kdl"
 spawn-sh-at-startup "nm-applet"
 spawn-sh-at-startup "syncthing serve"
 spawn-sh-at-startup "QT_SCALE_FACTOR=1.5 vicinae server"
-spawn-sh-at-startup "rudo"
 spawn-sh-at-startup "ghostty --gtk-single-instance=true --quit-after-last-window-closed=false --initial-window=false"
 spawn-sh-at-startup "niriusd"
 spawn-sh-at-startup "~/.config/niri/scripts/output_toggle.sh notebook"
-
+spawn-sh-at-startup "swayidle timeout 601 'niri msg action power-off-monitors' timeout 600 'systemctl suspend'"
+spawn-sh-at-startup "awww-daemon"
+spawn-sh-at-startup "$HOME/.config/niri/scripts/toggle-theme-global.sh && $HOME/.config/niri/scripts/toggle-theme-global.sh"
+// spawn-sh-at-startup "way-edges -c ~/.config/way-edges/config.kdl"
 // spawn-sh-at-startup "systemctl --user start stasis"
 // spawn-sh-at-startup "kmonad ~/.config/niri/kmonad.kbd"
 // spawn-sh-at-startup "qs -c noctalia-shell"
-spawn-sh-at-startup "swayidle timeout 601 'niri msg action power-off-monitors' timeout 600 'systemctl suspend'"
+// spawn-sh-at-startup "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_SESSION_DESKTOP SSH_AUTH_SOCK"
+// spawn-sh-at-startup "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE XDG_SESSION_DESKTOP"
+// spawn-sh-at-startup "valent --gapplication-service"
 
 // Niri Session
-
 // spawn-sh-at-startup "QT_QPA_PLATFORM=xcb sioyek"
-spawn-sh-at-startup "prime-run firefox"
-spawn-sh-at-startup "$HOME/.config/niri/scripts/toggle-theme-global.sh && $HOME/.config/niri/scripts/toggle-theme-global.sh"
-// spawn-sh-at-startup "prime-run obsidian"
+spawn-sh-at-startup "firefox"
+// spawn-sh-at-startup "obsidian"
 
-
-spawn-at-startup "systemctl" "--user" "import-environment" "SSH_AUTH_SOCK"
-spawn-at-startup "valent" "--gapplication-service"
-
-// include "./noctalia.kdl"
 // include "sioyek.kdl"

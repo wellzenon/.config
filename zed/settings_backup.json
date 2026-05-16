@@ -7,7 +7,6 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
-  "window_decorations": "server",
   "outline_panel": {
     "dock": "left"
   },
@@ -62,14 +61,13 @@
     "show": false,
   },
   "title_bar": {
-    "button_layout": "",
-    "show_branch_status_icon": true,
     "show_onboarding_banner": true,
     "show_project_items": true,
     "show_menus": false,
     "show_sign_in": false,
     "show_user_picture": true,
     "show_branch_name": true,
+    "show_branch_icon": true,
   },
   "cursor_shape": "block",
   "icon_theme": "Serendipity Icons",

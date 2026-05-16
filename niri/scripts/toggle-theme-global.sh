@@ -42,31 +42,30 @@ fi
 if [ "$CURRENT_STATE" = "'prefer-dark'" ]; then
     # Alvo: TEMA CLARO
     GNOME_CS="default"
-    GTK_THEME="Adwaita"              # Ajuste para seu tema GTK claro
+    GTK_THEME="Orchis"              # Ajuste para seu tema GTK claro
     NVIM_BG="light"
     KVANTUM_THEME="KvGnome"          # Ajuste para seu tema Kvantum claro
     SIOYEK_BG="1.0 1.0 1.0"          # RGB para fundo Sioyek
     SIOYEK_TXT="0.0 0.0 0.0"         # RGB para texto Sioyek
     NIRI_CURSOR="Bibata-Modern-Classic"
     WALLPAPER="$HOME/.config/wallpapers/Monster Abstract Wallpaper 4k Pc Desktop 5300a.jpg"
-    WAY_EDGES_FG="#444"
+    WAY_EDGES_FG="#333"
     WAY_EDGES_BG="#ddd"
 else
     # Alvo: TEMA ESCURO
     GNOME_CS="prefer-dark"
-    GTK_THEME="Adwaita-dark"         # Ajuste para seu tema GTK escuro
+    GTK_THEME="Orchis"         # Ajuste para seu tema GTK escuro
     NVIM_BG="dark"
     KVANTUM_THEME="KvGnomeDark"           # Ajuste para seu tema Kvantum escuro
     SIOYEK_BG="0.1 0.1 0.1"
     SIOYEK_TXT="0.8 0.8 0.8"
     NIRI_CURSOR="Bibata-Modern-Ice"
     WALLPAPER="$HOME/.config/wallpapers/4K-OLED-Backgrounds-for-Desktop.jpg"
-    WAY_EDGES_FG="#bbb"
-    WAY_EDGES_BG="#222"
+    WAY_EDGES_FG="#aaa"
+    WAY_EDGES_BG="#000"
 fi
 
-killall -SIGUSR1 swaybg
-swaybg -m fill -i "$WALLPAPER" &
+awww img "$WALLPAPER" -t random
 
 # ==========================================
 # 2. GNOME, Nautilus e Obsidian (GTK4 / Electron)
